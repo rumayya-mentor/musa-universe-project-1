@@ -20,8 +20,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .pbar-w{max-width:360px;margin:18px auto 0;background:var(--bg3);border-radius:10px;height:10px;overflow:hidden}
 .pbar-f{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .6s cubic-bezier(.22,1,.36,1);width:0%}
 .ptxt{font-family:'Space Mono',monospace;font-size:12px;color:var(--text3);margin-top:8px}
-.streak{display:flex;justify-content:center;gap:5px;margin-top:14px;flex-wrap:wrap}
-.sd{width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1.5px solid var(--bg4);display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'Space Mono',monospace;color:var(--text3);transition:all .3s}
+.streak{display:flex;justify-content:center;gap:4px;margin-top:14px;flex-wrap:wrap}
+.sd{width:32px;height:38px;border-radius:6px;background:var(--bg3);border:1.5px solid var(--bg4);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Space Mono',monospace;color:var(--text3);transition:all .3s;gap:1px}
+.sd .sd-day{font-size:8px;opacity:.7}.sd .sd-num{font-size:11px;font-weight:700}
 .sd.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .sd.now{border-color:var(--accent);box-shadow:0 0 0 3px rgba(248,184,78,.2)}
 .sd.off{opacity:.35;background:var(--bg)}
@@ -47,6 +48,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .ti{width:36px;height:36px;border-radius:50%;background:var(--purple-soft);color:var(--purple);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:14px;flex-shrink:0}
 .td{flex:1}.ts2{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}.tds{font-size:12px;color:var(--text3)}
 .te{font-family:'Space Mono',monospace;font-size:11px;padding:3px 10px;border-radius:12px;background:var(--purple-soft);color:var(--purple);white-space:nowrap}
+.tkd{background:var(--coral-soft);border:1px solid rgba(240,122,86,.3);border-radius:var(--r);padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--coral)}
+.tkd-icon{font-size:18px;flex-shrink:0}
 .cl{list-style:none}
 .cl li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3);font-size:13px;line-height:1.5;transition:opacity .2s}
 .cl li:last-child{border-bottom:none}.cl li.ic{opacity:.45}
@@ -68,20 +71,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .jb{background:var(--bg3);border-radius:var(--rs);padding:14px 16px;margin:12px 0;font-size:13px;color:var(--text2);border-left:3px solid var(--purple);line-height:1.7}
 .qb{background:var(--bg3);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;border-left:3px solid var(--accent)}
 .qb .qt{font-size:14px;font-weight:600;margin-bottom:4px}.qb .qs{font-size:12px;color:var(--text3)}
-.dh{display:flex;align-items:center;gap:10px;margin:24px 0 8px}
+.dh{display:flex;align-items:center;gap:10px;margin:24px 0 8px;flex-wrap:wrap}
 .dn2{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;padding:4px 12px;border-radius:4px;background:var(--bg4);color:var(--text2)}
 .dt{font-size:14px;font-weight:600}
+.dd{font-family:'Space Mono',monospace;font-size:11px;color:var(--text3);margin-left:auto}
 .rp{background:var(--blue-soft);border-radius:var(--rs);padding:14px 16px;margin:14px 0;font-size:13px;color:var(--blue);line-height:1.6}
 .fc{background:linear-gradient(135deg,rgba(248,184,78,.12),rgba(240,122,86,.12));border:1px solid rgba(248,184,78,.25);border-radius:var(--r);padding:24px;text-align:center;margin:16px 0}
 .fc h3{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
 .fc p{font-size:13px;color:var(--text2)}
 .skgr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.skc{background:var(--bg3);border-radius:var(--rs);padding:12px}
-.skc .sn{margin-bottom:4px}.skc .sh{font-size:11px;color:var(--text3);line-height:1.4}
+.skc{background:var(--bg3);border-radius:var(--rs);padding:12px}.skc .sn{margin-bottom:4px}.skc .sh{font-size:11px;color:var(--text3);line-height:1.4}
 .sl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin:24px 0 10px}
 .so{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--r);padding:16px;margin-bottom:16px}
-.sr{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px solid var(--bg3)}
-.sr:last-child{border-bottom:none}
+.sr{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px solid var(--bg3)}.sr:last-child{border-bottom:none}
 .st{font-family:'Space Mono',monospace;font-size:11px;color:var(--text3);min-width:100px}
 .sla{color:var(--text2);flex:1}
 .stg{font-family:'Space Mono',monospace;font-size:9px;padding:2px 8px;border-radius:8px}
@@ -89,9 +91,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 .na{width:100%;min-height:80px;background:var(--bg3);border:1px solid var(--bg4);border-radius:var(--rs);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;padding:12px;resize:vertical;line-height:1.6;margin-top:8px;transition:border-color .2s}
 .na:focus{outline:none;border-color:var(--accent)}.na::placeholder{color:var(--text3)}
 .ns{font-family:'Space Mono',monospace;font-size:10px;color:var(--teal);margin-top:4px;opacity:0;transition:opacity .3s}.ns.show{opacity:1}
-.rb{display:block;margin:40px auto 0;padding:8px 20px;background:transparent;border:1px solid var(--bg4);border-radius:20px;color:var(--text3);font-size:11px;font-family:'Space Mono',monospace;cursor:pointer;transition:all .2s}
-.rb:hover{border-color:#e24b4a;color:#e24b4a}
-@media(max-width:480px){.hero{padding:36px 16px 24px}.skgr{grid-template-columns:1fr}.ctn{padding:0 12px 80px}.cd{padding:14px}.nw{margin:0 -12px;padding:0 12px}.tb{flex-direction:column;align-items:flex-start;gap:8px}}
+.quote{margin:30px 0 10px;padding:20px;text-align:center;border-top:1px solid var(--bg3)}
+.quote-text{font-size:15px;font-style:italic;color:var(--text2);line-height:1.7;margin-bottom:8px}
+.quote-author{font-family:'Space Mono',monospace;font-size:11px;color:var(--text3)}
+.rb{display:block;margin:40px auto 0;padding:8px 20px;background:transparent;border:1px solid var(--bg4);border-radius:20px;color:var(--text3);font-size:11px;font-family:'Space Mono',monospace;cursor:pointer;transition:all .2s}.rb:hover{border-color:#e24b4a;color:#e24b4a}
+@media(max-width:480px){.hero{padding:36px 16px 24px}.skgr{grid-template-columns:1fr}.ctn{padding:0 12px 80px}.cd{padding:14px}.nw{margin:0 -12px;padding:0 12px}.tb{flex-direction:column;align-items:flex-start;gap:8px}.dd{margin-left:0}}
 </style>
 </head>
 <body>
@@ -99,7 +103,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <div class="hero-label">Musa's Project #1</div>
 <h1>The death of the sun</h1>
 <div class="hero-sub">Apa yang terjadi kalau matahari mati?</div>
-<div class="hero-dates" id="dateRange">14 working days &middot; Sat off &middot; 11:30-13:30</div>
+<div class="hero-dates">26 Apr - 11 May 2026 &middot; Sat off &middot; 11:30-13:30</div>
 <div class="pbar-w"><div class="pbar-f" id="mainProg"></div></div>
 <div class="ptxt" id="progTxt">0 / 42 tasks</div>
 <div class="streak" id="streakBar"></div>
@@ -107,17 +111,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <div class="ctn">
 <div class="nw"><nav class="np" id="nav">
 <div class="pl active" data-p="0"><span class="pc">&#10003;</span>Overview</div>
-<div class="pl" data-p="1"><span class="pc">&#10003;</span>Day 1-2</div>
-<div class="pl" data-p="2"><span class="pc">&#10003;</span>Day 3-4</div>
-<div class="pl" data-p="3"><span class="pc">&#10003;</span>Day 5-6</div>
-<div class="pl" data-p="4"><span class="pc">&#10003;</span>Day 7-8</div>
-<div class="pl" data-p="5"><span class="pc">&#10003;</span>Day 9-10</div>
-<div class="pl" data-p="6"><span class="pc">&#10003;</span>Day 11-12</div>
-<div class="pl" data-p="7"><span class="pc">&#10003;</span>Day 13-14</div>
+<div class="pl" data-p="1"><span class="pc">&#10003;</span>26-27 Apr</div>
+<div class="pl" data-p="2"><span class="pc">&#10003;</span>28-29 Apr</div>
+<div class="pl" data-p="3"><span class="pc">&#10003;</span>30 Apr-1 May</div>
+<div class="pl" data-p="4"><span class="pc">&#10003;</span>3-4 May</div>
+<div class="pl" data-p="5"><span class="pc">&#10003;</span>5-6 May</div>
+<div class="pl" data-p="6"><span class="pc">&#10003;</span>7-8 May</div>
+<div class="pl" data-p="7"><span class="pc">&#10003;</span>10-11 May</div>
 </nav></div>
 
+<!-- ==================== OVERVIEW ==================== -->
 <div class="ph active" id="ph-0">
-<div class="phh"><h2>Project overview</h2><p>Your big questions &amp; daily schedule</p></div>
+<div class="phh"><h2>Project overview</h2><p>26 April - 11 May 2026</p></div>
 <div class="sl">Daily schedule / Jadwal harian</div>
 <div class="so">
 <div class="sr"><span class="st">09:00-11:00</span><span class="sla">Other learning / projects</span><span class="stg sot">other</span></div>
@@ -126,6 +131,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <div class="sr"><span class="st">13:30-14:00</span><span class="sla">Break</span><span class="stg sbr">break</span></div>
 <div class="sr"><span class="st">14:00-15:00</span><span class="sla">Other learning / projects</span><span class="stg sot">other</span></div>
 <div class="sr" style="opacity:.5"><span class="st">Saturday</span><span class="sla">Day off — rest!</span><span class="stg sbr">off</span></div>
+<div class="sr" style="color:var(--coral)"><span class="st">Thu sore</span><span class="sla">Taekwondo training</span><span class="stg" style="background:var(--coral-soft);color:var(--coral)">tkd</span></div>
+<div class="sr" style="color:var(--coral)"><span class="st">Sat pagi</span><span class="sla">Taekwondo training</span><span class="stg" style="background:var(--coral-soft);color:var(--coral)">tkd</span></div>
 </div>
 <div class="sl">Big questions / Pertanyaan besar</div>
 <div class="qb"><div class="qt">Does the sun still have its heliosphere as a red giant / white dwarf?</div><div class="qs">Apakah matahari masih punya heliosphere saat jadi red giant dan white dwarf?</div></div>
@@ -147,11 +154,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <li><div class="cw"><input type="checkbox" data-task="out2"></div><span class="ck">B: Video explainer (3-5 min) with diagrams<span class="clg">Video penjelasan dengan diagram</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="out3"></div><span class="ck">C: Written report (2-3 pages) + illustrations<span class="clg">Laporan tertulis dengan ilustrasi</span></span></li>
 </ul></div>
+<div class="quote"><div class="quote-text">"The important thing is not to stop questioning. Curiosity has its own reason for existing."</div><div class="quote-author">— Albert Einstein</div></div>
 </div>
 
+<!-- ==================== DAY 1-2: WONDER ==================== -->
 <div class="ph" id="ph-1">
 <div class="phh"><span class="pt tw">Wonder</span><h2>Day 1-2: Ask your questions</h2><p>Hari 1-2: Ajukan pertanyaanmu</p></div>
-<div class="dh"><span class="dn2">DAY 1</span><span class="dt">Explore your curiosity</span></div>
+
+<div class="dh"><span class="dn2">DAY 1</span><span class="dt">Explore your curiosity</span><span class="dd">Sun, 26 Apr</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:00</div><div class="tds">Write what you know + guess answers</div></div><div class="te">~90 min</div></div>
 <div class="cd"><div class="ct"><span class="sb sc">Critical thinking</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="w1"></div><span class="ck">Write everything you think you know about the sun dying<span class="clg">Tulis semua yang kamu pikir kamu tahu</span><span class="tt">~30 min</span></span></li>
@@ -159,68 +169,80 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <li><div class="cw"><input type="checkbox" data-task="w3"></div><span class="ck">Circle the question you're MOST curious about<span class="clg">Lingkari pertanyaan paling bikin penasaran</span><span class="tt">~10 min</span></span></li>
 </ul><textarea class="na" data-note="wonder" placeholder="My initial thoughts / Pikiran awalku..."></textarea><div class="ns" id="ns-wonder">Saved</div></div>
 
-<div class="dh"><span class="dn2">DAY 2</span><span class="dt">Plan your hunt</span></div>
+<div class="dh"><span class="dn2">DAY 2</span><span class="dt">Plan your hunt</span><span class="dd">Mon, 27 Apr</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:00</div><div class="tds">Plan sources + decide format</div></div><div class="te">~90 min</div></div>
 <div class="cd"><div class="ct"><span class="sb ss">Self-management</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="w4"></div><span class="ck">List 3-4 sources (video, book, Claude, Ayah)<span class="clg">Daftar 3-4 sumber</span><span class="tt">~20 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="w5"></div><span class="ck">Write what to find out for EACH question<span class="clg">Tulis apa yang perlu dicari untuk setiap pertanyaan</span><span class="tt">~30 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="w5"></div><span class="ck">Write what to find out for EACH question<span class="clg">Tulis apa yang perlu dicari</span><span class="tt">~30 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="w6"></div><span class="ck">Decide output format (poster / video / report)<span class="clg">Tentukan format output</span><span class="tt">~10 min</span></span></li>
-</ul><textarea class="na" data-note="plan" placeholder="Sources and plan / Sumber dan rencana..."></textarea><div class="ns" id="ns-plan">Saved</div></div>
+</ul><textarea class="na" data-note="plan" placeholder="Sources and plan..."></textarea><div class="ns" id="ns-plan">Saved</div></div>
 <div class="ps"><div class="si">&#9998;</div><h4>Mini-presentation to Ayah (13:00-13:15)</h4><p>Share your questions, sources, and output plan (2 min)</p></div>
-<div class="rp">Reflection (13:15-13:30): "On a scale 1-10, how excited am I? Why?"<br><em>"Dari skala 1-10, seberapa semangat?"</em></div>
+<div class="rp">Reflection (13:15-13:30): "On a scale 1-10, how excited am I? Why?"</div>
 <textarea class="na" data-note="ref-d2" placeholder="Reflection..."></textarea><div class="ns" id="ns-ref-d2">Saved</div>
+<div class="quote"><div class="quote-text">"The beginning is the most important part of the work. A good plan today is better than a perfect plan tomorrow."</div><div class="quote-author">— on Self-management &amp; Critical thinking</div></div>
 </div>
 
+<!-- ==================== DAY 3-4: HUNT A ==================== -->
 <div class="ph" id="ph-2">
 <div class="phh"><span class="pt th2">Hunt</span><h2>Day 3-4: Research part 1</h2><p>Sun's lifecycle &amp; heliosphere</p></div>
-<div class="dh"><span class="dn2">DAY 3</span><span class="dt">The sun's life story</span></div>
+
+<div class="dh"><span class="dn2">DAY 3</span><span class="dt">The sun's life story</span><span class="dd">Tue, 28 Apr</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Research lifecycle + math challenge</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb sm">Math &amp; Science</span></div><ul class="cl">
-<li><div class="cw"><input type="checkbox" data-task="h1"></div><span class="ck">How old is the sun? How long will it live?<span class="clg">Berapa umur matahari? Berapa lama akan hidup?</span><span class="tt">~25 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="h2"></div><span class="ck">What is a red giant? How big will the sun become?<span class="clg">Apa itu red giant? Seberapa besar?</span><span class="tt">~25 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="h3"></div><span class="ck">MATH: Sun is 4.6B years old, lives ~10B. What % is left? Show working!<span class="clg">MATH: Hitung persentase sisa hidup matahari!</span><span class="tt">~20 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h1"></div><span class="ck">How old is the sun? How long will it live?<span class="clg">Berapa umur matahari?</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h2"></div><span class="ck">What is a red giant? How big will the sun become?<span class="clg">Apa itu red giant?</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h3"></div><span class="ck">MATH: Sun is 4.6B years old, lives ~10B. What % is left?<span class="clg">Hitung persentase sisa hidup matahari!</span><span class="tt">~20 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="h4"></div><span class="ck">Write notes from source #1 in YOUR OWN WORDS<span class="clg">Tulis catatan dengan kata-katamu sendiri</span><span class="tt">~30 min</span></span></li>
 </ul><textarea class="na" data-note="hunt1" placeholder="Source #1 notes..."></textarea><div class="ns" id="ns-hunt1">Saved</div></div>
 
-<div class="dh"><span class="dn2">DAY 4</span><span class="dt">White dwarf &amp; heliosphere</span></div>
+<div class="dh"><span class="dn2">DAY 4</span><span class="dt">White dwarf &amp; heliosphere</span><span class="dd">Wed, 29 Apr</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Research heliosphere + compare sources</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb sc">Critical thinking</span></div><ul class="cl">
-<li><div class="cw"><input type="checkbox" data-task="h5"></div><span class="ck">What is the heliosphere? What creates it?<span class="clg">Apa itu heliosphere? Apa yang membuatnya?</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h5"></div><span class="ck">What is the heliosphere? What creates it?<span class="clg">Apa itu heliosphere?</span><span class="tt">~25 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="h6"></div><span class="ck">What happens to solar wind during red giant phase?<span class="clg">Apa yang terjadi dengan solar wind?</span><span class="tt">~25 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="h7"></div><span class="ck">Does a white dwarf have solar wind?<span class="clg">Apakah white dwarf punya solar wind?</span><span class="tt">~20 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="h8"></div><span class="ck">Notes from source #2 — compare with source #1<span class="clg">Catatan sumber #2 — bandingkan dengan #1</span><span class="tt">~30 min</span></span></li>
-</ul><textarea class="na" data-note="hunt2" placeholder="Source #2 notes & comparison..."></textarea><div class="ns" id="ns-hunt2">Saved</div></div>
-<div class="nu"><strong>Stuck?</strong> Ask Ayah or Claude: "Explain the heliosphere like I'm 13"<br><em>Tanya Ayah atau Claude!</em></div>
-<div class="rp">"What's the most surprising thing I learned?"<br><em>"Hal paling mengejutkan?"</em></div>
+<li><div class="cw"><input type="checkbox" data-task="h8"></div><span class="ck">Notes from source #2 — compare with source #1<span class="clg">Bandingkan dengan sumber #1</span><span class="tt">~30 min</span></span></li>
+</ul><textarea class="na" data-note="hunt2" placeholder="Source #2 notes..."></textarea><div class="ns" id="ns-hunt2">Saved</div></div>
+<div class="nu"><strong>Stuck?</strong> Ask Ayah or Claude: "Explain the heliosphere like I'm 13"</div>
+<div class="rp">"What's the most surprising thing I learned?"</div>
 <textarea class="na" data-note="ref-d4" placeholder="Most surprising..."></textarea><div class="ns" id="ns-ref-d4">Saved</div>
+<div class="quote"><div class="quote-text">"Research is formalized curiosity. It is poking and prying with a purpose."</div><div class="quote-author">— Zora Neale Hurston, on Critical thinking &amp; Math/Science</div></div>
 </div>
 
+<!-- ==================== DAY 5-6: HUNT B ==================== -->
 <div class="ph" id="ph-3">
 <div class="phh"><span class="pt th2">Hunt</span><h2>Day 5-6: Research part 2</h2><p>Neutron stars &amp; pulsars</p></div>
-<div class="dh"><span class="dn2">DAY 5</span><span class="dt">Neutron stars</span></div>
+
+<div class="dh"><span class="dn2">DAY 5</span><span class="dt">Neutron stars</span><span class="dd">Thu, 30 Apr</span></div>
+<div class="tkd"><span class="tkd-icon">&#129354;</span><strong>Taekwondo sore ini!</strong> Finish project work by 13:30, rest, then train hard. Discipline in the dojang = discipline in learning.</div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Research neutron stars + density math</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb sm">Math &amp; Science</span></div><ul class="cl">
-<li><div class="cw"><input type="checkbox" data-task="h9"></div><span class="ck">What is a neutron star? How different from white dwarf?<span class="clg">Apa bedanya neutron star dan white dwarf?</span><span class="tt">~30 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="h10"></div><span class="ck">MATH: ~20km wide, 1.4x sun mass. Calculate density!<span class="clg">MATH: Hitung densitasnya!</span><span class="tt">~25 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="h11"></div><span class="ck">What if neutron star collided with white dwarf?<span class="clg">Apa yang terjadi kalau bertabrakan?</span><span class="tt">~25 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="h12"></div><span class="ck">Watch a video about kilonova<span class="clg">Tonton video tentang kilonova</span><span class="tt">~20 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h9"></div><span class="ck">What is a neutron star? How different from white dwarf?<span class="clg">Apa bedanya?</span><span class="tt">~30 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h10"></div><span class="ck">MATH: ~20km wide, 1.4x sun mass. Calculate density!<span class="clg">Hitung densitasnya!</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h11"></div><span class="ck">What if neutron star collided with white dwarf?<span class="clg">Kalau bertabrakan?</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h12"></div><span class="ck">Watch a video about kilonova<span class="clg">Tonton video kilonova</span><span class="tt">~20 min</span></span></li>
 </ul><textarea class="na" data-note="hunt3" placeholder="Neutron star notes..."></textarea><div class="ns" id="ns-hunt3">Saved</div></div>
 
-<div class="dh"><span class="dn2">DAY 6</span><span class="dt">Pulsar beams</span></div>
+<div class="dh"><span class="dn2">DAY 6</span><span class="dt">Pulsar beams</span><span class="dd">Fri, 1 May</span></div>
+<div class="nu" style="background:var(--coral-soft);border-color:var(--coral);color:var(--coral)"><strong>&#129354; Reminder:</strong> Besok Sabtu = Taekwondo pagi + day off. Selesaikan summary hari ini supaya Minggu bisa mulai Wrestle dengan fresh!<br><em>Tomorrow: TKD morning + rest day. Finish your summary today!</em></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Pulsars + write full summary</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb sc">Critical thinking</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="h13"></div><span class="ck">What is a pulsar? How does the beam work?<span class="clg">Apa itu pulsar?</span><span class="tt">~25 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="h14"></div><span class="ck">What if a pulsar beam hit Earth?<span class="clg">Kalau beam pulsar kena Bumi?</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="h14"></div><span class="ck">What if a pulsar beam hit Earth?<span class="clg">Kalau beam kena Bumi?</span><span class="tt">~25 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="h15"></div><span class="ck">Is there a dangerous pulsar near Earth?<span class="clg">Ada pulsar berbahaya dekat Bumi?</span><span class="tt">~20 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="h16"></div><span class="ck">Write summary of ALL research (1 paragraph per Q)<span class="clg">Ringkasan semua riset</span><span class="tt">~30 min</span></span></li>
 </ul><textarea class="na" data-note="hunt4" placeholder="Full summary..."></textarea><div class="ns" id="ns-hunt4">Saved</div></div>
-<div class="ps"><div class="si">&#9998;</div><h4>Progress check with Ayah (13:00-13:15)</h4><p>Show notes. What's learned? What's confusing? (3 min)</p></div>
-<div class="nu"><strong>Feeling lost?</strong> Normal! Hard topics are confusing at first. Ask for help — that's strategy.<br><em>Minta bantuan — itu strategi, bukan kelemahan.</em></div>
+<div class="ps"><div class="si">&#9998;</div><h4>Progress check with Ayah (13:00-13:15)</h4><p>Show notes. What's learned? What's confusing?</p></div>
+<div class="quote"><div class="quote-text">"I have no special talents. I am only passionately curious."</div><div class="quote-author">— Albert Einstein, on Grit &amp; Growth mindset</div></div>
 </div>
 
+<!-- ========= SAT 2 MAY = OFF ========= -->
+
+<!-- ==================== DAY 7-8: WRESTLE ==================== -->
 <div class="ph" id="ph-4">
 <div class="phh"><span class="pt twr">Wrestle</span><h2>Day 7-8: Think deep</h2><p>Berpikir mendalam</p></div>
-<div class="dh"><span class="dn2">DAY 7</span><span class="dt">Connect and compare</span></div>
+
+<div class="dh"><span class="dn2">DAY 7</span><span class="dt">Connect and compare</span><span class="dd">Sun, 3 May</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:15</div><div class="tds">Compare, analyze, form opinions</div></div><div class="te">~105 min</div></div>
 <div class="cd"><div class="ct"><span class="sb sc">Critical thinking</span> <span class="sb sgr">Growth mindset</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="wr1"></div><span class="ck">Comparison table: white dwarf vs neutron star<span class="clg">Tabel perbandingan</span><span class="tt">~30 min</span></span></li>
@@ -228,60 +250,72 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <li><div class="cw"><input type="checkbox" data-task="wr3"></div><span class="ck">Did sources disagree? Which do you trust? Why?<span class="clg">Sumber mana yang lebih dipercaya?</span><span class="tt">~25 min</span></span></li>
 </ul><textarea class="na" data-note="wr1" placeholder="My analysis..."></textarea><div class="ns" id="ns-wr1">Saved</div></div>
 
-<div class="dh"><span class="dn2">DAY 8</span><span class="dt">Challenge yourself</span></div>
+<div class="dh"><span class="dn2">DAY 8</span><span class="dt">Challenge yourself</span><span class="dd">Mon, 4 May</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Hard questions + reflection</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb sc">Critical thinking</span> <span class="sb sg">Grit</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="wr4"></div><span class="ck">HARD: Step-by-step if neutron star hit our white dwarf sun?<span class="clg">Langkah demi langkah?</span><span class="tt">~35 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="wr5"></div><span class="ck">MATH: Pulsar beam at 300,000 km/s — time to Earth from nearest?<span class="clg">Berapa lama beam sampai Bumi?</span><span class="tt">~25 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="wr6"></div><span class="ck">"I used to think ___ / Now I think ___" for each question<span class="clg">"Dulu saya pikir ___ / Sekarang ___"</span><span class="tt">~30 min</span></span></li>
-</ul><textarea class="na" data-note="wr2" placeholder="I used to think... Now I think..."></textarea><div class="ns" id="ns-wr2">Saved</div></div>
-<div class="jb">JOURNAL (last 15 min): "Hardest part was ___. Got through by ___."<br><em>"Bagian tersulit ___. Mengatasinya dengan ___."</em></div>
+<li><div class="cw"><input type="checkbox" data-task="wr5"></div><span class="ck">MATH: Pulsar beam at 300,000 km/s — time to Earth?<span class="clg">Berapa lama beam sampai Bumi?</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="wr6"></div><span class="ck">"I used to think ___ / Now I think ___" for each Q<span class="clg">"Dulu saya pikir ___ / Sekarang ___"</span><span class="tt">~30 min</span></span></li>
+</ul><textarea class="na" data-note="wr2" placeholder="I used to think... Now..."></textarea><div class="ns" id="ns-wr2">Saved</div></div>
+<div class="jb">JOURNAL (last 15 min): "Hardest part was ___. Got through by ___."</div>
 <textarea class="na" data-note="jrn8" placeholder="Hardest part..."></textarea><div class="ns" id="ns-jrn8">Saved</div>
+<div class="quote"><div class="quote-text">"The mind is not a vessel to be filled, but a fire to be kindled."</div><div class="quote-author">— Plutarch, on Critical thinking &amp; Growth mindset</div></div>
 </div>
 
+<!-- ==================== DAY 9-10: MAKE A ==================== -->
 <div class="ph" id="ph-5">
 <div class="phh"><span class="pt tm">Make</span><h2>Day 9-10: Build your output</h2><p>Buat outputmu</p></div>
-<div class="dh"><span class="dn2">DAY 9</span><span class="dt">Structure and draft</span></div>
+
+<div class="dh"><span class="dn2">DAY 9</span><span class="dt">Structure and draft</span><span class="dd">Tue, 5 May</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Outline + first draft</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb scr">Creativity</span> <span class="sb sco">Communication</span></div><ul class="cl">
-<li><div class="cw"><input type="checkbox" data-task="m1"></div><span class="ck">3-5 main points audience MUST understand<span class="clg">Poin utama yang harus dipahami</span><span class="tt">~20 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="m1"></div><span class="ck">3-5 main points audience MUST understand<span class="clg">Poin utama</span><span class="tt">~20 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="m2"></div><span class="ck">Outline / storyboard (paper first!)<span class="clg">Sketsa di kertas dulu!</span><span class="tt">~30 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="m3"></div><span class="ck">Start first draft — not perfect is OK!<span class="clg">Tidak perlu sempurna!</span><span class="tt">~60 min</span></span></li>
 </ul></div>
 
-<div class="dh"><span class="dn2">DAY 10</span><span class="dt">Add depth &amp; visuals</span></div>
+<div class="dh"><span class="dn2">DAY 10</span><span class="dt">Add depth &amp; visuals</span><span class="dd">Wed, 6 May</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Diagrams, data, your analysis</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb scr">Creativity</span> <span class="sb sm">Math &amp; Science</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="m4"></div><span class="ck">Add at least 1 diagram or visual<span class="clg">Minimal 1 diagram</span><span class="tt">~40 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="m5"></div><span class="ck">Include 2+ numbers showing scale<span class="clg">Minimal 2 angka tentang skala</span><span class="tt">~20 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="m6"></div><span class="ck">Add YOUR opinion — not just facts<span class="clg">Tambahkan pendapatmu sendiri</span><span class="tt">~30 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="m5"></div><span class="ck">Include 2+ numbers showing scale<span class="clg">Minimal 2 angka</span><span class="tt">~20 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="m6"></div><span class="ck">Add YOUR opinion — not just facts<span class="clg">Pendapatmu sendiri</span><span class="tt">~30 min</span></span></li>
 </ul></div>
-<div class="nu"><strong>Perfectionism trap!</strong> Done > perfect. Get it down, then improve.<br><em>Draft pertama tidak akan sempurna — memang begitu.</em></div>
+<div class="nu"><strong>Perfectionism trap!</strong> Done > perfect. Get it down, then improve.</div>
+<div class="quote"><div class="quote-text">"Creativity is intelligence having fun. Don't wait for perfection — create, then refine."</div><div class="quote-author">— on Creativity &amp; Grit</div></div>
 </div>
 
+<!-- ==================== DAY 11-12: MAKE B ==================== -->
 <div class="ph" id="ph-6">
 <div class="phh"><span class="pt tm">Make</span><h2>Day 11-12: Polish and refine</h2><p>Poles dan perbaiki</p></div>
-<div class="dh"><span class="dn2">DAY 11</span><span class="dt">Feedback + improve</span></div>
+
+<div class="dh"><span class="dn2">DAY 11</span><span class="dt">Feedback + improve</span><span class="dd">Thu, 7 May</span></div>
+<div class="tkd"><span class="tkd-icon">&#129354;</span><strong>Taekwondo sore ini!</strong> In sparring, you learn from getting hit. In projects, you learn from feedback. Same mindset.</div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:15</div><div class="tds">Show draft to Ayah + revise</div></div><div class="te">~105 min</div></div>
 <div class="cd"><div class="ct"><span class="sb sgr">Growth mindset</span> <span class="sb sg">Grit</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="m7"></div><span class="ck">Show draft to Ayah: "What's unclear?"<span class="clg">Tunjukkan ke Ayah</span><span class="tt">~20 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="m8"></div><span class="ck">Write feedback. Agree? What to change?<span class="clg">Tulis feedback. Apa yang diubah?</span><span class="tt">~15 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="m8"></div><span class="ck">Write feedback. Agree? What to change?<span class="clg">Apa yang diubah?</span><span class="tt">~15 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="m9"></div><span class="ck">Improve based on feedback<span class="clg">Perbaiki berdasarkan feedback</span><span class="tt">~60 min</span></span></li>
 </ul><textarea class="na" data-note="fb" placeholder="Feedback from Ayah..."></textarea><div class="ns" id="ns-fb">Saved</div></div>
 
-<div class="dh"><span class="dn2">DAY 12</span><span class="dt">Final version</span></div>
+<div class="dh"><span class="dn2">DAY 12</span><span class="dt">Final version</span><span class="dd">Fri, 8 May</span></div>
+<div class="nu" style="background:var(--coral-soft);border-color:var(--coral);color:var(--coral)"><strong>&#129354; Reminder:</strong> Besok Sabtu = Taekwondo pagi + rest day. Finish strong today! Setelah weekend, it's presentation time.<br><em>Tomorrow: TKD + rest. Selesaikan hari ini!</em></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:30</div><div class="tds">Finalize + practice presenting</div></div><div class="te">~2 hrs</div></div>
 <div class="cd"><div class="ct"><span class="sb ss">Self-management</span></div><ul class="cl">
 <li><div class="cw"><input type="checkbox" data-task="m10"></div><span class="ck">Complete final — check spelling, facts, visuals<span class="clg">Cek ejaan, fakta, visual</span><span class="tt">~60 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="m11"></div><span class="ck">Practice out loud (aim 5 min)<span class="clg">Latihan suara keras (target 5 menit)</span><span class="tt">~30 min</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="m12"></div><span class="ck">Prepare 2 audience questions<span class="clg">Siapkan 2 pertanyaan audiens</span><span class="tt">~15 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="m11"></div><span class="ck">Practice out loud (aim 5 min)<span class="clg">Latihan suara keras</span><span class="tt">~30 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="m12"></div><span class="ck">Prepare 2 audience questions<span class="clg">Siapkan 2 pertanyaan</span><span class="tt">~15 min</span></span></li>
 </ul></div>
-<div class="nu"><strong>Almost there!</strong> 12 days of real work. Be proud.<br><em>Hampir selesai! Banggalah.</em></div>
+<div class="quote"><div class="quote-text">"A black belt is a white belt who never gave up. Your project is the same — keep refining until you're proud."</div><div class="quote-author">— on Grit &amp; Self-management</div></div>
 </div>
 
+<!-- ========= SAT 9 MAY = OFF ========= -->
+
+<!-- ==================== DAY 13-14: PRESENT ==================== -->
 <div class="ph" id="ph-7">
 <div class="phh"><span class="pt tl">Present + Look back</span><h2>Day 13-14: Present &amp; reflect</h2><p>Presentasi dan refleksi</p></div>
-<div class="dh"><span class="dn2">DAY 13</span><span class="dt">Presentation day!</span></div>
+
+<div class="dh"><span class="dn2">DAY 13</span><span class="dt">Presentation day!</span><span class="dd">Sun, 10 May</span></div>
 <div class="tb"><div class="ti">&#9733;</div><div class="td"><div class="ts2">11:30 - 12:30</div><div class="tds">Present to family!</div></div><div class="te">~60 min</div></div>
 <div class="fc"><h3>Presentation day</h3><p>You are the expert now. / Kamu sekarang ahlinya.</p></div>
 <div class="cd"><div class="ct"><span class="sb sco">Communication</span></div><ul class="cl">
@@ -290,31 +324,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);lin
 <li><div class="cw"><input type="checkbox" data-task="p3"></div><span class="ck">Ask: "What was most interesting?"<span class="tt">~5 min</span></span></li>
 </ul><textarea class="na" data-note="pres" placeholder="How did it go?"></textarea><div class="ns" id="ns-pres">Saved</div></div>
 
-<div class="dh"><span class="dn2">DAY 14</span><span class="dt">Reflect and grow</span></div>
+<div class="dh"><span class="dn2">DAY 14</span><span class="dt">Reflect and grow</span><span class="dd">Mon, 11 May</span></div>
 <div class="tb"><div class="ti">&#9201;</div><div class="td"><div class="ts2">11:30 - 13:00</div><div class="tds">Final reflection + self-assessment</div></div><div class="te">~90 min</div></div>
 <div class="cd"><div class="ct"><span class="sb sgr">Growth mindset</span></div><ul class="cl">
-<li><div class="cw"><input type="checkbox" data-task="r1"></div><span class="ck">"I used to think ___. Now I think ___." (each Q)<span class="clg">"Dulu ___ Sekarang ___" (setiap pertanyaan)</span><span class="tt">~25 min</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="r1"></div><span class="ck">"I used to think ___. Now I think ___." (each Q)<span class="clg">"Dulu ___ Sekarang ___"</span><span class="tt">~25 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="r2"></div><span class="ck">"Hardest part was ___. Pushed through by ___."<span class="tt">~10 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="r3"></div><span class="ck">"One thing I'm proud of: ___."<span class="tt">~10 min</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="r4"></div><span class="ck">"My NEW question is ___." (starts Project #2!)<span class="clg">Pertanyaan baru = Project #2!</span><span class="tt">~10 min</span></span></li>
 </ul><textarea class="na" data-note="fref" placeholder="Final reflection..." style="min-height:120px"></textarea><div class="ns" id="ns-fref">Saved</div></div>
 
-<div class="cd"><div class="ct">Self-assessment (rate 1-5, explain why)</div><ul class="cl">
-<li><div class="cw"><input type="checkbox" data-task="sa1"></div><span class="ck">Time management over 14 days?<span class="clg">Mengatur waktu dengan baik?</span></span></li>
+<div class="cd"><div class="ct">Self-assessment (rate 1-5, explain)</div><ul class="cl">
+<li><div class="cw"><input type="checkbox" data-task="sa1"></div><span class="ck">Time management?<span class="clg">Mengatur waktu?</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="sa2"></div><span class="ck">Critical thinking (not just copying)?<span class="clg">Berpikir kritis?</span></span></li>
 <li><div class="cw"><input type="checkbox" data-task="sa3"></div><span class="ck">Pushed through when hard?<span class="clg">Bertahan saat sulit?</span></span></li>
-<li><div class="cw"><input type="checkbox" data-task="sa4"></div><span class="ck">Proud of what I made?<span class="clg">Bangga dengan hasilnya?</span></span></li>
+<li><div class="cw"><input type="checkbox" data-task="sa4"></div><span class="ck">Proud of what I made?<span class="clg">Bangga?</span></span></li>
 </ul><textarea class="na" data-note="sass" placeholder="Ratings and why..."></textarea><div class="ns" id="ns-sass">Saved</div></div>
 
 <div class="ps"><div class="si">&#9733;</div><h4>Add to portfolio</h4><p>Save to Google Drive + print for binder</p></div>
 <div class="fc" style="margin-top:20px"><h3>Project #1 complete!</h3><p>New question = Project #2. Siklus berlanjut.</p></div>
+<div class="quote"><div class="quote-text">"The expert in anything was once a beginner. You just proved you can learn anything you set your mind to. What's next?"</div><div class="quote-author">— on Growth mindset &amp; Communication</div></div>
 </div>
 
 <button class="rb" onclick="resetAll()">Reset all progress</button>
 </div>
 
 <script>
-const K='musa-p1';
+const K='musa-p1-v2',DATES=['2026-04-26','2026-04-27','2026-04-28','2026-04-29','2026-04-30','2026-05-01','2026-05-02','2026-05-03','2026-05-04','2026-05-05','2026-05-06','2026-05-07','2026-05-08','2026-05-09','2026-05-10','2026-05-11'];
 function ld(){try{return JSON.parse(localStorage.getItem(K))||{t:{},n:{},s:[]};}catch(e){return{t:{},n:{},s:[]};}}
 function sv(d){try{localStorage.setItem(K,JSON.stringify(d));}catch(e){}}
 const D=ld(),cbs=document.querySelectorAll('input[data-task]'),nas=document.querySelectorAll('.na[data-note]'),pls=document.querySelectorAll('.pl'),phs=document.querySelectorAll('.ph');
@@ -325,7 +360,7 @@ function ui(c){const l=c.closest('li'),la=l?.querySelector('.ck');if(l)l.classLi
 function prog(){const n=cbs.length,d=[...cbs].filter(c=>c.checked).length,p=Math.round(d/n*100);document.getElementById('mainProg').style.width=p+'%';document.getElementById('progTxt').textContent=d+' / '+n+' tasks \u2014 '+p+'%'}
 function pst(){pls.forEach(p=>{const i=+p.dataset.p;if(!i)return;const ts=pm[i]||[];p.classList.toggle('done',ts.length>0&&ts.every(t=>D.t[t]))})}
 function strk(){const td=new Date().toISOString().split('T')[0];if(!D.s.includes(td))D.s.push(td);rstrk()}
-function rstrk(){const b=document.getElementById('streakBar'),td=new Date();b.innerHTML='';if(!D.sd){D.sd=td.toISOString().split('T')[0];sv(D)}const st=new Date(D.sd);let dc=0;for(let i=0;dc<14;i++){const d=new Date(st);d.setDate(d.getDate()+i);if(d.getDay()===6){const dot=document.createElement('div');dot.className='sd off';dot.textContent='S';b.appendChild(dot);continue}dc++;const ds=d.toISOString().split('T')[0],dot=document.createElement('div');dot.className='sd';dot.textContent=dc;if(D.s?.includes(ds))dot.classList.add('on');if(ds===td.toISOString().split('T')[0])dot.classList.add('now');b.appendChild(dot)}}
+function rstrk(){const b=document.getElementById('streakBar'),td=new Date().toISOString().split('T')[0];b.innerHTML='';const days=['S','M','T','W','T','F','S'];DATES.forEach(ds=>{const d=new Date(ds+'T12:00:00'),dot=document.createElement('div');dot.className='sd';const isSat=d.getDay()===6;if(isSat)dot.classList.add('off');if(D.s?.includes(ds))dot.classList.add('on');if(ds===td)dot.classList.add('now');dot.innerHTML='<span class="sd-day">'+days[d.getDay()]+'</span><span class="sd-num">'+d.getDate()+'</span>';b.appendChild(dot)})}
 pls.forEach(p=>p.addEventListener('click',()=>{pls.forEach(x=>x.classList.remove('active'));p.classList.add('active');phs.forEach((x,i)=>x.classList.toggle('active',i===+p.dataset.p));window.scrollTo({top:0,behavior:'smooth'})}));
 function resetAll(){if(confirm('Reset ALL progress?\nReset SEMUA progress?')){localStorage.removeItem(K);location.reload()}}
 prog();pst();rstrk();
