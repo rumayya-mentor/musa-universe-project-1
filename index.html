@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Musa's Project-Based Learning Tracker">
+<meta name="theme-color" content="#0c0e13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Musa's Project #1 — The Death of the Sun</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9788;</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e13;
+  --bg2: #13161d;
+  --bg3: #1a1e28;
+  --bg4: #222733;
+  --text: #e8e6e0;
+  --text2: #9b9a94;
+  --text3: #6b6a65;
+  --accent: #f4a623;
+  --accent2: #e8593c;
+  --accent-soft: rgba(244,166,35,0.12);
+  --teal: #3dc9a5;
+  --teal-soft: rgba(61,201,165,0.12);
+  --purple: #7f77dd;
+  --purple-soft: rgba(127,119,221,0.12);
+  --coral: #e8593c;
+  --coral-soft: rgba(232,89,60,0.12);
+  --blue: #5ba4e6;
+  --blue-soft: rgba(91,164,230,0.12);
+  --green: #7bc44a;
+  --green-soft: rgba(123,196,74,0.12);
+  --red: #e24b4a;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HERO ===== */
+.hero {
+  padding: 48px 24px 32px;
+  text-align: center;
+  background: linear-gradient(180deg, #1a1228 0%, var(--bg) 100%);
+  border-bottom: 1px solid var(--bg3);
+  position: relative;
+}
+.hero-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.hero h1 {
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 700;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub { font-size: 14px; color: var(--text2); margin-bottom: 16px; }
+.hero-dates {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  padding: 6px 16px;
+  background: var(--bg3);
+  border-radius: 20px;
+  display: inline-block;
+}
+.progress-bar-wrap {
+  max-width: 360px;
+  margin: 18px auto 0;
+  background: var(--bg3);
+  border-radius: 10px;
+  height: 10px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 0%;
+}
+.progress-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 8px;
+}
+.streak-bar {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.streak-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg3);
+  border: 1.5px solid var(--bg4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: 'Space Mono', monospace;
+  color: var(--text3);
+  transition: all 0.3s;
+}
+.streak-dot.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.streak-dot.today {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(244,166,35,0.25);
+}
+
+/* ===== CONTAINER ===== */
+.container { max-width: 680px; margin: 0 auto; padding: 0 16px 80px; }
+
+/* ===== NAV ===== */
+.nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--bg3);
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+.nav-pills {
+  display: flex;
+  gap: 6px;
+  padding: 12px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.nav-pills::-webkit-scrollbar { display: none; }
+.pill {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--bg4);
+  background: var(--bg2);
+  color: var(--text3);
+  transition: all 0.2s;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.pill:hover { border-color: var(--text3); }
+.pill.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.pill.done { background: var(--teal-soft); border-color: var(--teal); color: var(--teal); }
+.pill .pill-check { display: none; margin-right: 4px; }
+.pill.done .pill-check { display: inline; }
+
+/* ===== PHASES ===== */
+.phase { display: none; animation: fadeIn 0.25s ease; }
+.phase.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.phase-header {
+  padding: 24px 0 16px;
+  border-bottom: 1px solid var(--bg3);
+  margin-bottom: 20px;
+}
+.phase-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.tag-wonder { background: var(--accent-soft); color: var(--accent); }
+.tag-hunt { background: var(--teal-soft); color: var(--teal); }
+.tag-wrestle { background: var(--purple-soft); color: var(--purple); }
+.tag-make { background: var(--coral-soft); color: var(--coral); }
+.tag-lookback { background: var(--blue-soft); color: var(--blue); }
+.phase-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.phase-header p { font-size: 13px; color: var(--text2); }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--bg3);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.card.all-done { border-color: var(--teal); }
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ===== CHECKLIST ===== */
+.checklist { list-style: none; }
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bg3);
+  font-size: 13px;
+  line-height: 1.5;
+  transition: opacity 0.2s;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li.is-checked { opacity: 0.55; }
+.cb-wrap {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.cb-wrap input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--text3);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+}
+.cb-wrap input:checked {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+.cb-wrap input:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px; top: 3px;
+  width: 6px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.cb-wrap input:active { transform: scale(0.9); }
+.check-label { flex: 1; }
+.check-label.done { text-decoration: line-through; color: var(--text3); }
+.check-lang {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  display: block;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+/* ===== SKILL BADGES ===== */
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.sk-critical { background: var(--purple-soft); color: var(--purple); }
+.sk-creative { background: var(--coral-soft); color: var(--coral); }
+.sk-grit { background: var(--accent-soft); color: var(--accent); }
+.sk-growth { background: var(--teal-soft); color: var(--teal); }
+.sk-math { background: var(--blue-soft); color: var(--blue); }
+.sk-comm { background: var(--green-soft); color: var(--green); }
+.sk-self { background: rgba(212,83,126,0.1); color: #d4537e; }
+
+/* ===== SPECIAL BLOCKS ===== */
+.nudge {
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: 13px;
+  color: var(--accent);
+  line-height: 1.6;
+}
+.nudge strong { font-weight: 700; }
+
+.present-slot {
+  background: var(--bg3);
+  border: 1.5px dashed var(--text3);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  margin: 16px 0;
+}
+.present-slot .slot-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--purple-soft);
+  color: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  font-size: 18px;
+}
+.present-slot h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.present-slot p { font-size: 12px; color: var(--text3); line-height: 1.5; }
+
+.journal-box {
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  color: var(--text2);
+  border-left: 3px solid var(--purple);
+  line-height: 1.7;
+}
+
+.question-box {
+  background: var(--bg3);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  border-left: 3px solid var(--accent);
+}
+.question-box .q-text { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.question-box .q-sub { font-size: 12px; color: var(--text3); }
+
+.day-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 12px;
+}
+.day-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: var(--bg4);
+  color: var(--text2);
+}
+.day-title { font-size: 14px; font-weight: 600; }
+
+.reflect-prompt {
+  background: var(--blue-soft);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: 13px;
+  color: var(--blue);
+  line-height: 1.6;
+}
+
+.final-card {
+  background: linear-gradient(135deg, rgba(244,166,35,0.1) 0%, rgba(232,89,60,0.1) 100%);
+  border: 1px solid rgba(244,166,35,0.25);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  margin: 16px 0;
+}
+.final-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+.final-card p { font-size: 13px; color: var(--text2); }
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.skill-card {
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+.skill-card .sc-name { margin-bottom: 4px; }
+.skill-card .sc-how { font-size: 11px; color: var(--text3); line-height: 1.4; }
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin: 24px 0 10px;
+}
+
+/* ===== NOTES TEXTAREA ===== */
+.notes-area {
+  width: 100%;
+  min-height: 80px;
+  background: var(--bg3);
+  border: 1px solid var(--bg4);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  padding: 12px;
+  resize: vertical;
+  line-height: 1.6;
+  margin-top: 8px;
+  transition: border-color 0.2s;
+}
+.notes-area:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.notes-area::placeholder { color: var(--text3); }
+.notes-saved {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--teal);
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.notes-saved.show { opacity: 1; }
+
+/* ===== RESET ===== */
+.reset-btn {
+  display: block;
+  margin: 40px auto 0;
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid var(--bg4);
+  border-radius: 20px;
+  color: var(--text3);
+  font-size: 11px;
+  font-family: 'Space Mono', monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.reset-btn:hover { border-color: var(--red); color: var(--red); }
+
+/* ===== MOBILE ===== */
+@media (max-width: 480px) {
+  .hero { padding: 36px 16px 24px; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .container { padding: 0 12px 80px; }
+  .card { padding: 14px; }
+  .nav-wrap { margin: 0 -12px; padding: 0 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Musa's Project #1</div>
+  <h1>The death of the sun</h1>
+  <div class="hero-sub">Apa yang terjadi kalau matahari mati?</div>
+  <div class="hero-dates" id="dateRange">14-day project</div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="mainProgress"></div></div>
+  <div class="progress-text" id="progressText">0 / 42 tasks</div>
+  <div class="streak-bar" id="streakBar"></div>
+</div>
+
+<div class="container">
+  <div class="nav-wrap">
+    <nav class="nav-pills" id="navPills">
+      <div class="pill active" data-phase="0"><span class="pill-check">&#10003;</span>Overview</div>
+      <div class="pill" data-phase="1"><span class="pill-check">&#10003;</span>Day 1-2</div>
+      <div class="pill" data-phase="2"><span class="pill-check">&#10003;</span>Day 3-4</div>
+      <div class="pill" data-phase="3"><span class="pill-check">&#10003;</span>Day 5-6</div>
+      <div class="pill" data-phase="4"><span class="pill-check">&#10003;</span>Day 7-8</div>
+      <div class="pill" data-phase="5"><span class="pill-check">&#10003;</span>Day 9-10</div>
+      <div class="pill" data-phase="6"><span class="pill-check">&#10003;</span>Day 11-12</div>
+      <div class="pill" data-phase="7"><span class="pill-check">&#10003;</span>Day 13-14</div>
+    </nav>
+  </div>
+
+  <!-- ==================== OVERVIEW ==================== -->
+  <div class="phase active" id="phase-0">
+    <div class="phase-header">
+      <h2>Project overview</h2>
+      <p>Your big questions / Pertanyaan besarmu</p>
+    </div>
+    <div class="question-box">
+      <div class="q-text">Does the sun still have its heliosphere when it becomes a red giant and white dwarf?</div>
+      <div class="q-sub">Apakah matahari masih punya heliosphere saat jadi red giant dan white dwarf?</div>
+    </div>
+    <div class="question-box">
+      <div class="q-text">What if a neutron star hit a white dwarf?</div>
+      <div class="q-sub">Bagaimana kalau neutron star menabrak white dwarf?</div>
+    </div>
+    <div class="question-box">
+      <div class="q-text">What if a neutron star's beam hit a star or a planet?</div>
+      <div class="q-sub">Bagaimana kalau beam neutron star mengenai bintang atau planet?</div>
+    </div>
+
+    <div class="section-label">Skills you will build</div>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="sc-name"><span class="skill-badge sk-critical">Critical thinking</span></div><div class="sc-how">Comparing sources, evaluating evidence</div></div>
+      <div class="skill-card"><div class="sc-name"><span class="skill-badge sk-creative">Creativity</span></div><div class="sc-how">Designing your final presentation</div></div>
+      <div class="skill-card"><div class="sc-name"><span class="skill-badge sk-grit">Grit</span></div><div class="sc-how">Pushing through when topics get hard</div></div>
+      <div class="skill-card"><div class="sc-name"><span class="skill-badge sk-growth">Growth mindset</span></div><div class="sc-how">"I don't know YET" — tracking change</div></div>
+      <div class="skill-card"><div class="sc-name"><span class="skill-badge sk-math">Math &amp; Science</span></div><div class="sc-how">Scale, distance, temperature, time</div></div>
+      <div class="skill-card"><div class="sc-name"><span class="skill-badge sk-comm">Communication</span></div><div class="sc-how">Presenting clearly to your family</div></div>
+      <div class="skill-card"><div class="sc-name"><span class="skill-badge sk-self">Self-management</span></div><div class="sc-how">Following this plan, managing time</div></div>
+    </div>
+
+    <div class="section-label">Final output / Hasil akhir</div>
+    <div class="card">
+      <div class="card-title">Choose your format / Pilih formatmu</div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="out1"></div><span class="check-label">Option A: Poster timeline + 5-min presentation to family<span class="check-lang">Poster timeline + presentasi 5 menit ke keluarga</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="out2"></div><span class="check-label">Option B: Video explainer (3-5 min) with diagrams<span class="check-lang">Video penjelasan (3-5 menit) dengan diagram</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="out3"></div><span class="check-label">Option C: Written report (2-3 pages) with illustrations<span class="check-lang">Laporan tertulis (2-3 halaman) dengan ilustrasi</span></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== DAY 1-2: WONDER ==================== -->
+  <div class="phase" id="phase-1">
+    <div class="phase-header">
+      <span class="phase-tag tag-wonder">Wonder</span>
+      <h2>Day 1-2: Ask your questions</h2>
+      <p>Hari 1-2: Ajukan pertanyaanmu</p>
+    </div>
+    <div class="day-header"><span class="day-num">DAY 1</span><span class="day-title">Explore your curiosity</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-critical">Critical thinking</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="w1"></div><span class="check-label">Write down everything you already think you know about the sun dying<span class="check-lang">Tulis semua yang kamu pikir kamu tahu tentang matinya matahari</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="w2"></div><span class="check-label">For each of your 3 questions, write: "I think the answer might be..." (guess first!)<span class="check-lang">Untuk setiap pertanyaan, tulis: "Saya kira jawabannya mungkin..."</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="w3"></div><span class="check-label">Circle the one question you're MOST curious about<span class="check-lang">Lingkari pertanyaan yang PALING bikin penasaran</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="wonder-notes" placeholder="My initial thoughts / Pikiran awalku..."></textarea>
+      <div class="notes-saved" id="ns-wonder-notes">Saved</div>
+    </div>
+
+    <div class="day-header"><span class="day-num">DAY 2</span><span class="day-title">Plan your hunt</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-self">Self-management</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="w4"></div><span class="check-label">List 3-4 sources you will use (video, book, Claude, website, ask Ayah)<span class="check-lang">Daftar 3-4 sumber yang akan kamu pakai</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="w5"></div><span class="check-label">Write down what you need to find out for EACH question<span class="check-lang">Tulis apa yang perlu dicari untuk SETIAP pertanyaan</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="w6"></div><span class="check-label">Decide which output format you want (poster / video / report)<span class="check-lang">Tentukan format output yang kamu mau</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="plan-notes" placeholder="My sources and plan / Sumber dan rencanaku..."></textarea>
+      <div class="notes-saved" id="ns-plan-notes">Saved</div>
+    </div>
+
+    <div class="present-slot">
+      <div class="slot-icon">&#9998;</div>
+      <h4>Mini-presentation: Share your plan</h4>
+      <p>Tell Ayah: what are your questions, what sources will you use, and what will you make? (2 minutes)</p>
+      <p style="margin-top:4px"><em>Ceritakan ke Ayah: apa pertanyaanmu, sumber apa, dan apa yang akan kamu buat?</em></p>
+    </div>
+
+    <div class="reflect-prompt">End of day reflection:<br>"On a scale 1-10, how excited am I? Why?"<br><em>"Dari skala 1-10, seberapa semangat aku? Kenapa?"</em></div>
+    <textarea class="notes-area" data-note="reflect-d2" placeholder="My reflection / Refleksiku..."></textarea>
+    <div class="notes-saved" id="ns-reflect-d2">Saved</div>
+  </div>
+
+  <!-- ==================== DAY 3-4: HUNT A ==================== -->
+  <div class="phase" id="phase-2">
+    <div class="phase-header">
+      <span class="phase-tag tag-hunt">Hunt</span>
+      <h2>Day 3-4: Research part 1</h2>
+      <p>Hari 3-4: Riset bagian 1 — Life cycle of the sun</p>
+    </div>
+    <div class="day-header"><span class="day-num">DAY 3</span><span class="day-title">The sun's life story</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-math">Math &amp; Science</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h1"></div><span class="check-label">Research: How old is the sun now? How long will it live?<span class="check-lang">Riset: Berapa umur matahari? Berapa lama dia akan hidup?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h2"></div><span class="check-label">Research: What is a red giant? How big will the sun become?<span class="check-lang">Riset: Apa itu red giant? Seberapa besar matahari akan mengembang?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h3"></div><span class="check-label">MATH: The sun is 4.6B years old, will live ~10B years. What % of its life is left?<span class="check-lang">MATH: Matahari 4.6 miliar tahun, akan hidup ~10 miliar. Berapa % sisa hidupnya?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h4"></div><span class="check-label">Write notes from source #1 in YOUR OWN WORDS<span class="check-lang">Tulis catatan dari sumber #1 dengan KATA-KATAMU SENDIRI</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="hunt-a1" placeholder="Source #1 notes / Catatan sumber #1..."></textarea>
+      <div class="notes-saved" id="ns-hunt-a1">Saved</div>
+    </div>
+
+    <div class="day-header"><span class="day-num">DAY 4</span><span class="day-title">White dwarf &amp; heliosphere</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-critical">Critical thinking</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h5"></div><span class="check-label">Research: What is the heliosphere? What creates it?<span class="check-lang">Riset: Apa itu heliosphere? Apa yang membuatnya?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h6"></div><span class="check-label">Research: What happens to solar wind when the sun becomes a red giant?<span class="check-lang">Riset: Apa yang terjadi dengan solar wind saat jadi red giant?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h7"></div><span class="check-label">Research: Does a white dwarf have solar wind?<span class="check-lang">Riset: Apakah white dwarf punya solar wind?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h8"></div><span class="check-label">Write notes from source #2 — compare with source #1<span class="check-lang">Tulis catatan dari sumber #2 — bandingkan dengan sumber #1</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="hunt-a2" placeholder="Source #2 notes & comparison / Catatan sumber #2 & perbandingan..."></textarea>
+      <div class="notes-saved" id="ns-hunt-a2">Saved</div>
+    </div>
+
+    <div class="nudge"><strong>Stuck?</strong> Ask Ayah or Claude: "Can you explain the heliosphere like I'm 13?"<br><em>Stuck? Tanya Ayah atau Claude: "Bisa jelaskan heliosphere untuk anak 13 tahun?"</em></div>
+
+    <div class="reflect-prompt">"What's the most surprising thing I learned so far?"<br><em>"Apa hal paling mengejutkan yang sudah saya pelajari?"</em></div>
+    <textarea class="notes-area" data-note="reflect-d4" placeholder="Most surprising thing / Hal paling mengejutkan..."></textarea>
+    <div class="notes-saved" id="ns-reflect-d4">Saved</div>
+  </div>
+
+  <!-- ==================== DAY 5-6: HUNT B ==================== -->
+  <div class="phase" id="phase-3">
+    <div class="phase-header">
+      <span class="phase-tag tag-hunt">Hunt</span>
+      <h2>Day 5-6: Research part 2</h2>
+      <p>Hari 5-6: Riset bagian 2 — Neutron stars</p>
+    </div>
+    <div class="day-header"><span class="day-num">DAY 5</span><span class="day-title">Neutron stars: extreme survivors</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-math">Math &amp; Science</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h9"></div><span class="check-label">Research: What is a neutron star? How is it different from a white dwarf?<span class="check-lang">Riset: Apa itu neutron star? Bedanya dengan white dwarf?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h10"></div><span class="check-label">MATH: Neutron star is ~20km wide but weighs 1.4x the sun. How dense is that?<span class="check-lang">MATH: Neutron star ~20km tapi 1.4x berat matahari. Seberapa padat?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h11"></div><span class="check-label">Research: What happens if a neutron star collides with a white dwarf?<span class="check-lang">Riset: Apa yang terjadi kalau neutron star bertabrakan dengan white dwarf?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h12"></div><span class="check-label">Watch a video about neutron star collisions (kilonova)<span class="check-lang">Tonton video tentang tabrakan neutron star (kilonova)</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="hunt-b1" placeholder="Neutron star notes / Catatan neutron star..."></textarea>
+      <div class="notes-saved" id="ns-hunt-b1">Saved</div>
+    </div>
+
+    <div class="day-header"><span class="day-num">DAY 6</span><span class="day-title">Pulsar beams</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-critical">Critical thinking</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h13"></div><span class="check-label">Research: What is a pulsar? How does the beam work?<span class="check-lang">Riset: Apa itu pulsar? Bagaimana beam-nya bekerja?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h14"></div><span class="check-label">Research: What would happen if a pulsar beam hit Earth?<span class="check-lang">Riset: Apa yang terjadi kalau beam pulsar mengenai Bumi?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h15"></div><span class="check-label">SCIENCE: Is there a pulsar near enough to Earth to be dangerous?<span class="check-lang">SAINS: Apakah ada pulsar cukup dekat untuk berbahaya?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="h16"></div><span class="check-label">Write a summary of ALL research so far (1 paragraph per question)<span class="check-lang">Tulis ringkasan SEMUA riset (1 paragraf per pertanyaan)</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="hunt-b2" placeholder="Research summary / Ringkasan riset..."></textarea>
+      <div class="notes-saved" id="ns-hunt-b2">Saved</div>
+    </div>
+
+    <div class="present-slot">
+      <div class="slot-icon">&#9998;</div>
+      <h4>Progress check: Share what you've found</h4>
+      <p>Show Ayah your notes. What have you learned? What's still confusing? (3 min)</p>
+      <p style="margin-top:4px"><em>Tunjukkan catatan ke Ayah. Apa yang masih membingungkan?</em></p>
+    </div>
+
+    <div class="nudge"><strong>Feeling lost?</strong> That's normal — it means you're learning something genuinely hard. Ask for help. That's not weakness, that's strategy.<br><em>Merasa bingung? Itu normal! Minta bantuan — itu strategi, bukan kelemahan.</em></div>
+  </div>
+
+  <!-- ==================== DAY 7-8: WRESTLE ==================== -->
+  <div class="phase" id="phase-4">
+    <div class="phase-header">
+      <span class="phase-tag tag-wrestle">Wrestle</span>
+      <h2>Day 7-8: Think deep</h2>
+      <p>Hari 7-8: Berpikir mendalam — real understanding happens here</p>
+    </div>
+    <div class="day-header"><span class="day-num">DAY 7</span><span class="day-title">Connect and compare</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-critical">Critical thinking</span> <span class="skill-badge sk-growth">Growth mindset</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="wr1"></div><span class="check-label">Make a comparison table: white dwarf vs neutron star<span class="check-lang">Buat tabel perbandingan: white dwarf vs neutron star</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="wr2"></div><span class="check-label">Answer YOUR question: Does the sun keep its heliosphere? Write with evidence<span class="check-lang">Jawab pertanyaanmu: Apakah matahari tetap punya heliosphere? Tulis dengan bukti</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="wr3"></div><span class="check-label">Did any sources disagree? Which do you trust more? Why?<span class="check-lang">Ada sumber yang tidak setuju? Mana yang lebih dipercaya? Kenapa?</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="wrestle-1" placeholder="My analysis / Analisisku..."></textarea>
+      <div class="notes-saved" id="ns-wrestle-1">Saved</div>
+    </div>
+
+    <div class="day-header"><span class="day-num">DAY 8</span><span class="day-title">Challenge yourself</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-critical">Critical thinking</span> <span class="skill-badge sk-grit">Grit</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="wr4"></div><span class="check-label">HARD: What happens step-by-step if a neutron star hit our white dwarf sun?<span class="check-lang">SULIT: Apa yang terjadi langkah demi langkah kalau neutron star menabrak white dwarf?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="wr5"></div><span class="check-label">MATH: Pulsar beam at light speed (300,000 km/s) — how long to reach Earth from nearest pulsar?<span class="check-lang">MATH: Beam pulsar secepat cahaya — berapa lama sampai ke Bumi dari pulsar terdekat?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="wr6"></div><span class="check-label">Write "I used to think ___ / Now I think ___" for each question<span class="check-lang">Tulis "Dulu saya pikir ___ / Sekarang saya pikir ___" untuk setiap pertanyaan</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="wrestle-2" placeholder="I used to think... Now I think... / Dulu saya pikir... Sekarang..."></textarea>
+      <div class="notes-saved" id="ns-wrestle-2">Saved</div>
+    </div>
+
+    <div class="journal-box">JOURNAL: "The hardest part so far was ___. I got through it by ___."<br><em>"Bagian tersulit sejauh ini adalah ___. Saya mengatasinya dengan ___."</em></div>
+    <textarea class="notes-area" data-note="journal-d8" placeholder="The hardest part / Bagian tersulit..."></textarea>
+    <div class="notes-saved" id="ns-journal-d8">Saved</div>
+
+    <div class="nudge"><strong>Want to go deeper?</strong> Ask Claude: "What happens to the planets when the sun becomes a red giant?" or "Could two neutron stars create a black hole?"<br><em>Mau lebih dalam? Tanya Claude pertanyaan-pertanyaan di atas!</em></div>
+  </div>
+
+  <!-- ==================== DAY 9-10: MAKE A ==================== -->
+  <div class="phase" id="phase-5">
+    <div class="phase-header">
+      <span class="phase-tag tag-make">Make</span>
+      <h2>Day 9-10: Build your output</h2>
+      <p>Hari 9-10: Buat outputmu — start creating!</p>
+    </div>
+    <div class="day-header"><span class="day-num">DAY 9</span><span class="day-title">Structure and draft</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-creative">Creativity</span> <span class="skill-badge sk-comm">Communication</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m1"></div><span class="check-label">Decide: What are the 3-5 main points your audience MUST understand?<span class="check-lang">Tentukan: Apa 3-5 poin utama yang audiens HARUS paham?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m2"></div><span class="check-label">Create an outline or storyboard (sketch on paper first!)<span class="check-lang">Buat outline atau storyboard (sketsa di kertas dulu!)</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m3"></div><span class="check-label">Start your first draft — it doesn't need to be perfect!<span class="check-lang">Mulai draft pertama — tidak perlu sempurna!</span></span></li>
+      </ul>
+    </div>
+
+    <div class="day-header"><span class="day-num">DAY 10</span><span class="day-title">Add depth</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-creative">Creativity</span> <span class="skill-badge sk-math">Math &amp; Science</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m4"></div><span class="check-label">Add at least 1 diagram or visual (timeline, chart, or scale drawing)<span class="check-lang">Tambahkan minimal 1 diagram atau visual</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m5"></div><span class="check-label">Include at least 2 numbers that show the scale<span class="check-lang">Masukkan minimal 2 angka yang menunjukkan skala</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m6"></div><span class="check-label">Add your own opinion — not just facts, but what YOU think<span class="check-lang">Tambahkan pendapatmu — bukan cuma fakta, tapi apa yang KAMU pikir</span></span></li>
+      </ul>
+    </div>
+
+    <div class="nudge"><strong>Perfectionism trap!</strong> Your first draft will not be perfect — and that's the point. Done is better than perfect.<br><em>Jebakan perfeksionisme! Draft pertama tidak akan sempurna — dan memang begitu seharusnya.</em></div>
+
+    <div class="reflect-prompt">"Am I creating something I'd be proud to show?"<br><em>"Apakah aku membuat sesuatu yang aku bangga tunjukkan?"</em></div>
+    <textarea class="notes-area" data-note="reflect-d10" placeholder="My thoughts on my draft / Pendapatku tentang draftku..."></textarea>
+    <div class="notes-saved" id="ns-reflect-d10">Saved</div>
+  </div>
+
+  <!-- ==================== DAY 11-12: MAKE B ==================== -->
+  <div class="phase" id="phase-6">
+    <div class="phase-header">
+      <span class="phase-tag tag-make">Make</span>
+      <h2>Day 11-12: Polish and refine</h2>
+      <p>Hari 11-12: Poles dan perbaiki</p>
+    </div>
+    <div class="day-header"><span class="day-num">DAY 11</span><span class="day-title">Get feedback, improve</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-growth">Growth mindset</span> <span class="skill-badge sk-grit">Grit</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m7"></div><span class="check-label">Show draft to Ayah. Ask: "What's unclear? What's missing?"<span class="check-lang">Tunjukkan draft ke Ayah. Tanya: "Apa yang kurang jelas?"</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m8"></div><span class="check-label">Write down feedback. Do you agree? What will you change?<span class="check-lang">Tulis feedback. Setuju? Apa yang akan diubah?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m9"></div><span class="check-label">Make improvements based on feedback<span class="check-lang">Perbaiki berdasarkan feedback</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="feedback" placeholder="Feedback from Ayah / Feedback dari Ayah..."></textarea>
+      <div class="notes-saved" id="ns-feedback">Saved</div>
+    </div>
+
+    <div class="day-header"><span class="day-num">DAY 12</span><span class="day-title">Final version</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-self">Self-management</span> <span class="skill-badge sk-grit">Grit</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m10"></div><span class="check-label">Complete final version — check spelling, facts, visuals<span class="check-lang">Selesaikan versi final — cek ejaan, fakta, visual</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m11"></div><span class="check-label">Practice explaining out loud (aim for 5 minutes)<span class="check-lang">Latihan jelaskan dengan suara keras (target 5 menit)</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="m12"></div><span class="check-label">Prepare 2 questions your audience might ask<span class="check-lang">Siapkan 2 pertanyaan yang mungkin ditanya audiens</span></span></li>
+      </ul>
+    </div>
+
+    <div class="nudge"><strong>Almost there!</strong> You've spent 12 days on this. Even if it's not perfect, you've done something most adults never do. Be proud.<br><em>Hampir selesai! Bahkan kalau belum sempurna, kamu sudah hebat. Banggalah.</em></div>
+  </div>
+
+  <!-- ==================== DAY 13-14: PRESENT ==================== -->
+  <div class="phase" id="phase-7">
+    <div class="phase-header">
+      <span class="phase-tag tag-lookback">Present + Look back</span>
+      <h2>Day 13-14: Present and reflect</h2>
+      <p>Hari 13-14: Presentasi dan refleksi</p>
+    </div>
+    <div class="day-header"><span class="day-num">DAY 13</span><span class="day-title">Presentation day!</span></div>
+
+    <div class="final-card">
+      <h3>Presentation day</h3>
+      <p>Present your project to your family. You are the expert now.</p>
+      <p style="margin-top:2px"><em>Presentasikan projectmu. Kamu sekarang ahlinya.</em></p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-comm">Communication</span> <span class="skill-badge sk-grit">Grit</span></div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="p1"></div><span class="check-label">Present your project (5 min + Q&amp;A)<span class="check-lang">Presentasikan projectmu (5 menit + tanya jawab)</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="p2"></div><span class="check-label">Answer at least 2 questions from your audience<span class="check-lang">Jawab minimal 2 pertanyaan dari audiens</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="p3"></div><span class="check-label">Ask your audience: "What was the most interesting part?"<span class="check-lang">Tanya audiens: "Bagian mana paling menarik?"</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="presentation" placeholder="How did the presentation go? / Bagaimana presentasinya?"></textarea>
+      <div class="notes-saved" id="ns-presentation">Saved</div>
+    </div>
+
+    <div class="day-header"><span class="day-num">DAY 14</span><span class="day-title">Reflect and grow</span></div>
+    <div class="card">
+      <div class="card-title"><span class="skill-badge sk-growth">Growth mindset</span> Final reflection</div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="r1"></div><span class="check-label">"I used to think ___. Now I think ___." (for EACH question)<span class="check-lang">"Dulu saya pikir ___. Sekarang saya pikir ___." (setiap pertanyaan)</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="r2"></div><span class="check-label">"The hardest part was ___. I pushed through by ___."<span class="check-lang">"Bagian tersulit adalah ___. Saya bertahan dengan ___."</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="r3"></div><span class="check-label">"One thing I'm proud of is ___."<span class="check-lang">"Satu hal yang saya banggakan adalah ___."</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="r4"></div><span class="check-label">"My new question is ___." (this starts Project #2!)<span class="check-lang">"Pertanyaan baru saya adalah ___." (ini mulai Project #2!)</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="final-reflect" placeholder="Final reflection / Refleksi akhir..." style="min-height:120px"></textarea>
+      <div class="notes-saved" id="ns-final-reflect">Saved</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Self-assessment / Penilaian diri (rate 1-5)</div>
+      <ul class="checklist">
+        <li><div class="cb-wrap"><input type="checkbox" data-task="sa1"></div><span class="check-label">Did I manage my time well?<span class="check-lang">Apakah saya mengatur waktu dengan baik?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="sa2"></div><span class="check-label">Did I think critically (not just copy)?<span class="check-lang">Apakah saya berpikir kritis?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="sa3"></div><span class="check-label">Did I push through when it got hard?<span class="check-lang">Apakah saya bertahan saat sulit?</span></span></li>
+        <li><div class="cb-wrap"><input type="checkbox" data-task="sa4"></div><span class="check-label">Am I proud of what I made?<span class="check-lang">Apakah saya bangga dengan hasilnya?</span></span></li>
+      </ul>
+      <textarea class="notes-area" data-note="self-assess" placeholder="My ratings and why / Nilai saya dan alasannya..."></textarea>
+      <div class="notes-saved" id="ns-self-assess">Saved</div>
+    </div>
+
+    <div class="present-slot">
+      <div class="slot-icon">&#9733;</div>
+      <h4>Add to portfolio</h4>
+      <p>Save final output + reflection to Google Drive and print for binder</p>
+      <p style="margin-top:4px"><em>Simpan ke folder portofolio dan cetak untuk binder</em></p>
+    </div>
+
+    <div class="final-card" style="margin-top:20px">
+      <h3>Project #1 complete!</h3>
+      <p>Your new question becomes Project #2. The cycle continues.</p>
+      <p style="margin-top:2px"><em>Pertanyaan barumu jadi Project #2. Siklus berlanjut.</em></p>
+    </div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">Reset all progress</button>
+</div>
+
+<script>
+const STORAGE_KEY = 'musa-project-1';
+
+function loadData() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { tasks: {}, notes: {}, streak: [] };
+  } catch(e) { return { tasks: {}, notes: {}, streak: [] }; }
+}
+
+function saveData(data) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+const data = loadData();
+const allChecks = document.querySelectorAll('input[type="checkbox"][data-task]');
+const allNotes = document.querySelectorAll('.notes-area[data-note]');
+const pills = document.querySelectorAll('.pill');
+const phases = document.querySelectorAll('.phase');
+
+const phaseTaskMap = {
+  1: ['w1','w2','w3','w4','w5','w6'],
+  2: ['h1','h2','h3','h4','h5','h6','h7','h8'],
+  3: ['h9','h10','h11','h12','h13','h14','h15','h16'],
+  4: ['wr1','wr2','wr3','wr4','wr5','wr6'],
+  5: ['m1','m2','m3','m4','m5','m6'],
+  6: ['m7','m8','m9','m10','m11','m12'],
+  7: ['p1','p2','p3','r1','r2','r3','r4','sa1','sa2','sa3','sa4']
+};
+
+allChecks.forEach(cb => {
+  const t = cb.dataset.task;
+  if (data.tasks[t]) { cb.checked = true; updateCheckUI(cb); }
+  cb.addEventListener('change', () => {
+    data.tasks[t] = cb.checked;
+    updateCheckUI(cb);
+    updateProgress();
+    updatePills();
+    updateStreak();
+    saveData(data);
+  });
+});
+
+allNotes.forEach(ta => {
+  const key = ta.dataset.note;
+  if (data.notes[key]) ta.value = data.notes[key];
+  let timeout;
+  ta.addEventListener('input', () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      data.notes[key] = ta.value;
+      saveData(data);
+      const indicator = document.getElementById('ns-' + key);
+      if (indicator) {
+        indicator.classList.add('show');
+        setTimeout(() => indicator.classList.remove('show'), 1500);
+      }
+    }, 500);
+  });
+});
+
+function updateCheckUI(cb) {
+  const li = cb.closest('li');
+  const label = li?.querySelector('.check-label');
+  if (li) li.classList.toggle('is-checked', cb.checked);
+  if (label) label.classList.toggle('done', cb.checked);
+  const card = cb.closest('.card');
+  if (card) {
+    const checks = card.querySelectorAll('input[data-task]');
+    const allDone = [...checks].every(c => c.checked);
+    card.classList.toggle('all-done', allDone);
+  }
+}
+
+function updateProgress() {
+  const total = allChecks.length;
+  const done = [...allChecks].filter(c => c.checked).length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('mainProgress').style.width = pct + '%';
+  document.getElementById('progressText').textContent = done + ' / ' + total + ' tasks \u2014 ' + pct + '%';
+}
+
+function updatePills() {
+  pills.forEach(p => {
+    const pi = parseInt(p.dataset.phase);
+    if (pi === 0) return;
+    const tasks = phaseTaskMap[pi] || [];
+    const allDone = tasks.length > 0 && tasks.every(t => data.tasks[t]);
+    p.classList.toggle('done', allDone);
+  });
+}
+
+function updateStreak() {
+  const today = new Date().toISOString().split('T')[0];
+  if (!data.streak.includes(today)) {
+    data.streak.push(today);
+  }
+  renderStreak();
+}
+
+function renderStreak() {
+  const bar = document.getElementById('streakBar');
+  const today = new Date();
+  bar.innerHTML = '';
+  for (let i = 0; i < 14; i++) {
+    const d = document.createElement('div');
+    d.className = 'streak-dot';
+    d.textContent = i + 1;
+    const dateStr = getProjectDate(i);
+    if (data.streak && data.streak.includes(dateStr)) d.classList.add('active');
+    const todayStr = today.toISOString().split('T')[0];
+    if (dateStr === todayStr) d.classList.add('today');
+    bar.appendChild(d);
+  }
+}
+
+function getProjectDate(dayIndex) {
+  const start = data.startDate ? new Date(data.startDate) : new Date();
+  if (!data.startDate) {
+    data.startDate = start.toISOString().split('T')[0];
+    saveData(data);
+  }
+  const d = new Date(start);
+  d.setDate(d.getDate() + dayIndex);
+  return d.toISOString().split('T')[0];
+}
+
+pills.forEach(p => {
+  p.addEventListener('click', () => {
+    pills.forEach(pp => pp.classList.remove('active'));
+    p.classList.add('active');
+    const idx = parseInt(p.dataset.phase);
+    phases.forEach((ph, i) => ph.classList.toggle('active', i === idx));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+function resetAll() {
+  if (confirm('Reset ALL progress? This cannot be undone.\nReset SEMUA progress? Tidak bisa dibatalkan.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+updateProgress();
+updatePills();
+renderStreak();
+
+const dateEl = document.getElementById('dateRange');
+if (data.startDate) {
+  const s = new Date(data.startDate);
+  const e = new Date(s);
+  e.setDate(e.getDate() + 13);
+  const fmt = d => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  dateEl.textContent = fmt(s) + ' \u2013 ' + fmt(e) + ' \u00b7 14 days';
+}
+</script>
+</body>
+</html>
