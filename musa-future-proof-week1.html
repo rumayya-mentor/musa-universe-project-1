@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f1a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Musa — Future-Proof Human: Week 1</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1a0f;--bg2:#152015;--bg3:#1c2e1c;--bg4:#243824;--bg5:#2e4a2e;--text:#eef4ee;--text2:#b0c4b0;--text3:#7a9a7a;--gold:#f0c040;--gold-soft:rgba(240,192,64,0.13);--ember:#e87040;--ember-soft:rgba(232,112,64,0.13);--green:#5ec87a;--green-soft:rgba(94,200,122,0.13);--sage:#90c8a0;--sage-soft:rgba(144,200,160,0.12);--sky:#70b8e0;--sky-soft:rgba(112,184,224,0.13);--rose:#e07890;--rose-soft:rgba(224,120,144,0.12);--r:12px;--rs:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased}
+.hero{padding:48px 24px 32px;text-align:center;background:linear-gradient(180deg,#0a1f0a 0%,var(--bg) 100%);border-bottom:1px solid var(--bg3);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(94,200,122,0.07) 0%,transparent 70%);pointer-events:none}
+.hero-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.hero h1{font-size:clamp(22px,5vw,30px);font-weight:700;margin-bottom:6px;background:linear-gradient(135deg,var(--gold),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:14px;color:var(--text2);margin-bottom:6px}
+.hero-manifesto{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:16px}
+.hero-dates{font-family:'Space Mono',monospace;font-size:12px;color:var(--text3);padding:6px 16px;background:var(--bg3);border-radius:20px;display:inline-block}
+.pbar-w{max-width:360px;margin:18px auto 0;background:var(--bg3);border-radius:10px;height:10px;overflow:hidden}
+.pbar-f{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--green),var(--gold));transition:width .6s cubic-bezier(.22,1,.36,1);width:0%}
+.ptxt{font-family:'Space Mono',monospace;font-size:12px;color:var(--text3);margin-top:8px}
+.flame-row{display:flex;justify-content:center;gap:6px;margin-top:16px;flex-wrap:wrap}
+.fd{width:36px;height:42px;border-radius:8px;background:var(--bg3);border:1.5px solid var(--bg4);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Space Mono',monospace;color:var(--text3);gap:2px;transition:all .3s}
+.fd .fd-day{font-size:8px;opacity:.7}.fd .fd-num{font-size:11px;font-weight:700}
+.fd.on{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.fd.now{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,192,64,.2)}
+.fd.off{opacity:.3}
+.ctn{max-width:680px;margin:0 auto;padding:0 16px 80px}
+.nw{position:sticky;top:0;z-index:100;background:rgba(15,26,15,.93);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--bg3);margin:0 -16px;padding:0 16px}
+.np{display:flex;gap:6px;padding:12px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.np::-webkit-scrollbar{display:none}
+.pl{flex-shrink:0;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--bg4);background:var(--bg2);color:var(--text3);transition:all .2s;white-space:nowrap;user-select:none;-webkit-tap-highlight-color:transparent}
+.pl:hover{border-color:var(--text3);color:var(--text2)}
+.pl.active{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.pl.done{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+.pl .pc{display:none;margin-right:4px}.pl.done .pc{display:inline}
+.ph{display:none;animation:fi .3s ease}.ph.active{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.phh{padding:24px 0 16px;border-bottom:1px solid var(--bg3);margin-bottom:20px}
+.pt{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.tg{background:var(--green-soft);color:var(--green)}.tgo{background:var(--gold-soft);color:var(--gold)}.te2{background:var(--ember-soft);color:var(--ember)}.ts3{background:var(--sky-soft);color:var(--sky)}.tr{background:var(--rose-soft);color:var(--rose)}
+.phh h2{font-size:20px;font-weight:700;margin-bottom:4px}.phh p{font-size:13px;color:var(--text2)}
+.cd{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--r);padding:16px;margin-bottom:12px;transition:border-color .3s}
+.cd.alld{border-color:var(--green)}
+.ct{font-size:14px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tb{background:var(--bg3);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;border-left:3px solid var(--gold)}
+.ti{width:36px;height:36px;border-radius:50%;background:var(--gold-soft);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:14px;flex-shrink:0}
+.td2{flex:1}.ts2{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}.tds{font-size:12px;color:var(--text3)}
+.te{font-family:'Space Mono',monospace;font-size:11px;padding:3px 10px;border-radius:12px;background:var(--gold-soft);color:var(--gold);white-space:nowrap}
+.paper{background:rgba(240,192,64,0.08);border:1.5px dashed rgba(240,192,64,0.35);border-radius:var(--r);padding:16px 18px;margin:14px 0;display:flex;gap:12px;align-items:flex-start}
+.paper-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.paper-body{flex:1}
+.paper-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.paper-text{font-size:13px;color:var(--text2);line-height:1.65}
+.paper-hand{margin-top:8px;font-size:12px;color:var(--ember);font-weight:600}
+.pnote{background:rgba(94,200,122,0.07);border:1px solid rgba(94,200,122,0.2);border-radius:var(--r);padding:14px 16px;margin:16px 0}
+.pnote-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.pnote-text{font-size:13px;color:var(--sage);line-height:1.65}
+.cl{list-style:none}
+.cl li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3);font-size:13px;line-height:1.5;transition:opacity .2s}
+.cl li:last-child{border-bottom:none}.cl li.ic{opacity:.45}
+.cw{position:relative;width:20px;height:20px;flex-shrink:0;margin-top:1px}
+.cw input{appearance:none;-webkit-appearance:none;width:20px;height:20px;border:1.5px solid var(--bg5);border-radius:5px;cursor:pointer;transition:all .2s;background:transparent}
+.cw input:checked{background:var(--green);border-color:var(--green)}
+.cw input:checked::after{content:'';position:absolute;left:6px;top:3px;width:6px;height:10px;border:solid #0f1a0f;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.ck{flex:1}.ck.dn{text-decoration:line-through;color:var(--text3)}
+.clg{font-family:'Space Mono',monospace;font-size:11px;color:var(--text3);display:block;margin-top:3px;line-height:1.4}
+.tt{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);background:var(--gold-soft);padding:1px 7px;border-radius:8px;display:inline-block;margin-top:3px}
+.sb{display:inline-flex;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
+.sb-mind{background:var(--sky-soft);color:var(--sky)}.sb-heart{background:var(--rose-soft);color:var(--rose)}.sb-will{background:var(--ember-soft);color:var(--ember)}.sb-social{background:var(--sage-soft);color:var(--sage)}.sb-future{background:var(--green-soft);color:var(--green)}.sb-id{background:var(--gold-soft);color:var(--gold)}
+.nu{background:var(--ember-soft);border-left:3px solid var(--ember);border-radius:0 var(--rs) var(--rs) 0;padding:14px 16px;margin:14px 0;font-size:13px;color:var(--ember);line-height:1.6}
+.insight{background:var(--sky-soft);border-left:3px solid var(--sky);border-radius:0 var(--rs) var(--rs) 0;padding:14px 16px;margin:14px 0;font-size:13px;color:var(--sky);line-height:1.6}
+.insight strong{font-weight:700}
+.dh{display:flex;align-items:center;gap:10px;margin:28px 0 12px;flex-wrap:wrap}
+.dn2{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;padding:4px 12px;border-radius:4px;background:var(--bg4);color:var(--text2)}
+.dt{font-size:14px;font-weight:600}.dd{font-family:'Space Mono',monospace;font-size:11px;color:var(--text3);margin-left:auto}
+.na{width:100%;min-height:80px;background:var(--bg3);border:1px solid var(--bg4);border-radius:var(--rs);color:var(--text);font-family:'Space Mono',monospace;font-size:12px;padding:12px;resize:vertical;line-height:1.6;margin-top:8px;transition:border-color .2s}
+.na:focus{outline:none;border-color:var(--gold)}.na::placeholder{color:var(--text3)}
+.ns{font-family:'Space Mono',monospace;font-size:10px;color:var(--green);margin-top:4px;opacity:0;transition:opacity .3s}.ns.show{opacity:1}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.pc2{background:var(--bg3);border-radius:var(--rs);padding:14px;border:1px solid var(--bg4)}
+.pc2-icon{font-size:22px;margin-bottom:6px}.pc2-title{font-size:13px;font-weight:700;margin-bottom:4px}.pc2-desc{font-size:11px;color:var(--text3);line-height:1.5}
+.sl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin:24px 0 10px}
+.so{background:var(--bg2);border:1px solid var(--bg3);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.sr{display:flex;align-items:center;gap:8px;padding:10px 16px;font-size:12px;border-bottom:1px solid var(--bg3)}
+.sr:last-child{border-bottom:none}
+.st{font-family:'Space Mono',monospace;font-size:11px;color:var(--text3);min-width:110px}.sla{color:var(--text2);flex:1}
+.stg{font-family:'Space Mono',monospace;font-size:9px;padding:2px 8px;border-radius:8px}
+.sth{background:var(--green-soft);color:var(--green)}.sbr{background:var(--bg4);color:var(--text3)}.sot{background:var(--sky-soft);color:var(--sky)}.stk{background:var(--ember-soft);color:var(--ember)}
+.wsum{background:linear-gradient(135deg,rgba(240,192,64,.1),rgba(232,112,64,.1));border:1px solid rgba(240,192,64,.22);border-radius:var(--r);padding:24px;text-align:center;margin:20px 0}
+.wsum h3{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--ember));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.wsum p{font-size:13px;color:var(--text2);line-height:1.7}
+.quote{margin:30px 0 10px;padding:20px;text-align:center;border-top:1px solid var(--bg3)}
+.quote-text{font-size:15px;font-style:italic;color:var(--text2);line-height:1.7;margin-bottom:8px}
+.quote-author{font-family:'Space Mono',monospace;font-size:11px;color:var(--text3)}
+.assess{background:var(--bg3);border-radius:var(--r);padding:16px;margin:14px 0;border:1px solid var(--bg4)}
+.assess-q{font-size:13px;font-weight:600;margin-bottom:8px}
+.assess-scale{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.asn{width:36px;height:36px;border-radius:50%;background:var(--bg4);border:1.5px solid var(--bg5);color:var(--text3);font-family:'Space Mono',monospace;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;user-select:none}
+.asn:hover{border-color:var(--gold);color:var(--gold)}.asn.sel{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+.rb{display:block;margin:40px auto 0;padding:8px 20px;background:transparent;border:1px solid var(--bg4);border-radius:20px;color:var(--text3);font-size:11px;font-family:'Space Mono',monospace;cursor:pointer;transition:all .2s}
+.rb:hover{border-color:#e24b4a;color:#e24b4a}
+@media(max-width:480px){.hero{padding:36px 16px 24px}.pgrid{grid-template-columns:1fr}.ctn{padding:0 12px 80px}.cd{padding:14px}.nw{margin:0 -12px;padding:0 12px}.tb{flex-direction:column;align-items:flex-start;gap:8px}.dd{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-label">Musa's Future-Proof Human Program</div>
+  <h1>Week 1: Discover Who You Are</h1>
+  <div class="hero-sub">Self-Knowledge · Mental Strength · Purpose · Social Confidence</div>
+  <div class="hero-manifesto">"The best project you'll ever build is yourself."</div>
+  <div class="hero-dates">28 Mar – 4 Apr 2026 · 09:00–11:00 daily</div>
+  <div class="pbar-w"><div class="pbar-f" id="mainProg"></div></div>
+  <div class="ptxt" id="progTxt">0 / 0 tasks</div>
+  <div class="flame-row" id="streakBar"></div>
+</div>
+
+<div class="ctn">
+<div class="nw"><nav class="np" id="nav">
+  <div class="pl active" data-p="0"><span class="pc">&#10003;</span>Overview</div>
+  <div class="pl" data-p="1"><span class="pc">&#10003;</span>Fri 28 Mar</div>
+  <div class="pl" data-p="2"><span class="pc">&#10003;</span>Mon 31 Mar</div>
+  <div class="pl" data-p="3"><span class="pc">&#10003;</span>Tue 1 Apr</div>
+  <div class="pl" data-p="4"><span class="pc">&#10003;</span>Wed 2 Apr</div>
+  <div class="pl" data-p="5"><span class="pc">&#10003;</span>Thu 3 Apr</div>
+  <div class="pl" data-p="6"><span class="pc">&#10003;</span>Fri 4 Apr</div>
+</nav></div>
+
+<!-- OVERVIEW -->
+<div class="ph active" id="ph-0">
+<div class="phh"><h2>Welcome, Musa.</h2><p>This is not a school program. This is the program that will shape who you become.</p></div>
+<div class="insight"><strong>Why this program exists:</strong> You're 13. Your brain is in the most powerful growth window of your life — scientists call it a <em>sensitive period</em>. The habits, beliefs, and identity you build right now will wire themselves deep into who you are as an adult. Most people don't know this. You do. That's already an advantage.</div>
+<div class="sl">Your daily slot for this program</div>
+<div class="so">
+  <div class="sr" style="background:var(--green-soft);padding:10px 16px;"><span class="st">09:00–11:00</span><span class="sla" style="color:var(--green);font-weight:600;">Future-Proof Human (this program)</span><span class="stg sth">main</span></div>
+  <div class="sr"><span class="st">11:00–11:30</span><span class="sla">Break</span><span class="stg sbr">break</span></div>
+  <div class="sr"><span class="st">11:30–13:30</span><span class="sla">Project #1 — The Death of the Sun</span><span class="stg sot">project</span></div>
+  <div class="sr"><span class="st">13:30–14:00</span><span class="sla">Break / Lunch</span><span class="stg sbr">break</span></div>
+  <div class="sr"><span class="st">14:00–15:00</span><span class="sla">Other learning / reading</span><span class="stg sot">other</span></div>
+  <div class="sr" style="color:var(--ember)"><span class="st">Thu afternoon</span><span class="sla">Taekwondo training</span><span class="stg stk">tkd</span></div>
+  <div class="sr" style="color:var(--ember)"><span class="st">Sat morning</span><span class="sla">Taekwondo + full day off</span><span class="stg stk">off</span></div>
+</div>
+<div class="sl">The 5 pillars you will build</div>
+<div class="pgrid">
+  <div class="pc2"><div class="pc2-icon">🧠</div><div class="pc2-title" style="color:var(--sky)">Cognitive Mastery</div><div class="pc2-desc">How you think and reason — not just what you know</div></div>
+  <div class="pc2"><div class="pc2-icon">❤️‍🔥</div><div class="pc2-title" style="color:var(--rose)">Emotional Intelligence</div><div class="pc2-desc">Understanding your emotions as data — the #1 skill leaders have</div></div>
+  <div class="pc2"><div class="pc2-icon">🌱</div><div class="pc2-title" style="color:var(--gold)">Identity & Purpose</div><div class="pc2-desc">Knowing who you are and why you're here — your life compass</div></div>
+  <div class="pc2"><div class="pc2-icon">🤝</div><div class="pc2-title" style="color:var(--sage)">Social Mastery</div><div class="pc2-desc">Assertiveness, connection, and the courage to be yourself</div></div>
+  <div class="pc2" style="grid-column:1/-1"><div class="pc2-icon">🚀</div><div class="pc2-title" style="color:var(--green)">Future Literacy</div><div class="pc2-desc">Understanding AI and the changing world — thrive, not just survive</div></div>
+</div>
+<div class="sl">Daily non-negotiable habits — start today</div>
+<div class="cd">
+<ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="h1"></div><span class="ck"><strong>Morning intention (5 min)</strong> — Before opening your phone: 3 slow deep breaths, say one thing you're grateful for out loud, say one intention: "Today I will..."<span class="clg">Sebelum buka HP: 3 napas, 1 syukur, 1 niat</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="h2"></div><span class="ck"><strong>20 min physical movement</strong> — Walk, pushups, shoot hoops — anything. Exercise produces BDNF, literally "Miracle-Gro for the brain." Non-negotiable.<span class="clg">Gerak fisik 20 menit. Wajib setiap hari.</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="h3"></div><span class="ck"><strong>Evening journal (5 min)</strong> — 3 lines on paper every night: (1) What happened. (2) How I felt. (3) What I learned. Hand to Dad.<span class="clg">3 kalimat sebelum tidur. Tulis di kertas, kasih ke Ayah.</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="h4"></div><span class="ck"><strong>15 min English reading</strong> — Anything you enjoy. Fiction builds empathy. Non-fiction builds your model of the world.<span class="clg">Baca 15 menit dalam bahasa Inggris. Bebas topiknya.</span></span></li>
+</ul>
+</div>
+<div class="wsum"><h3>Week 1 Mission: Discovery</h3><p>Before you build anything great, you need to understand your starting point. This week is honest self-discovery — your strengths, gaps, values, and fears. World-class performers all know themselves deeply. This week you begin that journey.</p></div>
+<div class="quote"><div class="quote-text">"Knowing yourself is the beginning of all wisdom."</div><div class="quote-author">— Aristotle</div></div>
+</div>
+
+<!-- DAY 1: FRI 28 MAR -->
+<div class="ph" id="ph-1">
+<div class="phh"><span class="pt tgo">Pillar: Identity</span><h2>Day 1 — Who Am I?</h2><p>Friday, 28 March · 09:00–11:00</p></div>
+<div class="insight"><strong>Why this matters:</strong> Your identity is the story you tell yourself about who you are. It drives every decision you make. Most people never examine it. You will — starting today.</div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:00 – 09:10 · Warm-Up</div><div class="tds">Morning intention + settle in</div></div><div class="te">10 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d1t1"></div><span class="ck">Sit comfortably. Take 3 slow deep breaths. Say out loud: "Today I will discover something true about myself." Then begin.<span class="clg">Duduk, tarik napas 3x, bilang keras-keras kalimatnya.</span><span class="tt">10 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:10 – 10:00 · Core Work</div><div class="tds">The Three Circles — Your Identity Map</div></div><div class="te">50 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Three Circles</div><div class="paper-text">Draw three large circles side by side. Label them:<br><br><strong>Circle 1: Who I Was</strong> — Your life in Indonesia. What did you love? What were you known for? What made you happy? What were you afraid of?<br><br><strong>Circle 2: Who I Am Now</strong> — Right now today. What do you love? What are you good at? What frustrates you? What do you want people to know about you?<br><br><strong>Circle 3: Who I Want to Become</strong> — In 10 years. Not your job — your character. What words do you want people to use to describe you? What kind of man do you want to be?<br><br>Fill each circle with words, drawings, anything. Be honest. No one will judge you.</div><div class="paper-hand">📋 Hand these circles to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d1t2"></div><span class="ck">Draw the three circles. Fill Circle 1 — Who I Was (Indonesia life).<span class="tt">15 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d1t3"></div><span class="ck">Fill Circle 2 — Who I Am Now.<span class="tt">15 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d1t4"></div><span class="ck">Fill Circle 3 — Who I Want to Become.<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:00 – 10:50 · Deep Work</div><div class="tds">Values Discovery</div></div><div class="te">50 min</div></div>
+<div class="insight"><strong>Science note:</strong> Research by Dr Brené Brown shows people who know their core values make better decisions, handle pressure better, and feel more confident. Your values are your compass — when things get hard, they tell you who you are.</div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Values Discovery</div><div class="paper-text">Here are 30 values. Read them all, then:<br><strong>Step 1:</strong> Circle your top 10 — the ones that feel most like YOU.<br><strong>Step 2:</strong> Cross out 5. You now have your Top 5.<br><strong>Step 3:</strong> From 5, pick your Top 3 core values.<br><br><em>Honesty · Courage · Creativity · Kindness · Excellence · Adventure · Loyalty · Independence · Justice · Curiosity · Discipline · Humility · Leadership · Love · Respect · Generosity · Resilience · Growth · Faith · Service · Ambition · Wisdom · Gratitude · Authenticity · Compassion · Freedom · Integrity · Passion · Focus · Fun</em><br><br>Write your 3 core values in big letters at the top of the page.</div><div class="paper-hand">📋 Hand to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d1t5"></div><span class="ck">Read all 30 values. Circle your top 10.<span class="tt">10 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d1t6"></div><span class="ck">Narrow to top 5, then choose your 3 core values.<span class="tt">10 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d1t7"></div><span class="ck">Write WHY each value matters to you — one sentence each.<span class="tt">15 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d1t8"></div><span class="ck">Write one time in your life when you lived by each value — one real example each.<span class="tt">15 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:50 – 11:00 · Close</div><div class="tds">Wrap up + evening journal reminder</div></div><div class="te">10 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Evening Journal (do tonight before bed)</div><div class="paper-text">Write 3 lines — short and honest:<br>1. <strong>What happened today</strong> (2–3 sentences)<br>2. <strong>How I felt</strong> (use specific emotion words — not just "good" or "fine")<br>3. <strong>What I learned about myself today</strong></div><div class="paper-hand">📋 Hand to Dad in the morning.</div></div></div>
+<div class="pnote"><div class="pnote-label">👨 Parent — What to watch for today</div><div class="pnote-text">When Musa shares his Three Circles, listen more than you talk. Notice: How specific is Circle 3? Vague answers ("I want to be successful") suggest he hasn't yet developed a concrete identity vision — that's normal and exactly what this week builds. His core values will tell you what drives him underneath. Notice if his stated values match how he actually behaves — this gap is important data for calibrating Week 2.</div></div>
+<div class="quote"><div class="quote-text">"He who knows others is wise; he who knows himself is enlightened."</div><div class="quote-author">— Lao Tzu</div></div>
+</div>
+
+<!-- DAY 2: MON 31 MAR -->
+<div class="ph" id="ph-2">
+<div class="phh"><span class="pt tg">Pillar: Mindset</span><h2>Day 2 — How Do I Think?</h2><p>Monday, 31 March · 09:00–11:00</p></div>
+<div class="insight"><strong>Science note:</strong> Carol Dweck at Stanford proved that people with a <em>Growth Mindset</em> — who believe abilities can be developed through effort — achieve significantly more than those who think talent is fixed. This single belief is one of the biggest predictors of success. Today you install it.</div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:00 – 09:10 · Warm-Up</div><div class="tds">Morning intention</div></div><div class="te">10 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d2t1"></div><span class="ck">3 deep breaths. Say out loud: "Every time I struggle today, my brain is growing." Then begin.<span class="clg">Bilang keras-keras: "Setiap kali aku kesulitan hari ini, otakku sedang berkembang."</span><span class="tt">10 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:10 – 09:30 · Learn</div><div class="tds">Growth Mindset — the science</div></div><div class="te">20 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d2t2"></div><span class="ck">Watch Carol Dweck's talk on YouTube — search "Carol Dweck growth mindset TEDx". Watch the first 10 minutes.<span class="clg">Tonton video Carol Dweck di YouTube. 10 menit pertama.</span><span class="tt">10 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d2t3"></div><span class="ck">After watching — what is the one idea that hit you hardest? Why? Think about it for 2 minutes.<span class="tt">5 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d2t4"></div><span class="ck">Write on a card in big letters: "I CAN'T DO THIS YET." Underline YET. Stick it on your wall. The word YET changes everything.<span class="clg">Tulis di kertas besar: "AKU BELUM BISA INI." Tempelkan di tembok.</span><span class="tt">5 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:30 – 10:20 · Core Work</div><div class="tds">Maths Assessment + Metacognition</div></div><div class="te">50 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Maths Assessment (timed, no help)</div><div class="paper-text">Ask Dad to set a 40-minute timer. Solve these without help. This is not a test to judge you — it is a map to show where to start.<br><br><strong>Fractions:</strong> (1) ½ + ¾ = ? &nbsp; (2) ⅔ × ¾ = ? &nbsp; (3) 5 ÷ ¼ = ?<br><strong>Percentages:</strong> (4) What is 30% of 80? &nbsp; (5) 45 is what % of 180?<br><strong>Algebra:</strong> (6) 3x + 7 = 22, find x &nbsp; (7) 2(x + 4) = 18, find x<br><strong>Word problems:</strong> (8) A shop sells 240 items at $4.50 each. What is the total revenue? &nbsp; (9) A train travels 300 km in 2.5 hours. What is its average speed?<br><strong>Geometry:</strong> (10) A rectangle is 12 cm long and 7 cm wide. What is its area? Its perimeter?<br><br>After finishing: go back and write a number 1–3 next to each answer:<br>1 = "I guessed" · 2 = "I think this is right" · 3 = "I'm sure"<br><br>This skill — knowing what you know — is called <em>metacognition</em>. It is the #1 predictor of academic performance (researcher John Hattie).</div><div class="paper-hand">📋 Hand to Dad immediately when done. Do not check answers first.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d2t5"></div><span class="ck">Complete all 10 maths questions under timed conditions — 40 min max, no help.<span class="tt">40 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d2t6"></div><span class="ck">Go back and rate your confidence on each answer: 1, 2, or 3.<span class="tt">5 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:20 – 10:50 · Reflect</div><div class="tds">Resilience — reframing failure</div></div><div class="te">30 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Resilience Reflection</div><div class="paper-text">Answer these three questions in writing:<br><br>1. Think of something hard you tried and almost gave up on. What happened? Did you keep going or stop? What did you feel?<br><br>2. Think of someone you admire — family, history, or sport. What is one big challenge or failure they faced? What did they do?<br><br>3. What is one area of your life right now where you feel stuck? Write: "I can't do this <em>yet</em>, and the next small step I could take is ___________."</div><div class="paper-hand">📋 Hand to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d2t7"></div><span class="ck">Answer all 3 resilience questions in writing.<span class="tt">20 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d2t8"></div><span class="ck">Learn the 5-Second Rule: when you hesitate to do something hard, count 5-4-3-2-1 out loud and move. Use it at least once today. Write down when you used it and what happened.<span class="clg">Hitung 5-4-3-2-1 keras-keras lalu gerak. Pakai minimal sekali hari ini.</span><span class="tt">Use it all day</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:50 – 11:00 · Close</div><div class="tds">Wrap up</div></div><div class="te">10 min</div></div>
+<div class="pnote"><div class="pnote-label">👨 Parent — What to watch for today</div><div class="pnote-text">Mark the maths assessment yourself before showing results. Note: where confidence was HIGH but answer was WRONG (overconfidence), and where confidence was LOW but answer was RIGHT (underconfidence). Both patterns are important data. Ask him: "What do you notice about where you were wrong?" — let him discover it rather than you telling him. Also note how he handled difficulty during the test: did he give up on questions or push through? This is your first resilience data point.</div></div>
+<div class="quote"><div class="quote-text">"It's not that I'm so smart, it's just that I stay with problems longer."</div><div class="quote-author">— Albert Einstein</div></div>
+</div>
+
+<!-- DAY 3: TUE 1 APR -->
+<div class="ph" id="ph-3">
+<div class="phh"><span class="pt ts3">Pillar: Future Literacy</span><h2>Day 3 — What World Am I Entering?</h2><p>Tuesday, 1 April · 09:00–11:00</p></div>
+<div class="insight"><strong>Why this matters:</strong> You will spend your adult life in a world radically shaped by AI. The kids who understand this now — and prepare for it — will have an enormous advantage. Today you start thinking like someone who is ready for that world, not scared of it.</div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:00 – 09:10 · Warm-Up</div><div class="tds">Morning intention</div></div><div class="te">10 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d3t1"></div><span class="ck">3 deep breaths. Say out loud: "I am not preparing for yesterday's world. I am preparing for tomorrow's." Then begin.<span class="tt">10 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:10 – 09:50 · Learn + Discuss</div><div class="tds">AI, the future, and YOU</div></div><div class="te">40 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d3t2"></div><span class="ck">Search YouTube: "what jobs will AI replace" — watch one video (~10 min) that looks interesting to you.<span class="tt">10 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d3t3"></div><span class="ck">Read this carefully, then discuss with Dad: <em>"AI is very good at routine tasks — filling forms, standard questions, sorting data. It is NOT good at: genuine creativity, reading emotions, leading people, solving new problems, or ethical judgement. The humans who will thrive in 2035 are those who build deep human skills — not just academic ones."</em> Do you agree? Which of these skills do you already have?<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:50 – 10:40 · Core Work</div><div class="tds">English Assessment + Ikigai Purpose Map</div></div><div class="te">50 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — English Writing Assessment</div><div class="paper-text">Write about this topic — no time limit, no dictionary, no corrections first:<br><br><strong>"Describe yourself. Where are you from, what do you love, what are you good at, and what kind of person do you want to become?"</strong><br><br>Write at least 2 full paragraphs (5–7 sentences each). Write freely — this is not a grammar test. It is a test of how you express ideas in English. Just write what is true for you.</div><div class="paper-hand">📋 Hand to Dad when done. Do not correct it first.</div></div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Ikigai: Your Purpose Map</div><div class="paper-text"><em>Ikigai</em> is a Japanese concept meaning "reason for being." It lives at the intersection of 4 things. Answer each in writing:<br><br>1. <strong>What do I LOVE?</strong> — What makes you forget time? What would you do even if no one paid you?<br><br>2. <strong>What am I GOOD AT?</strong> — What do people ask your help with? What comes easily to you that seems hard for others?<br><br>3. <strong>What does the WORLD NEED?</strong> — What problems do you see — in your community, Indonesia, or the world — that bother you?<br><br>4. <strong>What could I be PAID FOR?</strong> — You don't need a final answer at 13. Just write early ideas.<br><br>You don't need perfect answers. These are seeds. We return to them each week.</div><div class="paper-hand">📋 Hand to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d3t4"></div><span class="ck">Complete English writing assessment — 2+ paragraphs, no dictionary.<span class="tt">20 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d3t5"></div><span class="ck">Complete Ikigai map — answer all 4 questions honestly.<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:40 – 11:00 · Reflect</div><div class="tds">3 Personal Goals for Year 8</div></div><div class="te">20 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — My 3 Personal Goals for Year 8</div><div class="paper-text">Write 3 goals for when school starts. NOT grade goals — character and social goals.<br><br>✗ "Get an A in maths" — outcome goal, not yours to fully control<br>✓ "Speak up in class at least once per week even when nervous" — behaviour goal<br>✓ "Make 2 real friends in the first month, not just classmates"<br>✓ "When someone mocks my accent, respond calmly and confidently"<br><br>Write YOUR 3. Make them specific and honest.</div><div class="paper-hand">📋 Hand to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d3t6"></div><span class="ck">Write your 3 personal Year 8 goals — specific behaviour goals, not grade goals.<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="pnote"><div class="pnote-label">👨 Parent — What to watch for today</div><div class="pnote-text">The English writing sample is your key diagnostic. Assess: sentence structure, vocabulary range, ability to express abstract ideas — not just grammar. His Ikigai answers — particularly what he says the world needs — reveal his level of outward vs inward thinking. At 13, mostly inward is normal; any outward thinking is a sign of strong empathy worth building on. His 3 goals will show you his social self-awareness level.</div></div>
+<div class="quote"><div class="quote-text">"The illiterate of the 21st century will not be those who cannot read and write, but those who cannot learn, unlearn, and relearn."</div><div class="quote-author">— Alvin Toffler</div></div>
+</div>
+
+<!-- DAY 4: WED 2 APR -->
+<div class="ph" id="ph-4">
+<div class="phh"><span class="pt tr">Pillar: Social Mastery</span><h2>Day 4 — How Do I Show Up?</h2><p>Wednesday, 2 April · 09:00–11:00</p></div>
+<div class="insight"><strong>Why this matters:</strong> Research shows 93% of communication is non-verbal — how you stand, eye contact, voice tone. Before you say a single word, people have already formed an impression. Assertiveness is not aggression — it is expressing yourself clearly and calmly while respecting others. It is a learnable skill.</div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:00 – 09:10 · Warm-Up</div><div class="tds">Morning intention</div></div><div class="te">10 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d4t1"></div><span class="ck">Stand up straight. 3 deep breaths. Say out loud: "I belong here. My voice matters." Then begin.<span class="clg">Berdiri tegak. Bilang keras-keras: "Aku layak ada di sini. Suaraku penting."</span><span class="tt">10 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:10 – 09:50 · Body Language + Introduction</div><div class="tds">Physical presence and first impressions</div></div><div class="te">40 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d4t2"></div><span class="ck">Stand in front of a mirror. Practise "Power Posture": feet shoulder-width apart, shoulders back and relaxed, chin level, eyes forward. Hold 60 seconds. Research by Amy Cuddy (Harvard) shows this posture changes your hormone levels within 2 minutes.<span class="tt">5 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d4t3"></div><span class="ck">Practise your introduction 7 times until it feels natural, not rehearsed: <em>"Hi, I'm Musa. I just moved from Indonesia. Good to meet you."</em> Then add: <em>"How long have you been at this school?"</em><span class="clg">Latih 7 kali sampai terasa natural, bukan hafalan.</span><span class="tt">10 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d4t4"></div><span class="ck">Role-play with Dad: Dad plays a classmate. You introduce yourself, then keep the conversation going for 2 minutes using questions. After: Dad gives honest feedback — eye contact, voice, confidence level 1–5.<span class="tt">15 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:50 – 10:40 · Assertiveness Training</div><div class="tds">Three scenarios — practise responding</div></div><div class="te">50 min</div></div>
+<div class="insight"><strong>The Assertiveness Spectrum:</strong><br><strong style="color:var(--text3)">Passive</strong> → say nothing, avoid, shrink yourself<br><strong style="color:var(--green)">Assertive</strong> → say it clearly, calmly, respectfully — this is the goal<br><strong style="color:var(--ember)">Aggressive</strong> → attack, threaten, get angry<br><br>Assertive people are heard and respected. Passive people get walked over. Aggressive people push others away. You are building the middle path.</div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Role-Play Responses</div><div class="paper-text">For each scenario, write THREE responses: Passive, Aggressive, and Assertive. Then role-play the Assertive response with Dad.<br><br><strong>Scenario 1:</strong> A classmate says: "You have a funny accent. Did you even go to school before?"<br><br><strong>Scenario 2:</strong> Teacher asks the class a question. You think you know the answer but aren't 100% sure. Everyone is quiet.<br><br><strong>Scenario 3:</strong> A group invites you to skip class to hang out. You don't want to.<br><br>For each scenario also write: What would passive cost you? What would aggressive cost you? What does assertive give you?</div><div class="paper-hand">📋 Hand to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d4t5"></div><span class="ck">Write Passive, Aggressive, and Assertive responses for all 3 scenarios.<span class="tt">20 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d4t6"></div><span class="ck">Role-play each assertive response with Dad. Repeat each until it feels calm and natural — not angry, not apologetic.<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:40 – 11:00 · Science Assessment</div><div class="tds">Find your starting point in science</div></div><div class="te">20 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Science Quick Assessment</div><div class="paper-text">Answer in English. Write what you know. If you don't know, write "I don't know yet." Be honest — no guessing needed.<br><br>1. What is a cell? What is the difference between a plant cell and an animal cell?<br>2. What are the three states of matter? Give an example of each.<br>3. What is gravity? Give an everyday example.<br>4. What is the difference between an element and a compound?<br>5. Name 3 organs in the human body and what each one does.<br>6. What is energy? Name 3 types.<br>7. What is the solar system? Name the 8 planets in order.</div><div class="paper-hand">📋 Hand to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d4t7"></div><span class="ck">Complete the 7-question science assessment in English. Be honest about what you don't know.<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="pnote"><div class="pnote-label">👨 Parent — What to watch for today</div><div class="pnote-text">The role-play is the most revealing exercise of the week. Watch: Does he laugh nervously or go quiet under confrontation? Does he get aggressive? Is his default passive? The quality of his assertive responses in writing vs in person often shows a gap — he may know the right answer intellectually but can't access it under social pressure. That gap is exactly what Week 2 will work on. Praise specific assertive moments: "When you said X, that was exactly right."</div></div>
+<div class="quote"><div class="quote-text">"You teach people how to treat you by what you allow, what you stop, and what you reinforce."</div><div class="quote-author">— Tony Gaskins</div></div>
+</div>
+
+<!-- DAY 5: THU 3 APR -->
+<div class="ph" id="ph-5">
+<div class="phh"><span class="pt te2">Pillar: Emotional Intelligence</span><h2>Day 5 — How Do I Feel?</h2><p>Thursday, 3 April · 09:00–11:00 · Taekwondo this afternoon!</p></div>
+<div class="nu"><strong>🥋 TKD day:</strong> This morning's session will help your training tonight. Emotional intelligence — understanding what you feel and why — is what separates great martial artists from average ones. Mind and body train together.</div>
+<div class="insight"><strong>Science note:</strong> Research by Dr Marc Brackett (Yale) proves that people who can name and understand their emotions perform better academically, have better relationships, and make better decisions. He calls this "emotional literacy." Most adults were never taught it. You are learning it at 13.</div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:00 – 09:10 · Warm-Up</div><div class="tds">Morning intention</div></div><div class="te">10 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d5t1"></div><span class="ck">3 deep breaths. Check in with yourself: How do I actually feel right now, in this moment? Name the feeling specifically — not just "okay." Then begin.<span class="tt">10 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:10 – 09:50 · Emotional Literacy</div><div class="tds">Naming emotions with precision</div></div><div class="te">40 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Emotions as Data</div><div class="paper-text">Search Google Images for "Feelings Wheel" — it is a circle with about 130 emotion words. Look at it for 2 minutes. Then answer these in writing:<br><br>1. Pick 5 emotion words that describe how you feel about moving to Perth and starting school. For each: when do you feel this most?<br><br>2. Pick one emotion you feel often that you DON'T like feeling (frustrated, embarrassed, anxious, etc.). Describe it: When does it happen? What triggers it? What do you usually do when you feel it? Does that response help you or hurt you?<br><br>3. Pick one emotion that gives you ENERGY (excited, determined, curious, etc.). When do you feel it? How could you create more moments that trigger it?<br><br>Write down: <em>"Emotions are not problems to hide. They are information to understand. The question isn't 'how do I stop feeling this?' — it's 'what is this feeling telling me?'"</em></div><div class="paper-hand">📋 Hand to Dad when done.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d5t2"></div><span class="ck">Look up Feelings Wheel. Pick your 5 emotions about the school transition. Explain each one.<span class="tt">15 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d5t3"></div><span class="ck">Write in detail about your difficult emotion and your energising emotion.<span class="tt">15 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:50 – 10:40 · Speaking Assessment + Emotional Courage</div><div class="tds">Record yourself + face your fears honestly</div></div><div class="te">50 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Speaking Assessment (recorded)</div><div class="paper-text">Ask Dad to record you (video or audio on phone).<br><br>Talk for 3 continuous minutes about ONE topic — your choice:<br>(A) Your favourite sport or hobby and why you love it<br>(B) A place in Indonesia that means a lot to you and why<br>(C) A person you admire and what you've learned from them<br><br>Rules: No notes. No stopping more than 3 seconds. English the whole time. Mistakes are okay — keep going.<br><br>After recording, watch it back with Dad. Together assess:<br>• Did I keep going or stop? (Resilience)<br>• How was my eye contact and body language?<br>• Did I use varied vocabulary or repeat the same words?<br>• Was I easy to understand?<br>• Confidence level 1–5?<br><br>Write your own self-assessment on paper.</div><div class="paper-hand">📋 Dad keeps the recording. Musa hands Dad the written self-assessment.</div></div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — What Am I Most Afraid Of?</div><div class="paper-text">This takes courage to answer honestly. You can share with Dad or keep it private — your choice.<br><br>1. What are you most afraid of about Year 8? Be specific — what exact scenario scares you most?<br>2. What is the worst realistic thing that could actually happen? How likely is that?<br>3. What would you tell a younger kid who had the same fear?<br>4. What is ONE thing you could do before school starts that would make you 10% less afraid?<br><br>Write down: <em>Courage is not the absence of fear. Courage is acting while afraid. Every great person you admire has done things while scared.</em></div><div class="paper-hand">📋 Your choice — share with Dad if you want, or keep as your private work.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d5t4"></div><span class="ck">Record your 3-minute English speaking assessment — no notes, no stopping.<span class="tt">5 min to record</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d5t5"></div><span class="ck">Watch it back with Dad. Write your honest self-assessment: what was strong, what to improve.<span class="tt">15 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d5t6"></div><span class="ck">Write your honest answers to the 4 fear questions.<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:40 – 11:00 · Body + Mind</div><div class="tds">Daily movement — non-negotiable</div></div><div class="te">20 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d5t7"></div><span class="ck">20 minutes of movement outside — walk, run, anything. This is not TKD warm-up. This is your brain's daily fuel. Exercise produces BDNF — a protein that grows your brain and improves mood and memory.<span class="clg">20 menit bergerak di luar. Bukan persiapan TKD — ini kebiasaan otakmu.</span><span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="pnote"><div class="pnote-label">👨 Parent — What to watch for today</div><div class="pnote-text">The fear exercise is the most emotionally honest task of the week. If he shares it, receive it without minimising ("You'll be fine!") or catastrophising. Just ask: "What would help you feel more ready?" Save the speaking recording — record again at Week 4 and Week 8. The progress will be concrete and motivating. Note his self-assessment accuracy: does he see himself clearly, or is there a gap between his perception and what you observe?</div></div>
+<div class="quote"><div class="quote-text">"Between stimulus and response there is a space. In that space is our power to choose our response."</div><div class="quote-author">— Viktor Frankl</div></div>
+</div>
+
+<!-- DAY 6: FRI 4 APR -->
+<div class="ph" id="ph-6">
+<div class="phh"><span class="pt tgo">Pillar: Integration</span><h2>Day 6 — What Did I Discover?</h2><p>Friday, 4 April · 09:00–11:00 · Week 1 Wrap-Up</p></div>
+<div class="insight"><strong>Why reflection matters:</strong> Research by Harvard Business School shows that people who reflect on what they've learned perform 23% better than those who just keep practising. Reflection is not wasted time — it is where learning becomes wisdom.</div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:00 – 09:10 · Warm-Up</div><div class="tds">Morning intention</div></div><div class="te">10 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d6t1"></div><span class="ck">3 deep breaths. Say out loud: "I have done five days of real work on myself. That is not nothing. That is the beginning of everything." Then begin.<span class="tt">10 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">09:10 – 10:00 · Review + Celebration</div><div class="tds">Go through the week together with Dad</div></div><div class="te">50 min</div></div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Week 1 Self-Assessment</div><div class="paper-text"><strong>Part 1: What I discovered</strong><br>1. The most important thing I learned about myself this week.<br>2. What surprised me about myself.<br>3. What was the hardest moment — and how did I handle it?<br><br><strong>Part 2: My starting point ratings (1–5)</strong><br>1 = need a lot of work · 5 = already strong<br>• English writing<br>• English speaking confidence<br>• Maths problem-solving<br>• Science knowledge in English<br>• Knowing my values and identity<br>• Handling difficult social situations<br>• Managing my emotions<br>• Believing I can grow and improve<br><br><strong>Part 3: What I want to focus on</strong><br>What are the 2 areas where I most want to grow in Week 2?</div><div class="paper-hand">📋 Hand to Dad — this becomes the input for your Week 2 program.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d6t2"></div><span class="ck">Complete all 3 parts of the Week 1 self-assessment in writing.<span class="tt">30 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d6t3"></div><span class="ck">Sit with Dad. He shares specific strengths he noticed this week. Listen fully. Then share what you found hardest.<span class="tt">20 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:00 – 10:45 · Vision</div><div class="tds">Mental rehearsal — your future self</div></div><div class="te">45 min</div></div>
+<div class="insight"><strong>Neuroscience note:</strong> Mental rehearsal — vividly imagining yourself succeeding — activates the same neural pathways as actually doing the thing. Research by Alvaro Pascual-Leone at Harvard proved this with brain scans. Olympic athletes, surgeons, and concert pianists all use this. You start today.</div>
+<div class="paper"><div class="paper-icon">✏️</div><div class="paper-body"><div class="paper-title">Paper Task — Your Letter from the Future</div><div class="paper-text">Write a letter to yourself from <strong>Musa aged 23</strong> — the version of you who figured it out.<br><br>He is writing back to you at 13. He knows what you're worried about. He knows what's coming. He knows what matters.<br><br>What does he say? What does he tell you to focus on? What does he tell you NOT to worry about? What does he wish someone had told him at your age?<br><br>Write at least 1 full page. Be honest and specific. Not "everything will be great" — give real advice from your future self.<br><br>Keep this letter. We return to it in 6 months.</div><div class="paper-hand">📋 Hand to Dad. He will keep it safe for you to read again in 6 months.</div></div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d6t4"></div><span class="ck">Write your letter from Musa age 23 to Musa age 13. At least 1 full page. Honest and specific.<span class="tt">30 min</span></span></li>
+</ul></div>
+
+<div class="tb"><div class="ti">⏰</div><div class="td2"><div class="ts2">10:45 – 11:00 · Close</div><div class="tds">Acknowledge the work done</div></div><div class="te">15 min</div></div>
+<div class="cd"><ul class="cl">
+  <li><div class="cw"><input type="checkbox" data-task="d6t5"></div><span class="ck">Stand up. Say out loud: "I know myself better than I did on Friday. I know where I'm going. I am building something real." This week is done.<span class="tt">5 min</span></span></li>
+  <li><div class="cw"><input type="checkbox" data-task="d6t6"></div><span class="ck">Write tonight's journal: What was the most valuable thing from this entire week? What are you most proud of?<span class="tt">10 min</span></span></li>
+</ul></div>
+
+<div class="assess">
+  <div class="assess-q">Dad's end-of-week rating: How emotionally ready does Musa feel for Year 8?</div>
+  <div class="assess-scale">
+    <div class="asn" data-group="ew1" data-val="1">1</div>
+    <div class="asn" data-group="ew1" data-val="2">2</div>
+    <div class="asn" data-group="ew1" data-val="3">3</div>
+    <div class="asn" data-group="ew1" data-val="4">4</div>
+    <div class="asn" data-group="ew1" data-val="5">5</div>
+  </div>
+  <textarea class="na" data-note="week1-parent" placeholder="Dad's overall notes from Week 1 — key observations to feed into Week 2 calibration..."></textarea>
+  <div class="ns" id="ns-week1-parent">Saved</div>
+</div>
+
+<div class="wsum"><h3>Week 1 Complete.</h3><p>You have mapped your identity, assessed your starting point, understood the world you're entering, practised showing up socially, and faced your emotions honestly. Upload this week's paper work to Claude so Week 2 can be built specifically for you — not from a template.</p></div>
+
+<div class="pnote"><div class="pnote-label">👨 Parent — End of Week 1 Handoff to Claude</div><div class="pnote-text">Collect all paper work. Photograph or scan each piece and upload to Claude with your observations. Flag specifically: (1) emotional readiness observations, (2) maths results with confidence ratings, (3) the English writing sample, (4) which role-play scenarios he struggled with most, (5) his 3 core values, (6) what moved him most this week. This becomes the calibration data for Week 2, which will be built specifically for Musa — not from a generic template.</div></div>
+
+<div class="quote"><div class="quote-text">"The journey of a thousand miles begins with a single step."</div><div class="quote-author">— Lao Tzu</div></div>
+<button class="rb" onclick="if(confirm('Reset all progress? This cannot be undone.'))resetAll()">Reset all progress</button>
+</div>
+
+</div><!-- end .ctn -->
+
+<script>
+const STORE='musa-fph-w1';
+function load(){try{return JSON.parse(localStorage.getItem(STORE))||{};}catch(e){return{};}}
+function save(s){try{localStorage.setItem(STORE,JSON.stringify(s));}catch(e){}}
+let state=load();
+const days=[
+  {label:'Fri 28',date:'2026-03-28'},
+  {label:'Mon 31',date:'2026-03-31'},
+  {label:'Tue 1',date:'2026-04-01'},
+  {label:'Wed 2',date:'2026-04-02'},
+  {label:'Thu 3',date:'2026-04-03'},
+  {label:'Fri 4',date:'2026-04-04'},
+];
+const dayTaskMap={
+  '2026-03-28':['d1t1','d1t2','d1t3','d1t4','d1t5','d1t6','d1t7','d1t8'],
+  '2026-03-31':['d2t1','d2t2','d2t3','d2t4','d2t5','d2t6','d2t7','d2t8'],
+  '2026-04-01':['d3t1','d3t2','d3t3','d3t4','d3t5','d3t6'],
+  '2026-04-02':['d4t1','d4t2','d4t3','d4t4','d4t5','d4t6','d4t7'],
+  '2026-04-03':['d5t1','d5t2','d5t3','d5t4','d5t5','d5t6','d5t7'],
+  '2026-04-04':['d6t1','d6t2','d6t3','d6t4','d6t5','d6t6'],
+};
+function buildStreak(){
+  const bar=document.getElementById('streakBar');if(!bar)return;bar.innerHTML='';
+  const today=new Date().toISOString().split('T')[0];
+  days.forEach(d=>{
+    const el=document.createElement('div');el.className='fd';
+    const tasks=dayTaskMap[d.date]||[];
+    const allDone=tasks.length>0&&tasks.every(t=>state[t]);
+    const isPast=d.date<today;const isToday=d.date===today;
+    if(allDone)el.classList.add('on');else if(isPast)el.classList.add('off');
+    if(isToday)el.classList.add('now');
+    el.innerHTML=`<span class="fd-day">${d.label.split(' ')[0]}</span><span class="fd-num">${d.label.split(' ')[1]}</span>`;
+    bar.appendChild(el);
+  });
+}
+function updateProgress(){
+  const all=document.querySelectorAll('input[data-task]');
+  const total=all.length;const done=Array.from(all).filter(i=>i.checked).length;
+  const pct=total?Math.round(done/total*100):0;
+  const bar=document.getElementById('mainProg');const txt=document.getElementById('progTxt');
+  if(bar)bar.style.width=pct+'%';
+  if(txt)txt.textContent=`${done} / ${total} tasks · ${pct}%`;
+  updateNavDone();buildStreak();
+}
+function updateNavDone(){
+  document.querySelectorAll('.pl[data-p]').forEach(btn=>{
+    const p=btn.dataset.p;if(p==='0')return;
+    const ph=document.getElementById('ph-'+p);if(!ph)return;
+    const tasks=ph.querySelectorAll('input[data-task]');if(!tasks.length)return;
+    btn.classList.toggle('done',Array.from(tasks).every(t=>t.checked));
+  });
+}
+function initCheckboxes(){
+  document.querySelectorAll('input[data-task]').forEach(cb=>{
+    const key=cb.dataset.task;cb.checked=!!state[key];
+    const li=cb.closest('li');const ck=li?li.querySelector('.ck'):null;
+    if(cb.checked){if(li)li.classList.add('ic');if(ck)ck.classList.add('dn');}
+    cb.addEventListener('change',()=>{
+      state[key]=cb.checked;save(state);
+      const li2=cb.closest('li');const ck2=li2?li2.querySelector('.ck'):null;
+      if(cb.checked){if(li2)li2.classList.add('ic');if(ck2)ck2.classList.add('dn');}
+      else{if(li2)li2.classList.remove('ic');if(ck2)ck2.classList.remove('dn');}
+      const card=cb.closest('.cd');
+      if(card){const all=card.querySelectorAll('input[data-task]');card.classList.toggle('alld',Array.from(all).every(c=>c.checked));}
+      updateProgress();
+    });
+  });updateProgress();
+}
+function initNotes(){
+  document.querySelectorAll('textarea[data-note]').forEach(ta=>{
+    const key='note-'+ta.dataset.note;ta.value=state[key]||'';
+    const ns=document.getElementById('ns-'+ta.dataset.note);let timer;
+    ta.addEventListener('input',()=>{
+      state[key]=ta.value;save(state);
+      if(ns){ns.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>ns.classList.remove('show'),1500);}
+    });
+  });
+}
+function initAssess(){
+  document.querySelectorAll('.asn').forEach(btn=>{
+    const key='assess-'+btn.dataset.group;
+    if(state[key]===btn.dataset.val)btn.classList.add('sel');
+    btn.addEventListener('click',()=>{
+      const g=btn.dataset.group;
+      document.querySelectorAll(`.asn[data-group="${g}"]`).forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');state['assess-'+g]=btn.dataset.val;save(state);
+    });
+  });
+}
+function initNav(){
+  document.querySelectorAll('.pl[data-p]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.pl[data-p]').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.ph').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      const ph=document.getElementById('ph-'+btn.dataset.p);
+      if(ph)ph.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+}
+function resetAll(){
+  state={};save(state);
+  document.querySelectorAll('input[data-task]').forEach(cb=>{
+    cb.checked=false;const li=cb.closest('li');const ck=li?li.querySelector('.ck'):null;
+    if(li)li.classList.remove('ic');if(ck)ck.classList.remove('dn');
+    const card=cb.closest('.cd');if(card)card.classList.remove('alld');
+  });
+  document.querySelectorAll('textarea[data-note]').forEach(ta=>ta.value='');
+  document.querySelectorAll('.asn').forEach(b=>b.classList.remove('sel'));
+  updateProgress();
+}
+document.addEventListener('DOMContentLoaded',()=>{initNav();initCheckboxes();initNotes();initAssess();buildStreak();});
+</script>
+</body>
+</html>
