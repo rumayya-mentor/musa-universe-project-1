@@ -628,7 +628,10 @@ function rar(el){
 }
 
 /* ── DAILY ── */
-let viewingDay=0; // 0 = active day
+let viewingDay=1; // which day tab is showing (1,2,3)
+
+// Fixed keys per trial day — independent of actual date
+const dayKey = d => "trial-day-"+d;
 
 function rdl(){
   const el=document.getElementById("dailyContent");
@@ -650,33 +653,30 @@ function rdl(){
     return;
   }
   if(ST.tc){rwck(el);return;}
-  const tk=Object.keys(ST.td||{}).sort();
-  const completedCount=tk.filter(k=>ST.td[k]&&ST.td[k].complete).length;
+  // count completed days by fixed keys
+  const completedCount=[1,2,3].filter(d=>ST.td[dayKey(d)]&&ST.td[dayKey(d)].complete).length;
   const activeDayNum=Math.min(completedCount+1,3);
-  // clamp viewingDay to valid range
-  if(viewingDay===0||viewingDay>activeDayNum)viewingDay=activeDayNum;
-  rdlDay(el,viewingDay,activeDayNum,tk);
+  if(viewingDay<1)viewingDay=1;
+  if(viewingDay>activeDayNum)viewingDay=activeDayNum;
+  rdlDay(el,viewingDay,activeDayNum);
 }
 
-function rdlDay(el,dayNum,activeDayNum,tk){
-  const isActive=dayNum===activeDayNum&&!(ST.td[tk[dayNum-1]]||{}).complete;
-  const dayKey=tk[dayNum-1]||null; // key for past days; null for active day
-  const tod=tdk();
-  // For active day, key is today
-  const activeKey=isActive?tod:dayKey;
-  const dd=(activeKey&&ST.td[activeKey])||{habits:{},notes:{},complete:false};
+function rdlDay(el,dayNum,activeDayNum){
+  const k=dayKey(dayNum);
+  if(!ST.td[k])ST.td[k]={habits:{},notes:{},complete:false,mr:""};
+  const dd=ST.td[k];
   const hb=dd.habits||{};const tn=dd.notes||{};
   const done=HABITS.filter(h=>hb[h.id]).length;
   const belt=BELTS.find(b=>done>=b.min&&done<=b.max)||BELTS[0];
   const tm=TMISSIONS[dayNum-1]||TMISSIONS[0];
-  const isPast=!isActive;
+  const isComplete=!!dd.complete;
 
-  // Build day tabs
+  // Build day tabs — all unlocked up to activeDayNum, all editable
   const tabs=[1,2,3].map(d=>{
-    const exists=d<activeDayNum||(d===activeDayNum);
-    const isComp=ST.td[tk[d-1]]&&ST.td[tk[d-1]].complete;
+    const unlocked=d<=activeDayNum;
+    const isComp=ST.td[dayKey(d)]&&ST.td[dayKey(d)].complete;
     const isViewing=d===dayNum;
-    if(!exists)return`<button style="flex:1;padding:8px;border-radius:10px;border:2px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.2);font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:not-allowed">Day ${d} 🔒</button>`;
+    if(!unlocked)return`<button style="flex:1;padding:8px;border-radius:10px;border:2px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.2);font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:not-allowed">Day ${d} 🔒</button>`;
     const bg=isViewing?"#fff":"rgba(255,255,255,0.06)";
     const col=isViewing?"#081426":"rgba(255,255,255,0.6)";
     const bd=isViewing?"#fff":isComp?"rgba(16,185,129,0.5)":"rgba(255,255,255,0.15)";
@@ -684,17 +684,7 @@ function rdlDay(el,dayNum,activeDayNum,tk){
     return`<button onclick="viewingDay=${d};rdl()" style="flex:1;padding:8px;border-radius:10px;border:2px solid ${bd};background:${bg};color:${col};font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:pointer;transition:all 0.2s">Day ${d}${tick}</button>`;
   }).join("");
 
-  el.innerHTML=`
-  <div style="display:flex;gap:6px;margin-bottom:16px">${tabs}</div>
-  ${isPast?`<div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:10px;padding:9px 13px;margin-bottom:14px;font-size:12px;color:rgba(255,255,255,0.6)">📖 Day ${dayNum} — read-only. ${dd.complete?"Completed ✓":"Not completed."}</div>`:""}
-  <div class="trial-hdr">
-    <h2>Trial Day ${dayNum} of 3 🌱</h2>
-    <p style="font-size:12px;color:rgba(255,255,255,0.45);margin:4px 0 10px">${activeKey?new Date(activeKey+"T12:00:00").toLocaleDateString("en",{weekday:"long",month:"long",day:"numeric"}):new Date().toLocaleDateString("en",{weekday:"long",month:"long",day:"numeric"})}</p>
-    <div class="beltrow"><div class="beltstrip" style="background:${belt.color}"></div><span>${belt.label}</span></div>
-    <div class="pwrap"><div class="pbar" style="width:${(done/7)*100}%"></div></div>
-    <p class="plbl">${done}/7 habits${isPast?" ticked on this day":" today"}${done===7?" 🔥":""}</p>
-  </div>
-  <div style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:13px 15px;margin-bottom:16px;">
+  const schedCard=`<div style="background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.1);border-radius:14px;padding:13px 15px;margin-bottom:16px;">
   <p style="font-family:'Cinzel Decorative',cursive;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:10px">📅 Musa's Daily Schedule</p>
   <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
     <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(16,185,129,0.08);border-radius:7px;padding:4px 8px;margin:0 -8px">
@@ -724,67 +714,93 @@ function rdlDay(el,dayNum,activeDayNum,tk){
     <div style="display:flex;justify-content:space-between;color:rgba(124,58,237,0.9)"><span style="font-weight:700">Thu afternoon</span><span>🥋 Taekwondo training</span></div>
     <div style="display:flex;justify-content:space-between;color:rgba(124,58,237,0.9)"><span style="font-weight:700">Sat morning</span><span>🥋 Taekwondo + full day off</span></div>
   </div>
-</div>
+</div>`;
+
+  el.innerHTML=`
+  <div style="display:flex;gap:6px;margin-bottom:16px">${tabs}</div>
+  <div class="trial-hdr">
+    <h2>Trial Day ${dayNum} of 3 🌱</h2>
+    <div class="beltrow"><div class="beltstrip" style="background:${belt.color}"></div><span>${belt.label}</span></div>
+    <div class="pwrap"><div class="pbar" style="width:${(done/7)*100}%"></div></div>
+    <p class="plbl">${done}/7 habits ticked${done===7?" 🔥":""}</p>
+  </div>
+  ${schedCard}
   <div class="miscard">
     <h3>📝 Day ${dayNum} Mission</h3>
     <p>${tm.main}</p>
-    ${isPast
-      ? `<div style="margin-top:10px;background:rgba(255,255,255,0.05);border-radius:10px;padding:10px 12px;font-size:13px;color:rgba(255,255,255,0.75);min-height:50px;line-height:1.6">${dd.mr||"<em style='opacity:0.4'>No response written.</em>"}</div>`
-      : `<textarea class="misinp" id="misinp" placeholder="Write your honest response here...">${dd.mr||""}</textarea>
-         <button class="btn-fl" style="background:#6366f1;width:100%;margin-top:8px" onclick="svMis()">Save Mission Response</button>`
-    }
+    <textarea class="misinp" id="misinp-d${dayNum}" placeholder="Write your honest response here...">${dd.mr||""}</textarea>
+    <button class="btn-fl" style="background:#6366f1;width:100%;margin-top:8px" onclick="svMis(${dayNum})">Save Mission Response</button>
+    <p id="mis-saved-${dayNum}" style="font-size:11px;color:#10b981;margin-top:5px;text-align:center;display:none">✓ Saved</p>
   </div>
   <p style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin:14px 0 10px">7 Habit Check-in + Reflections:</p>
-  <div id="trcards"></div>
+  <div id="trcards-d${dayNum}"></div>
   <div class="winban ${done===7?"show":""}"><div class="tr">🏆</div><h2>Black Belt Day!</h2><p>All 7 mastered. 🌊🔥🌪️🌿</p></div>
-  ${!isPast&&!dd.complete?`<button class="daycbtn" onclick="cmpDay()">Complete Day ${dayNum} →</button>`:""}
-  ${!isPast&&dd.complete?`<div style="text-align:center;margin-top:14px;padding:14px;background:rgba(16,185,129,0.1);border-radius:14px;border:2px solid rgba(16,185,129,0.3)"><p style="font-size:14px;font-weight:800;color:#6ee7b7">✅ Day ${dayNum} complete!</p>${dayNum<3?`<p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px">Come back tomorrow for Day ${dayNum+1}</p>`:`<p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px">All 3 days done — let your parent know! 🎉</p>`}</div>`:""}`;
+  ${!isComplete
+    ? `<button class="daycbtn" onclick="cmpDay(${dayNum})">Complete Day ${dayNum} →</button>`
+    : `<div style="text-align:center;margin-top:14px;padding:14px;background:rgba(16,185,129,0.1);border-radius:14px;border:2px solid rgba(16,185,129,0.3)">
+        <p style="font-size:14px;font-weight:800;color:#6ee7b7">✅ Day ${dayNum} complete!</p>
+        ${dayNum<3?`<p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px">Day ${dayNum+1} is now unlocked ↑</p>`:`<p style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px">All 3 days done — let your parent know! 🎉</p>`}
+        <button class="btn-fl" style="background:#6366f1;margin-top:10px;padding:8px 20px;font-size:12px" onclick="uncmpDay(${dayNum})">Edit Day ${dayNum}</button>
+      </div>`
+  }`;
 
   const prompts=tm.prompts||[];
-  document.getElementById("trcards").innerHTML=HABITS.map((h,i)=>{
+  document.getElementById("trcards-d"+dayNum).innerHTML=HABITS.map((h,i)=>{
     const id=!!hb[h.id];const nt2=tn[h.id]||"";const pv=nt2?`📝 "${nt2.length>38?nt2.slice(0,38)+"…":nt2}"`:"＋ Write reflection";
-    if(isPast){
-      return`<div class="hcc ${id?"done":""}" style="--hc:${h.color};animation-delay:${i*0.04}s;opacity:0.85">
-        <div class="hccm" style="cursor:default"><div class="hccbox" style="cursor:default">${id?"✓":""}</div>
-        <div class="hcct"><div class="hccn">${h.emoji} Habit ${h.id}: ${h.name}</div><div class="hccs">${h.subtitle}</div></div>
-        <div style="font-size:11px;font-weight:800;color:${id?"#6ee7b7":"rgba(255,255,255,0.25)"}">${id?"✅ Done":"⬜ Skipped"}</div></div>
-        ${nt2?`<div style="padding:0 14px 12px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;margin-top:0">📝 ${nt2}</div>`:""}
-      </div>`;
-    }
     return`<div class="hcc ${id?"done":""}" style="--hc:${h.color};animation-delay:${i*0.04}s">
-      <div class="hccm" onclick="tgTH(${h.id})"><div class="hccbox">${id?"✓":""}</div>
+      <div class="hccm" onclick="tgTH(${h.id},${dayNum})"><div class="hccbox">${id?"✓":""}</div>
       <div class="hcct"><div class="hccn">${h.emoji} Habit ${h.id}: ${h.name}</div><div class="hccs">${h.subtitle}</div></div></div>
-      <div class="hccp" onclick="tgTN(${h.id})">${id?pv:(prompts[i]||"＋ Add reflection")}</div>
-      <div class="hccnr" id="tnr-${h.id}">
-        <textarea class="hccni" id="tn-${h.id}" placeholder="Be honest — what actually happened?">${(tn[h.id]||"").replace(/"/g,"&quot;")}</textarea>
-        <button class="hccnsv" style="background:${h.color}" onclick="svTN(${h.id})">Save</button>
+      <div class="hccp" onclick="tgTN(${h.id},${dayNum})">${id?pv:(prompts[i]||"＋ Add reflection")}</div>
+      <div class="hccnr" id="tnr-d${dayNum}-${h.id}">
+        <textarea class="hccni" id="tn-d${dayNum}-${h.id}" placeholder="Be honest — what actually happened?">${(tn[h.id]||"").replace(/"/g,"&quot;")}</textarea>
+        <button class="hccnsv" style="background:${h.color}" onclick="svTN(${h.id},${dayNum})">Save</button>
       </div>
     </div>`;
   }).join("");
 }
 
-function svMis(){
-  const tod=tdk();
-  if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},complete:false};
-  ST.td[tod].mr=document.getElementById("misinp")?.value||"";
+function svMis(d){
+  const k=dayKey(d);
+  if(!ST.td[k])ST.td[k]={habits:{},notes:{},complete:false,mr:""};
+  ST.td[k].mr=document.getElementById("misinp-d"+d)?.value||"";
   sv();
-  const s=document.getElementById("misSaved");
+  const s=document.getElementById("mis-saved-"+d);
   if(s){s.style.display="block";setTimeout(()=>s.style.display="none",2000);}
 }
-function tgTH(id){const tod=tdk();if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},complete:false};ST.td[tod].habits[id]=!ST.td[tod].habits[id];sv();rdl();}
-function tgTN(id){const r=document.getElementById("tnr-"+id);const i=document.getElementById("tn-"+id);if(r&&r.classList.toggle("open")&&i)i.focus();}
-function svTN(id){const tod=tdk();if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},complete:false};const i=document.getElementById("tn-"+id);if(i)ST.td[tod].notes[id]=i.value;sv();rdl();}
-function cmpDay(){
-  const tod=tdk();
-  if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},complete:false};
-  ST.td[tod].complete=true;
+function tgTH(id,d){
+  const k=dayKey(d);
+  if(!ST.td[k])ST.td[k]={habits:{},notes:{},complete:false,mr:""};
+  ST.td[k].habits[id]=!ST.td[k].habits[id];
+  sv();rdl();
+}
+function tgTN(id,d){
+  const r=document.getElementById("tnr-d"+d+"-"+id);
+  const i=document.getElementById("tn-d"+d+"-"+id);
+  if(r&&r.classList.toggle("open")&&i)i.focus();
+}
+function svTN(id,d){
+  const k=dayKey(d);
+  if(!ST.td[k])ST.td[k]={habits:{},notes:{},complete:false,mr:""};
+  const i=document.getElementById("tn-d"+d+"-"+id);
+  if(i)ST.td[k].notes[id]=i.value;
+  sv();rdl();
+}
+function cmpDay(d){
+  svMis(d);
+  const k=dayKey(d);
+  if(!ST.td[k])ST.td[k]={habits:{},notes:{},complete:false,mr:""};
+  ST.td[k].complete=true;
   sv();
-  const completedDays=Object.keys(ST.td).filter(k=>ST.td[k]&&ST.td[k].complete).length;
-  if(completedDays>=3){rthf(document.getElementById("dailyContent"));return;}
-  viewingDay=completedDays+1;
+  const completedCount=[1,2,3].filter(x=>ST.td[dayKey(x)]&&ST.td[dayKey(x)].complete).length;
+  if(completedCount>=3){rthf(document.getElementById("dailyContent"));return;}
+  viewingDay=completedCount+1;
   rdl();
 }
-
+function uncmpDay(d){
+  const k=dayKey(d);
+  if(ST.td[k])ST.td[k].complete=false;
+  sv();rdl();
+}
 function rthf(el){
   el.innerHTML=`<div class="handoff"><span class="hi">🎉</span><h2>3-Day Trial Complete!</h2>
   <p>Amazing work, Musa. You've completed all 3 days of your training trial.<br><br>
