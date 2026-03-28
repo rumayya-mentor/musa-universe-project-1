@@ -431,7 +431,7 @@ function rhm(){
     <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(16,185,129,0.08);border-radius:7px;padding:4px 8px;margin:0 -8px">
       <span style="color:#6ee7b7;font-weight:700">09:00 – 11:00</span>
       <div style="text-align:right">
-        <a href="https://rumayya-mentor.github.io/musa-future-proof-human/" target="_blank" style="color:#6ee7b7;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(110,231,183,0.4)">Future-Proof Human Program ↗</a>
+        <a href="https://rumayya-mentor.github.io/musa-universe-project-1/musa-future-proof-week1.html" target="_blank" style="color:#6ee7b7;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(110,231,183,0.4)">Future-Proof Human Program ↗</a>
         <div style="color:rgba(255,255,255,0.35);font-size:11px">Self-knowledge · Mental strength · Purpose</div>
       </div>
     </div>
@@ -651,7 +651,8 @@ function rdl(){
   }
   if(ST.tc){rwck(el);return;}
   const tk=Object.keys(ST.td||{}).sort();
-  const activeDayNum=Math.min(tk.length+1,3);
+  const completedCount=tk.filter(k=>ST.td[k]&&ST.td[k].complete).length;
+  const activeDayNum=Math.min(completedCount+1,3);
   // clamp viewingDay to valid range
   if(viewingDay===0||viewingDay>activeDayNum)viewingDay=activeDayNum;
   rdlDay(el,viewingDay,activeDayNum,tk);
@@ -699,7 +700,7 @@ function rdlDay(el,dayNum,activeDayNum,tk){
     <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(16,185,129,0.08);border-radius:7px;padding:4px 8px;margin:0 -8px">
       <span style="color:#6ee7b7;font-weight:700">09:00 – 11:00</span>
       <div style="text-align:right">
-        <a href="https://rumayya-mentor.github.io/musa-future-proof-human/" target="_blank" style="color:#6ee7b7;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(110,231,183,0.4)">Future-Proof Human Program ↗</a>
+        <a href="https://rumayya-mentor.github.io/musa-universe-project-1/musa-future-proof-week1.html" target="_blank" style="color:#6ee7b7;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(110,231,183,0.4)">Future-Proof Human Program ↗</a>
         <div style="color:rgba(255,255,255,0.35);font-size:11px">Self-knowledge · Mental strength · Purpose</div>
       </div>
     </div>
@@ -774,14 +775,13 @@ function tgTH(id){const tod=tdk();if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},
 function tgTN(id){const r=document.getElementById("tnr-"+id);const i=document.getElementById("tn-"+id);if(r&&r.classList.toggle("open")&&i)i.focus();}
 function svTN(id){const tod=tdk();if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},complete:false};const i=document.getElementById("tn-"+id);if(i)ST.td[tod].notes[id]=i.value;sv();rdl();}
 function cmpDay(){
-  const tk=Object.keys(ST.td||{}).sort();
   const tod=tdk();
   if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},complete:false};
   ST.td[tod].complete=true;
   sv();
-  const activeDayNum=Math.min(Object.keys(ST.td).length,3);
-  if(activeDayNum>=3){rthf(document.getElementById("dailyContent"));return;}
-  viewingDay=activeDayNum+1<4?activeDayNum+1:activeDayNum;
+  const completedDays=Object.keys(ST.td).filter(k=>ST.td[k]&&ST.td[k].complete).length;
+  if(completedDays>=3){rthf(document.getElementById("dailyContent"));return;}
+  viewingDay=completedDays+1;
   rdl();
 }
 
