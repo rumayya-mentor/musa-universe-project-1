@@ -16,8 +16,8 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .header-band{display:inline-block;height:3px;width:70px;border-radius:99px;background:linear-gradient(90deg,#3b82f6,#ef4444,#6366f1,#84cc16);margin-bottom:10px;}
 .header h1{font-family:'Fredoka One',cursive;font-size:28px;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,0.5);line-height:1.2;cursor:pointer;user-select:none;}
 .header-sub{font-size:12px;color:rgba(255,255,255,0.45);margin:4px 0 16px;font-weight:700;}
-.nav{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;}
-.nav-btn{padding:8px 13px;border-radius:10px 10px 0 0;border:2px solid rgba(255,255,255,0.1);border-bottom:none;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;cursor:pointer;transition:all 0.2s;}
+.nav{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;width:100%;max-width:520px;margin:0 auto;}
+.nav-btn{padding:7px 4px;border-radius:8px 8px 0 0;border:2px solid rgba(255,255,255,0.1);border-bottom:none;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);font-family:'Nunito',sans-serif;font-weight:800;font-size:10px;cursor:pointer;transition:all 0.2s;text-align:center;white-space:nowrap;}
 .nav-btn.active{background:#fff;color:#081426;border-color:#fff;}
 .nav-btn.ptab{border-color:rgba(251,191,36,0.3);color:rgba(251,191,36,0.6);}
 .nav-btn.ptab.active{background:#fbbf24;color:#081426;}
@@ -40,6 +40,8 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .thpill:hover{transform:translateX(5px);}
 .btn-primary{display:inline-block;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;padding:13px 30px;border-radius:99px;border:none;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 4px 18px rgba(245,158,11,0.35);}
 .btn-primary:hover{transform:translateY(-2px);}
+/* SCHEDULE BANNER */
+.sched-item{display:flex;gap:10px;padding:8px 10px;border-radius:10px;margin-bottom:4px;}
 /* LEARN */
 .learn-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
 .btn-icon{background:rgba(255,255,255,0.1);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
@@ -55,7 +57,6 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .lch .badge{display:inline-block;margin-top:7px;padding:4px 14px;border-radius:99px;font-size:12px;font-weight:800;background:rgba(255,255,255,0.13);position:relative;}
 .lcb{padding:0 19px 24px;}
 .sblk{background:rgba(255,255,255,0.05);border-radius:14px;padding:14px 16px;margin-bottom:12px;border-left:4px solid;}
-.sblk .si{font-size:18px;margin-bottom:5px;display:block;}
 .sblk h3{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:0.58;margin-bottom:6px;}
 .sblk p{font-size:13px;line-height:1.72;color:rgba(255,255,255,0.82);}
 .exgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
@@ -97,22 +98,11 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .radwrap{display:flex;flex-direction:column;align-items:center;padding:20px;background:rgba(255,255,255,0.055);border:1px solid rgba(255,255,255,0.09);border-radius:20px;margin-bottom:16px;}
 .radwrap h3{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:4px;}
 .radwrap p{font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:16px;text-align:center;}
-.radscores{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-top:16px;}
-.rsi{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.05);}
-.rsibw{background:rgba(255,255,255,0.1);border-radius:99px;height:5px;margin-top:4px;}
-.rsib{height:100%;border-radius:99px;transition:width 0.8s ease;}
-.tleg{display:flex;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
-.tld{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);}
-.tld span{width:10px;height:10px;border-radius:50%;display:inline-block;}
 .rhc{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:13px;border:2px solid;margin-bottom:7px;}
 .tbdg{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;}
 /* DAILY */
 .trial-hdr{text-align:center;margin-bottom:18px;}
 .trial-hdr h2{font-family:'Fredoka One',cursive;font-size:22px;}
-.tdi{display:flex;justify-content:center;gap:8px;margin:10px 0;}
-.tdidot{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:rgba(255,255,255,0.45);transition:all 0.3s;}
-.tdidot.done{background:linear-gradient(135deg,#10b981,#059669);border-color:#10b981;color:#fff;}
-.tdidot.active{border-color:#fbbf24;color:#fbbf24;animation:pulse 2s infinite;}
 .beltrow{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.45);}
 .beltstrip{height:7px;width:55px;border-radius:99px;}
 .pwrap{max-width:320px;margin:0 auto 5px;background:rgba(255,255,255,0.1);border-radius:99px;height:11px;overflow:hidden;}
@@ -143,7 +133,7 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .winban.show{display:block;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
 .winban .tr{font-size:40px;}
 .winban h2{color:#fbbf24;font-family:'Fredoka One',cursive;font-size:20px;margin:7px 0 3px;}
-.daycbtn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;cursor:pointer;margin-top:14px;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 4px 18px rgba(16,185,129,0.3);}
+.daycbtn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;cursor:pointer;margin-top:14px;transition:transform 0.15s;box-shadow:0 4px 18px rgba(16,185,129,0.3);}
 .daycbtn:hover{transform:translateY(-2px);}
 .handoff{text-align:center;padding:30px 20px;background:linear-gradient(135deg,rgba(251,191,36,0.12),rgba(251,191,36,0.04));border-radius:20px;border:2px solid rgba(251,191,36,0.3);animation:popIn 0.4s ease;}
 .handoff .hi{font-size:52px;margin-bottom:12px;display:block;}
@@ -163,68 +153,66 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .bchwrap{background:rgba(255,255,255,0.05);border-radius:17px;padding:18px 14px 12px;border:1px solid rgba(255,255,255,0.09);margin-bottom:16px;}
 .bars{display:flex;align-items:flex-end;justify-content:space-around;height:95px;gap:5px;margin-bottom:8px;}
 .bc{display:flex;flex-direction:column;align-items:center;flex:1;}
-.bcc{font-size:10px;font-weight:800;color:#fbbf24;margin-bottom:3px;min-height:14px;}
+.bcc{font-size:11px;font-weight:800;color:#fbbf24;margin-bottom:3px;min-height:14px;}
 .b{width:100%;border-radius:5px 5px 0 0;min-height:4px;transition:height 0.6s cubic-bezier(0.34,1.56,0.64,1);}
 .bl{font-size:10px;font-weight:700;margin-top:5px;color:rgba(255,255,255,0.45);}
 .bl.today{color:#fbbf24;}
-.strow{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:12px;padding:10px 12px;margin-bottom:7px;border:1px solid rgba(255,255,255,0.09);}
-.sdots{display:flex;gap:3px;margin-top:5px;}
-.sdot{width:19px;height:19px;border-radius:5px;background:rgba(255,255,255,0.1);}
+.strow{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border-radius:13px;padding:11px 13px;margin-bottom:7px;border:1px solid rgba(255,255,255,0.09);}
+.sdots{display:flex;gap:4px;margin-top:5px;}
+.sdot{width:20px;height:20px;border-radius:5px;background:rgba(255,255,255,0.1);}
 .str{text-align:right;flex-shrink:0;}
-.sfire{color:#fbbf24;font-weight:800;font-size:12px;}
-.sdlbl{color:rgba(255,255,255,0.45);font-size:10px;margin-top:2px;}
+.sfire{color:#fbbf24;font-weight:800;font-size:13px;}
+.sdlbl{color:rgba(255,255,255,0.45);font-size:11px;margin-top:2px;}
+.ndmsg{text-align:center;padding:30px 16px;color:rgba(255,255,255,0.4);font-size:14px;line-height:1.7;}
 /* PARENT */
-.pinsc{text-align:center;padding:40px 20px;animation:fadeUp 0.4s ease;}
-.pinsc .pi{font-size:52px;margin-bottom:14px;display:block;}
+.pinsc{text-align:center;padding:40px 20px;}
+.pinsc .pi{font-size:44px;margin-bottom:12px;display:block;}
 .pinsc h2{font-family:'Fredoka One',cursive;font-size:24px;margin-bottom:8px;}
-.pinsc p{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:20px;}
-.pininp{width:100%;max-width:320px;background:rgba(255,255,255,0.08);border:2px solid rgba(251,191,36,0.4);border-radius:13px;padding:13px 16px;color:#fff;font-size:15px;font-family:'Nunito',sans-serif;outline:none;text-align:center;letter-spacing:2px;margin-bottom:12px;}
-.pininp::placeholder{letter-spacing:0;color:rgba(255,255,255,0.28);}
-.pinerr{color:#f87171;font-size:12px;font-weight:700;margin-bottom:10px;display:none;}
-.pdbody{animation:fadeUp 0.4s ease;}
+.pinsc p{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:20px;}
+.pininp{width:100%;max-width:280px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);border-radius:14px;padding:14px 18px;color:#fff;font-size:16px;font-family:'Nunito',sans-serif;outline:none;text-align:center;letter-spacing:2px;}
+.pininp::placeholder{color:rgba(255,255,255,0.3);letter-spacing:0;}
+.pinerr{color:#f87171;font-size:13px;margin-top:8px;display:none;}
+.pdbody{animation:fadeUp 0.3s ease;}
 .pdhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
-.pdhdr h2{font-family:'Fredoka One',cursive;font-size:22px;color:#fbbf24;}
-.pdlkbtn{background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);border-radius:99px;padding:6px 14px;color:#fbbf24;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
-.pdsec{margin-bottom:18px;}
-.pdst{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(251,191,36,0.8);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(251,191,36,0.15);}
-.pdsg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
-.pds{background:rgba(255,255,255,0.05);border-radius:12px;padding:12px 10px;text-align:center;border:1px solid rgba(255,255,255,0.09);}
-.pds .psv{font-family:'Fredoka One',cursive;font-size:26px;margin-bottom:2px;}
-.pds .psl{font-size:10px;color:rgba(255,255,255,0.45);font-weight:700;}
-.phr{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:11px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.09);}
-.phrn{font-size:12px;font-weight:800;}
-.phrs{font-size:11px;margin-top:2px;}
-.phrt{padding:2px 8px;border-radius:99px;font-size:10px;font-weight:800;flex-shrink:0;}
-.prc{background:rgba(255,255,255,0.04);border-radius:12px;padding:13px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.09);}
-.prch{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.prct{font-size:12px;color:rgba(255,255,255,0.72);line-height:1.6;font-style:italic;}
-.gapcard{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:12px;margin-bottom:8px;}
-.gapcard h4{font-size:12px;font-weight:800;color:#fca5a5;margin-bottom:4px;}
+.pdhdr h2{font-family:'Fredoka One',cursive;font-size:22px;}
+.pdlkbtn{background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.5);font-size:12px;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer;}
+.pdsec{margin-bottom:24px;}
+.pdst{font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:12px;}
+.pdsg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
+.pds{background:rgba(255,255,255,0.05);border-radius:13px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,0.09);}
+.psv{font-family:'Fredoka One',cursive;font-size:28px;}
+.psl{font-size:11px;color:rgba(255,255,255,0.45);font-weight:700;margin-top:4px;}
+.phr{display:flex;align-items:center;gap:10px;padding:11px 13px;border-radius:12px;background:rgba(255,255,255,0.05);margin-bottom:7px;border:1px solid rgba(255,255,255,0.09);}
+.phrn{font-size:13px;font-weight:800;}
+.phrs{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
+.gapcard{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:12px;padding:12px;margin-bottom:8px;}
+.gapcard h4{font-size:12px;font-weight:800;color:#fde68a;margin-bottom:4px;}
 .gapcard p{font-size:12px;color:rgba(255,255,255,0.72);line-height:1.58;}
-.progta{width:100%;background:rgba(255,255,255,0.07);border:2px solid rgba(251,191,36,0.3);border-radius:13px;padding:13px;color:#fff;font-size:13px;font-family:'Nunito',sans-serif;outline:none;resize:vertical;min-height:160px;line-height:1.65;}
-.progta::placeholder{color:rgba(255,255,255,0.28);}
-.noteta{width:100%;background:rgba(255,255,255,0.07);border:2px solid rgba(99,102,241,0.3);border-radius:13px;padding:13px;color:#fff;font-size:13px;font-family:'Nunito',sans-serif;outline:none;resize:vertical;min-height:90px;line-height:1.65;margin-bottom:10px;}
-.noteta::placeholder{color:rgba(255,255,255,0.28);}
-.appbtn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#081426;font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 4px 18px rgba(251,191,36,0.3);}
-.appbtn:hover{transform:translateY(-2px);}
-.ndmsg{text-align:center;padding:30px;color:rgba(255,255,255,0.45);font-size:13px;}
+.prc{background:rgba(255,255,255,0.04);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.08);}
+.prch{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.prct{font-size:12px;color:rgba(255,255,255,0.72);line-height:1.6;font-style:italic;}
 .pddt{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
-.pddtb{padding:6px 13px;border-radius:99px;border:1.5px solid rgba(255,255,255,0.09);background:transparent;color:rgba(255,255,255,0.45);font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;cursor:pointer;transition:all 0.2s;}
-.pddtb.active{background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.5);color:#fbbf24;}
+.pddtb{padding:5px 12px;border-radius:99px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.5);font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.pddtb.active{background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.4);color:#fbbf24;}
+.progta{width:100%;background:rgba(255,255,255,0.08);border:2px solid rgba(255,255,255,0.2);border-radius:14px;padding:14px;color:#fff;font-size:13px;font-family:'Nunito',sans-serif;outline:none;resize:none;min-height:120px;line-height:1.6;}
+.progta::placeholder{color:rgba(255,255,255,0.3);}
+.noteta{width:100%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:12px;color:#fff;font-size:13px;font-family:'Nunito',sans-serif;outline:none;resize:none;min-height:60px;line-height:1.6;margin-top:8px;}
+.noteta::placeholder{color:rgba(255,255,255,0.3);}
+.appbtn{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;cursor:pointer;margin-top:10px;transition:transform 0.15s;}
+.appbtn:hover{transform:translateY(-1px);}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="header-band"></div>
-  <h1 id="headerTitle">Musa's 7 Habits Journey</h1>
-  <p class="header-sub">🥋 Surabaya · 🌊 Perth · 🎯 Shenton College 2026</p>
-  <div class="nav" id="mainNav">
+  <h1 id="headerTitle" onclick="handleSecTap()">Musa's 7 Habits Journey</h1>
+  <p class="header-sub">🥋 Surabaya roots · 🌊 Perth life · 🎯 Shenton College 2026</p>
+  <div class="nav">
     <button class="nav-btn active" onclick="showView('home',this)">🏠 Home</button>
     <button class="nav-btn" onclick="showView('learn',this)">📖 Learn</button>
-    <button class="nav-btn" onclick="showView('assess',this)">📊 Assessment</button>
+    <button class="nav-btn" onclick="showView('assess',this)">📊 Assess</button>
     <button class="nav-btn" onclick="showView('daily',this)">✅ Daily</button>
-    <button class="nav-btn" onclick="showView('progress',this)">📅 Progress</button>
+    <button class="nav-btn" onclick="showView('progress',this)">📈 Progress</button>
     <button class="nav-btn ptab" id="ptabBtn" style="display:none" onclick="showView('parent',this)">🔒 Parent</button>
   </div>
 </div>
@@ -233,7 +221,7 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 <div class="view" id="view-learn">
   <div class="learn-nav">
     <button class="btn-icon" id="prevBtn" onclick="chH(-1)" disabled>‹</button>
-    <span style="font-size:12px;color:rgba(255,255,255,0.45);font-weight:700" id="lrnPrg">Habit 1 of 7</span>
+    <span style="font-size:13px;color:rgba(255,255,255,0.5);font-weight:700" id="lrnPrg">Habit 1 of 7</span>
     <button class="btn-icon" id="nextBtn" onclick="chH(1)">›</button>
   </div>
   <div class="hdots" id="hdots"></div>
@@ -245,125 +233,123 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 </div>
 <div class="view" id="view-assess"><div id="assessContent"></div></div>
 <div class="view" id="view-daily"><div id="dailyContent"></div></div>
-<div class="view" id="view-progress">
-  <div class="prog-hdr"><h2>My Progress 📈</h2><p id="progSub">Your journey so far</p></div>
-  <div id="progContent"></div>
-</div>
+<div class="view" id="view-progress"><div id="progContent"></div></div>
 <div class="view" id="view-parent"><div id="parentContent"></div></div>
 
-<div id="secZone" onclick="handleSecTap()" style="position:fixed;bottom:0;right:0;width:60px;height:60px;z-index:100;opacity:0;cursor:default;"></div>
-
 <script>
+/* ── HABITS DATA ── */
 const HABITS=[
-  {id:1,emoji:"🌊",color:"#3b82f6",name:"Be Proactive",subtitle:"You're in Charge",group:1,element:"🌊",ename:"Water — adapt and flow, don't just react",
-   what:"Being proactive means YOU decide how you react to things. Life throws problems at you — bad days, unfair situations, difficult people. A reactive person blames others and makes excuses. A proactive person asks: <em>what can I actually do about this?</em>",
-   why:"In taekwondo, you don't wait to get hit — you read the situation and respond with intention. Being proactive in life is the same skill. You stop being a passenger and start being the driver.",
-   examples:[{icon:"🥋",label:"Taekwondo",text:"Your poomsae isn't landing. Instead of thinking 'I'm just bad at this,' you ask your sabomnim for specific feedback and practise that move 50 more times."},{icon:"🎓",label:"Shenton prep",text:"You don't know anyone yet. Instead of worrying, you research the school, find what clubs exist, and plan your first week."},{icon:"🏠",label:"Homeschool",text:"Your lesson feels boring. Instead of giving up, you find a YouTube video or ask a different question to make it click."},{icon:"🌏",label:"Perth life",text:"Perth is different from Surabaya. Instead of wishing things were the same, you lean in — you explore, try new things, and adapt."}],
-   quote:"I am not a product of my circumstances. I am a product of my decisions.",
-   avatar:"Water benders don't force the water — they redirect it. Proactive people are the same. They redirect their energy toward what they CAN change.",
-   challenge:"Notice one moment today where you want to blame something outside yourself. Stop. Ask: what's one thing I can DO about this?"},
-  {id:2,emoji:"🎯",color:"#6366f1",name:"Begin With the End in Mind",subtitle:"Have a Plan",group:1,element:"🪨",ename:"Earth — stand firm on your destination",
-   what:"Before starting anything important, picture the finished result. It's like knowing your destination before leaving Surabaya for Perth. Covey asks: imagine the best version of yourself at 25 — who is he? Now, are the things you do TODAY building toward that person?",
-   why:"Every decision either moves you closer to who you want to be — or further away. If you know your destination, you make better choices automatically.",
-   examples:[{icon:"🥋",label:"Taekwondo belt",text:"You don't just turn up randomly. You know your next belt is the goal. Every session is aimed at that."},{icon:"🎓",label:"Shenton College",text:"Your goal: walk in confident, make real friends, and thrive in Year 8. That picture guides everything."},{icon:"📺",label:"Avatar",text:"Aang always knew his goal: master all four elements and bring peace. That vision kept him going even when everything fell apart."},{icon:"📚",label:"Homeschool",text:"Before a subject, ask: why am I learning this and what will I be able to DO with it? That question transforms how you study."}],
-   quote:"All things are created twice — first in the mind, then in reality.",
-   avatar:"Aang had a clear goal. The Fire Nation had a clear goal. The people without goals just reacted to whatever happened. Which one do you want to be?",
-   challenge:"Write: 'In Year 8 at Shenton, I want to be known as someone who ___.' That's your compass. Read it every morning."},
-  {id:3,emoji:"📋",color:"#059669",name:"Put First Things First",subtitle:"Work First, Then Play",group:1,element:"🪨",ename:"Earth — be immovable about what matters most",
-   what:"This habit is about protecting your time for what's MOST important. The things that change your life — training, studying, building skills — are important but rarely feel urgent. So people keep skipping them.",
-   why:"If you always do what's urgent, you'll never do what's important. Your Shenton prep, your taekwondo goals — none of these will come knocking. You have to choose them.",
-   examples:[{icon:"🥋",label:"Taekwondo",text:"Training isn't urgent but IS important. You schedule it like a commitment, not an option."},{icon:"📚",label:"Homeschool",text:"It's easy to push lessons to 'later.' But later becomes never. Do your core work first — then earn your free time."},{icon:"📱",label:"Screen time",text:"Scrolling feels urgent but isn't important. You cap it and use the saved time for something that builds you."},{icon:"🎓",label:"Shenton prep",text:"A bit of preparation each week beats a panicked rush in December."}],
-   quote:"The key is not to prioritise what's on your schedule — it's to schedule your priorities.",
-   avatar:"Zuko kept getting distracted chasing Aang instead of becoming the person he needed to be. What's YOUR 'chasing Aang' — the distraction from your real goal?",
-   challenge:"List your top 3 important (not just urgent) things. Schedule them first — even 20 minutes each. Do the list before any screens."},
-  {id:4,emoji:"🤝",color:"#dc2626",name:"Think Win-Win",subtitle:"Everyone Can Win",group:2,element:"🔥",ename:"Fire — bring energy that lights up, not burns",
-   what:"Most people think life is a competition — for every winner there must be a loser. Win-Win says: not true. The goal in any relationship or disagreement is a solution where BOTH people feel good. It's not about being soft — it's about being confident AND kind at the same time.",
-   why:"Win-Win builds trust. When you get to Shenton — your ability to make people feel like winners will determine how quickly you build real friendships.",
-   examples:[{icon:"🥋",label:"Sparring",text:"You want to win the spar, but your partner also needs to improve. You push hard AND help them get better. Both grow."},{icon:"🎓",label:"New school",text:"Someone at Shenton is good at something you're not. Instead of feeling threatened, you learn from them. They feel valued. Both win."},{icon:"🏠",label:"At home",text:"You want more free time: 'If I finish all my work by 3pm, can I have the afternoon off?' Everyone's happy."},{icon:"📺",label:"Avatar",text:"Aang didn't try to destroy the Fire Nation — he tried to end the war so EVERYONE could live in peace. Ultimate Win-Win."}],
-   quote:"Win-Win is a belief in abundance — one person's success does not come at the expense of another's.",
-   avatar:"Ozai only knew Win-Lose. Iroh knew Win-Win. Look at how each of their stories ended. Win-Win isn't weakness — it's wisdom.",
-   challenge:"Find one situation where you're trying to WIN against someone. Reframe: how could both of you get something good out of this?"},
-  {id:5,emoji:"👂",color:"#0891b2",name:"Seek First to Understand",subtitle:"Listen Before You Talk",group:2,element:"🌊",ename:"Water — be still enough to truly hear",
-   what:"Most people listen only to REPLY. While the other person is still talking, they're already building their counter-argument. This habit says: actually listen to understand. Give the other person the experience of being truly heard BEFORE you share your own view.",
-   why:"When people feel understood, they open up. Trust builds. And when it's your turn to speak — they actually listen back. You get heard MORE by listening MORE.",
-   examples:[{icon:"🥋",label:"Your sabomnim",text:"Your instructor gives feedback. Instead of defending yourself, you listen completely, repeat it back, and ask one question. Your technique improves 3x faster."},{icon:"🎓",label:"Making friends",text:"Ask a question about someone and actually listen to the answer. People remember the person who really listened."},{icon:"🏠",label:"With parents",text:"When they're upset, don't defend immediately. Say 'So what I hear you saying is...' and mean it. Watch what happens."},{icon:"🌏",label:"Two cultures",text:"You know Surabaya AND Perth. You've been the newcomer. That gives you real empathy — the ability to understand people who feel different."}],
-   quote:"Most people do not listen with the intent to understand — they listen with the intent to reply.",
-   avatar:"Iroh was the greatest listener in Avatar. He never pushed his wisdom. He listened first — to Zuko, to strangers in tea shops, to everyone. That's why everyone trusted him.",
-   challenge:"In your next real conversation, let the other person finish completely before you respond. Repeat back what they said first. Notice how they react."},
-  {id:6,emoji:"🌪️",color:"#7c3aed",name:"Synergize",subtitle:"Together Is Better",group:2,element:"🌪️",ename:"Air — combine freely, create something new",
-   what:"Synergy means the whole is greater than the sum of its parts. Two people working together — valuing each other's differences — can create something neither could do alone. It's NOT just compromise. Synergy is when different strengths combine and create something entirely new and better.",
-   why:"Aang couldn't have saved the world alone. No Avatar could. Learning to create WITH others, valuing differences, is one of the most valuable skills you can build.",
-   examples:[{icon:"🥋",label:"Dojang",text:"You're strong in patterns, your partner is fast in sparring. You teach each other. Both reach a level neither would hit alone."},{icon:"🎓",label:"Group work",text:"Your project group has four different thinkers. Map everyone's strengths and divide work around them."},{icon:"📺",label:"Team Avatar",text:"Katara's healing + Toph's earthbending + Sokka's strategy + Zuko's fire + Aang's airbending. None could do what they did as a team."},{icon:"🌏",label:"Your background",text:"You speak Indonesian and English. You know two cultures. That's synergy built in — you can bridge worlds others can't."}],
-   quote:"The whole is greater than the sum of its parts.",
-   avatar:"The gaang only worked because each person brought something totally different AND they respected those differences. Don't be the person who refuses to collaborate.",
-   challenge:"Think of one person whose skills are totally different from yours. How could you work on something together — even something small?"},
-  {id:7,emoji:"🌿",color:"#ea580c",name:"Sharpen the Saw",subtitle:"Balance Feels Best",group:3,element:"🌿",ename:"Spirit — restore your energy at the source",
-   what:"Imagine heading into competition with a blunt blade, a tired body, a scattered mind. YOU are the instrument. This habit is about maintaining yourself — physically, mentally, emotionally — so you can keep going at your best. Rest is not laziness. It's strategy.",
-   why:"If you burn out, none of the other 6 habits work. Even Aang had to rest and reconnect with his spirit to maintain his power. Same for you.",
-   examples:[{icon:"🥋",label:"Recovery days",text:"Elite martial artists train hard AND rest deliberately. Muscles grow in recovery. Rest days aren't skipped training — they're part of training."},{icon:"📺",label:"Watching Avatar",text:"This counts. Genuinely. Enjoying something that fills you up is sharpening-the-saw time, not wasted time."},{icon:"😴",label:"Sleep",text:"8 hours makes you sharper, faster, calmer, and more emotionally stable. It's the most underrated performance hack you have."},{icon:"🌊",label:"Perth beaches",text:"Go to the beach. You moved to one of the most beautiful cities on earth. Cottesloe, Scarborough, Trigg — free and they reset you."}],
-   quote:"You cannot pour from an empty vessel. Take care of yourself first.",
-   avatar:"In the Guru Pathik episode, Aang had to let go and restore himself before achieving the Avatar State. The whole show stops — because restoration matters that much.",
-   challenge:"Pick ONE thing today just for you — taekwondo warm-down, a beach walk, an Avatar episode, 8 hours sleep. No guilt. This IS the work."}
+{id:1,emoji:"🌊",color:"#3b82f6",name:"Be Proactive",subtitle:"You're in Charge",group:1,element:"🌊",ename:"Water — adapt and flow",
+ what:"Being proactive means YOU decide how you react to things. Life will throw problems — bad days, unfair situations, people being difficult. A reactive person blames others. A proactive person asks: <em>what can I actually do about this?</em>",
+ why:"In taekwondo, you don't wait to get hit — you read the situation and respond with intention. Same principle for your life. Stop being a passenger. Take the wheel.",
+ examples:[{icon:"🥋",label:"Taekwondo",text:"Poomsae not landing right? Instead of 'I'm just bad at this,' you ask your sabomnim for specific feedback and drill it 50 more times."},{icon:"🎓",label:"Shenton prep",text:"You don't know anyone yet. Instead of worrying, you research the school, find what clubs exist, plan your first week."},{icon:"🏠",label:"Homeschool",text:"Lesson feels boring today. Instead of giving up, you find a different resource or ask a better question."},{icon:"🌏",label:"Perth life",text:"Perth is different from Surabaya. Instead of wishing things were the same, you lean in — explore, try new things, adapt."}],
+ quote:"I am not a product of my circumstances. I am a product of my decisions.",
+ avatar:"Water benders don't force the water — they redirect it. Proactive people redirect their energy toward what they CAN change, instead of fighting what they can't.",
+ challenge:"Notice one moment today where you want to blame something outside yourself. Stop. Ask: what's one thing I can actually DO? Then do it."},
+{id:2,emoji:"🎯",color:"#6366f1",name:"Begin With the End in Mind",subtitle:"Have a Plan",group:1,element:"🪨",ename:"Earth — stand firm on your destination",
+ what:"Before you start anything important, picture what the finished result looks like. Covey asks: imagine the best version of yourself at 25. Who is he? What does he stand for? Are the things you do TODAY building toward that person?",
+ why:"Every decision either moves you closer to who you want to be — or further away. If you know your destination, you make better choices automatically.",
+ examples:[{icon:"🥋",label:"Belt goals",text:"You don't just turn up to training randomly. You know your next belt is the goal. Every session is aimed at that."},{icon:"🎓",label:"Shenton College",text:"Your goal isn't just 'start high school.' It's to walk in confident, make real friends, and thrive in Year 8."},{icon:"📺",label:"Avatar",text:"Aang always knew his end goal: master all four elements and bring peace. That vision kept him going even when everything fell apart."},{icon:"📚",label:"Homeschool",text:"Before starting a subject, ask: why am I learning this? What will I be able to DO when I understand it?"}],
+ quote:"All things are created twice — first in the mind, then in reality.",
+ avatar:"In Avatar, the Fire Nation had a clear goal. The Order of the White Lotus had a clear goal. Aang had a clear goal. People without goals just reacted to whatever happened. Which one do you want to be?",
+ challenge:"Write: 'In Year 8 at Shenton, I want to be known as someone who ___.' Fill that blank honestly. That's your compass. Read it every morning."},
+{id:3,emoji:"📋",color:"#059669",name:"Put First Things First",subtitle:"Work First, Then Play",group:1,element:"🪨",ename:"Earth — immovable about what matters most",
+ what:"This habit protects your time for what's MOST important. Most people spend all their time on things that feel urgent but aren't actually important. The things that change your life — training, studying, building skills — are important but rarely feel urgent. So people keep skipping them.",
+ why:"If you always do what's urgent, you'll never do what's important. Your Shenton prep, your taekwondo goals, your development — none of these will come knocking. You have to choose them.",
+ examples:[{icon:"🥋",label:"Taekwondo",text:"Training isn't urgent but it IS important. You schedule it and treat it like a commitment, not an option."},{icon:"📚",label:"Homeschool",text:"It's easy to push lessons to 'later.' But later becomes never. Do your core work first — then earn your free time."},{icon:"📱",label:"Screen time",text:"Scrolling feels urgent but isn't important. You cap it. Use the saved time for something that actually builds you."},{icon:"🎓",label:"Shenton prep",text:"You've got almost a year. That's plenty — but only if you use it on purpose."}],
+ quote:"The key is not to prioritise what's on your schedule — it's to schedule your priorities.",
+ avatar:"Zuko's obsession with chasing Aang meant he kept getting distracted from becoming the person he actually needed to be. What's YOUR 'chasing Aang' — the thing that distracts you from your real goal?",
+ challenge:"List your top 3 important (not just urgent) things. Schedule them first — even 20 minutes each. Do the list before any screens."},
+{id:4,emoji:"🤝",color:"#dc2626",name:"Think Win-Win",subtitle:"Everyone Can Win",group:2,element:"🔥",ename:"Fire — energy that lights up, not burns",
+ what:"Most people think life is a competition — for every winner there must be a loser. Win-Win says: not true. The goal in any relationship is to find a solution where BOTH people feel good. It's not about being soft — it's about being confident AND kind at the same time.",
+ why:"Win-Win builds trust. People want to be around you, work with you, help you. At Shenton — your ability to make people feel like winners will determine how quickly you build real friendships.",
+ examples:[{icon:"🥋",label:"Sparring",text:"You want to win the spar, but your partner also needs to improve. You push hard AND help them get better. Both grow."},{icon:"🎓",label:"New school",text:"Someone at Shenton is good at something you're not. Instead of feeling threatened, you learn from them. You both win."},{icon:"🏠",label:"At home",text:"You want more free time. Instead of demanding it: 'If I finish all work by 3pm, can I have the afternoon off?' Everyone's happy."},{icon:"📺",label:"Avatar",text:"Aang didn't try to destroy the Fire Nation — he tried to end the war so EVERYONE could live in peace. Ultimate Win-Win."}],
+ quote:"Win-Win is a belief in abundance — one person's success does not come at another's expense.",
+ avatar:"Ozai only knew Win-Lose. Iroh knew Win-Win. Look at how each of their stories ended. Win-Win isn't weakness — it's wisdom.",
+ challenge:"Find one situation today where you're trying to WIN against someone. Reframe it: how could both of you get something good from this?"},
+{id:5,emoji:"👂",color:"#0891b2",name:"Seek First to Understand",subtitle:"Listen Before You Talk",group:2,element:"🌊",ename:"Water — be still enough to truly hear",
+ what:"Most people listen only to REPLY. While the other person is still talking, they're already building their counter-argument. This habit says: actually listen to understand. Give the other person the experience of being truly heard, BEFORE you share your own view.",
+ why:"When people feel understood, they open up. They trust you. And when it's your turn to speak — they actually listen back. You get heard MORE by listening MORE.",
+ examples:[{icon:"🥋",label:"Your sabomnim",text:"Your instructor gives feedback. Instead of mentally defending yourself, you listen completely, repeat it back, ask one question. Your technique improves 3x faster."},{icon:"🎓",label:"Making friends",text:"Ask a question about someone and actually listen to the answer. Don't just wait for your turn to talk."},{icon:"🏠",label:"With parents",text:"When they're upset, don't defend immediately. Say 'So what I hear you saying is...' and mean it. Watch what changes."},{icon:"🌏",label:"Two cultures",text:"You know Surabaya AND Perth. You've been the newcomer. That gives you real empathy — the ability to understand people who feel different."}],
+ quote:"Most people do not listen with the intent to understand — they listen with the intent to reply.",
+ avatar:"Iroh was the greatest listener in Avatar. He never pushed his wisdom. He listened first — to Zuko, to strangers in tea shops, to everyone. That's why everyone trusted him.",
+ challenge:"In your next real conversation, let the other person finish completely before you respond. Repeat back what they said first. Notice how they react."},
+{id:6,emoji:"🌪️",color:"#7c3aed",name:"Synergize",subtitle:"Together Is Better",group:2,element:"🌪️",ename:"Air — combine freely, create something new",
+ what:"Synergy means the whole is greater than the sum of its parts. Two people working together — valuing each other's differences — can create something neither could do alone. It's NOT compromise (where both get less). Synergy creates something entirely new.",
+ why:"Aang couldn't have saved the world alone. The team — each bender bringing their element — is what made it possible. Learning to create WITH others is one of the most valuable skills you can build.",
+ examples:[{icon:"🥋",label:"Dojang",text:"You're strong in patterns, your partner is fast in sparring. You teach each other. Both reach a level neither would hit alone."},{icon:"🎓",label:"Group work",text:"Your group has four different thinkers. Instead of one person dominating, map everyone's strengths and divide work around them."},{icon:"📺",label:"Team Avatar",text:"Katara's healing + Toph's earthbending + Sokka's strategy + Zuko's fire + Aang's airbending. None of them could do alone what they did as a team."},{icon:"🌏",label:"Your background",text:"You speak Indonesian and English. You know two cultures. You can bridge worlds others can't. That's synergy built in."}],
+ quote:"The whole is greater than the sum of its parts.",
+ avatar:"The gaang only worked because each person brought something totally different AND they respected those differences. Don't be the person who refuses to work with people unlike them.",
+ challenge:"Think of one person whose skills are totally different from yours. Could you work on something together — even something small? Reach out today."},
+{id:7,emoji:"🌿",color:"#ea580c",name:"Sharpen the Saw",subtitle:"Balance Feels Best",group:3,element:"🌿",ename:"Spirit — restore your energy at the source",
+ what:"Imagine heading into a competition with a blunt blade, a tired body, and a scattered mind. You'd lose — not because you lack skill, but because you didn't take care of the instrument. YOU are the instrument. Rest is not laziness. It's strategy.",
+ why:"If you burn out, none of the other 6 habits work. Even Aang had to rest, meditate, and reconnect with his spirit to maintain his power. Same for you.",
+ examples:[{icon:"🥋",label:"Recovery days",text:"Elite martial artists train hard — and rest deliberately. Muscles grow in recovery. Rest days aren't skipped training, they ARE training."},{icon:"📺",label:"Watching Avatar",text:"This counts. Genuinely. Enjoying something that fills you up — stories, humour, inspiration — is sharper-saw time, not wasted time."},{icon:"😴",label:"Sleep",text:"8 hours makes you sharper, faster, calmer, and more emotionally regulated. The most underrated performance tool you have."},{icon:"🌊",label:"Perth beaches",text:"You moved to one of the most beautiful cities on earth. Cottesloe, Scarborough, Trigg — they're free and they reset you completely."}],
+ quote:"You cannot pour from an empty vessel. Take care of yourself first.",
+ avatar:"In the Guru Pathik episode, Aang had to let go and restore himself before he could achieve the Avatar State. The whole show stops — because restoration matters that much. Don't skip your Spirit Oasis.",
+ challenge:"Pick ONE thing today just for you — taekwondo warm-down, beach walk, Avatar episode, 8 hours sleep. No guilt. This IS the work."}
 ];
 
+/* ── ASSESSMENT QUESTIONS ── */
 const QS=[
-  {hid:1,q:"When something goes wrong at taekwondo training, what do you usually do first?",opts:["Feel frustrated and think it's just not my day","Wait and hope it gets better on its own","Ask my sabomnim what I can specifically fix"],sc:[1,2,3]},
-  {hid:1,q:"You've been in Perth for a year now. How do you handle things that are different from Surabaya?",opts:["I often wish things were more like back home","I accept it but don't really try to adapt","I actively look for ways to fit in and make the most of it"],sc:[1,2,3]},
-  {hid:1,q:"When you don't feel like doing your homeschool work, what happens?",opts:["I usually skip it or put it off until later","I do some of it but not my best","I do it anyway because I know it matters"],sc:[1,2,3]},
-  {hid:2,q:"Do you have a clear picture of what kind of person you want to be when you start at Shenton?",opts:["Not really — I'll figure it out when I get there","A vague idea but nothing specific","Yes — I know exactly how I want to show up"],sc:[1,2,3]},
-  {hid:2,q:"When you start learning something new in homeschool, what do you think about first?",opts:["I just start and see where it goes","I think about passing or finishing","I ask: why am I learning this and what will I be able to do with it?"],sc:[1,2,3]},
-  {hid:2,q:"How clear is your next taekwondo goal right now?",opts:["I just train and see what happens","I have a general idea but no real plan","I have a specific goal and I know what I need to do to get there"],sc:[1,2,3]},
-  {hid:3,q:"On a typical homeschool day, when do screens usually happen?",opts:["Whenever I want — they're mixed in with my work","After some work but it's pretty flexible","Only after my real work is done"],sc:[1,2,3]},
-  {hid:3,q:"Shenton is less than a year away. How much time do you spend preparing for it each week?",opts:["I haven't really started preparing yet","I think about it sometimes but don't do much","I have specific things I'm doing regularly to prepare"],sc:[1,2,3]},
-  {hid:3,q:"When you have a list of things to do, how do you decide what to do first?",opts:["Whatever looks easiest or most fun","Whatever feels most urgent in the moment","Whatever is most important, even if it's harder"],sc:[1,2,3]},
-  {hid:4,q:"When you disagree with someone at home about something, what usually happens?",opts:["I push to get what I want or just give up","I compromise but often feel like I lost something","I try to find a solution we're both genuinely happy with"],sc:[1,2,3]},
-  {hid:4,q:"At taekwondo, how do you feel when a training partner does better than you?",opts:["Frustrated — I want to be the best","A bit bothered but I try to hide it","Happy for them and curious about what I can learn from it"],sc:[1,2,3]},
-  {hid:4,q:"You're about to meet new people at Shenton. What's your general approach?",opts:["I'm competitive — I want to establish myself quickly","I'll be friendly but mostly look out for myself","I'll genuinely try to find what's good about each person and build real connections"],sc:[1,2,3]},
-  {hid:5,q:"When someone is talking to you about a problem, what are you usually doing in your head?",opts:["Already thinking about what I want to say next","Half listening, half thinking about my response","Fully focused on understanding what they actually mean"],sc:[1,2,3]},
-  {hid:5,q:"When your parents give you feedback or correction, how do you usually respond?",opts:["I defend myself straight away","I listen but I'm thinking about my defence","I try to fully understand their point before I respond"],sc:[1,2,3]},
-  {hid:5,q:"You've lived in two countries. How do you use that experience when you meet new people?",opts:["I don't really think about it","I mention it but don't think much about how to use it","I actively use it — I know how it feels to be the newcomer so I make others feel understood"],sc:[1,2,3]},
-  {hid:6,q:"In a group project or team situation, what role do you naturally take?",opts:["I prefer to do things my way — group work is frustrating","I participate but usually do my own part separately","I actively look for how each person's strength can make the whole thing better"],sc:[1,2,3]},
-  {hid:6,q:"When someone has a very different approach from yours, what's your reaction?",opts:["I think my way is probably better","I consider their way but usually stick to mine","I get genuinely curious — different perspectives often lead to better outcomes"],sc:[1,2,3]},
-  {hid:6,q:"Speaking two languages and knowing two cultures — how much do you actively use this?",opts:["I don't really think of it as a skill","I notice it but don't actively use it","I actively use my bilingual background to connect with different people"],sc:[1,2,3]},
-  {hid:7,q:"Taekwondo training twice a week — how do you treat your rest and recovery time?",opts:["I don't really think about recovery — I rest when I'm tired","I rest when I need to but it feels like wasted time","I actively recover — good sleep, stretching — because I know it's part of training"],sc:[1,2,3]},
-  {hid:7,q:"After a heavy homeschool day, how do you recharge?",opts:["I usually just keep going or scroll aimlessly","I rest a bit but often feel guilty about not doing more","I have things I genuinely enjoy that fill me back up — and I do them without guilt"],sc:[1,2,3]},
-  {hid:7,q:"Living in Perth with beaches and open space — how often do you use the environment to reset?",opts:["Rarely — I'm mostly indoors","Sometimes, but not intentionally","Regularly — I know that being outdoors resets my mind and energy"],sc:[1,2,3]}
+ {hid:1,q:"Something goes wrong at taekwondo training — you miss a technique you've been practising. What do you usually do?",opts:["Get frustrated and blame bad luck or being tired","Feel bad but move on and try again next session","Ask your sabomnim what specifically went wrong and drill it right there"],sc:[1,2,3]},
+ {hid:1,q:"You're having a boring homeschool day and can't focus. What happens?",opts:["Give up and go on your phone","Push through but don't enjoy it","Change your approach — find a different resource or ask for help"],sc:[1,2,3]},
+ {hid:1,q:"Something unfair happens — someone gets credit for your work. How do you respond?",opts:["Stay upset and complain about it","Let it go and say nothing","Calmly address it with the person or find a way to make it right"],sc:[1,2,3]},
+ {hid:2,q:"How clear is your picture of who you want to be when you start at Shenton College?",opts:["Not really thought about it — I'll just see what happens","I have some ideas but nothing specific","I have a clear picture of how I want to show up and what I want people to know me for"],sc:[1,2,3]},
+ {hid:2,q:"When you start a new project or task, what do you usually do first?",opts:["Just start and figure it out as I go","Think a bit about what I need to do","Picture the finished result clearly, then plan backwards"],sc:[1,2,3]},
+ {hid:2,q:"How often do you think about your long-term taekwondo goals when you're training?",opts:["Rarely — I just do whatever training is set","Sometimes, but not consistently","Often — I know my goal and each session is aimed at it"],sc:[1,2,3]},
+ {hid:3,q:"It's 11:30am — your homeschool slot starts. Your phone is nearby. What usually happens?",opts:["I check my phone first, then start work when I feel like it","I start work but check my phone every 20–30 minutes","I put my phone away and focus until the session is done"],sc:[1,2,3]},
+ {hid:3,q:"You have homework AND something fun to do. How do you usually handle it?",opts:["Do the fun thing first — homework can wait","Do homework but rush it to get to the fun thing","Complete the homework properly first, then enjoy the fun thing fully"],sc:[1,2,3]},
+ {hid:3,q:"How often do you feel like you wasted time at the end of the day?",opts:["Most days — time just disappears","Sometimes — I could have used my time better","Rarely — I usually get the important things done"],sc:[1,2,3]},
+ {hid:4,q:"You disagree with a friend about what to do together. How do you usually handle it?",opts:["Push for what I want or just give in","Compromise — we both get less than we wanted","Look for a solution where we both genuinely get what we want"],sc:[1,2,3]},
+ {hid:4,q:"Someone at taekwondo is improving faster than you. How does that make you feel?",opts:["Frustrated — I want to be the best","A little jealous but I accept it","Motivated — I can learn from them and we can push each other"],sc:[1,2,3]},
+ {hid:4,q:"You want something from your parents (more screen time, a day off). How do you approach it?",opts:["Demand it or argue until they say yes","Ask nicely and hope for the best","Offer something in return — make it work for both of us"],sc:[1,2,3]},
+ {hid:5,q:"A friend is upset about something. What do you usually do?",opts:["Tell them what I think they should do","Listen for a bit then share my own experience","Ask questions, really listen, and make sure they feel understood before saying anything"],sc:[1,2,3]},
+ {hid:5,q:"Your parent or teacher explains something you disagree with. What's your first reaction?",opts:["Jump in and share my own view straight away","Let them finish then explain why I disagree","Make sure I truly understand their point first, even if I still disagree"],sc:[1,2,3]},
+ {hid:5,q:"How often do you find yourself thinking about your response while someone is still talking?",opts:["Almost always — I'm planning what to say","Sometimes","Rarely — I focus on what they're saying until they're done"],sc:[1,2,3]},
+ {hid:6,q:"You're working on a group project. What's your natural approach?",opts:["Take over or do it myself — it's easier and faster","Do my part and let others do theirs separately","Actively bring the group together — combine everyone's strengths"],sc:[1,2,3]},
+ {hid:6,q:"Someone suggests a completely different approach to something you're already doing. How do you react?",opts:["Stick with my way — I know what works","Consider it but probably keep doing what I was doing","Get curious — their different angle might be better or spark a new idea"],sc:[1,2,3]},
+ {hid:6,q:"How do you feel about working with people who are very different from you?",opts:["It's difficult — different people create friction","It's okay, but I prefer people I have lots in common with","I find it valuable — different perspectives make the outcome better"],sc:[1,2,3]},
+ {hid:7,q:"After a big week of training and study, how do you usually recover?",opts:["Just keep going — rest feels like wasting time","Rest when I'm forced to but don't plan it","Deliberately schedule recovery — sleep, downtime, things I enjoy"],sc:[1,2,3]},
+ {hid:7,q:"How often do you do something just for YOU — purely because it restores you?",opts:["Rarely — there's always something I should be doing","Sometimes, but I feel guilty about it","Regularly and without guilt — I know it makes everything else better"],sc:[1,2,3]},
+ {hid:7,q:"How is your sleep usually?",opts:["Inconsistent — I stay up late and feel tired most days","Okay — I get enough most nights but not always","Good — I prioritise 8 hours and feel the difference"],sc:[1,2,3]}
+];
+
+/* ── TRIAL MISSIONS ── */
+const TMISSIONS=[
+ {main:"Today's mission is about <strong>awareness</strong>. As you go through today, notice how many times you react to something WITHOUT choosing your response — just automatic. At the end of the day, write: (1) the one situation where you felt most in control of yourself, and (2) the one where you felt least in control. Be honest.",
+  prompts:["🌊 Did you flow or fight today?","🎯 Was anything you did today aimed at Shenton?","📋 What did you do FIRST — important or urgent?","🤝 Was there a moment where you could have made someone feel like a winner?","👂 Did you actually hear someone today — or just wait for your turn?","🌪️ Did anyone's different view help you see something better?","🌿 Did you do ONE thing today just to restore yourself?"]},
+ {main:"Today, pick <strong>one specific habit</strong> — whichever felt hardest yesterday. Find a real situation today where you can deliberately practise it. Before you practise it, write what you're going to do differently. After, write what actually happened. One habit. One real situation. Done honestly.",
+  prompts:["🌊 Did you catch yourself blaming — and redirect?","🎯 Did you make ONE decision today with Shenton in mind?","📋 Did you schedule something important before something urgent?","🤝 Did you try to find a solution where BOTH sides won?","👂 Did you repeat back what someone said before responding?","🌪️ Did you look for a way to combine your strength with someone else's?","🌿 How did you recharge your energy today?"]},
+ {main:"Final trial day. Pick the habit you feel <strong>most confident</strong> about and write a specific example from the last 3 days where you genuinely lived it. Then pick the one you find <strong>hardest</strong>. Write honestly about why — what specifically gets in the way for you?",
+  prompts:["🌊 What's one thing you CAN control that you've been ignoring?","🎯 Is the person you're becoming right now the one you want to be?","📋 Honestly — did first things come first today?","🤝 Where could you be more generous in a relationship right now?","👂 Who in your life needs to feel more understood by you?","🌪️ What would be possible if you combined your skills with someone different?","🌿 What does your body and mind need most right now?"]}
 ];
 
 const BELTS=[
-  {min:0,max:0,color:"#e5e7eb",label:"White Belt"},
-  {min:1,max:1,color:"#fef08a",label:"Yellow Belt"},
-  {min:2,max:2,color:"#fed7aa",label:"Orange Belt"},
-  {min:3,max:3,color:"#86efac",label:"Green Belt"},
-  {min:4,max:4,color:"#93c5fd",label:"Blue Belt"},
-  {min:5,max:5,color:"#c4b5fd",label:"Red Belt"},
-  {min:6,max:6,color:"#f87171",label:"Red/Black Belt"},
-  {min:7,max:7,color:"#374151",label:"⚫ Black Belt — All 7 Mastered!"}
+ {min:0,max:0,color:"#fff",label:"White Belt"},
+ {min:1,max:1,color:"#fef08a",label:"Yellow Belt"},
+ {min:2,max:2,color:"#fed7aa",label:"Orange Belt"},
+ {min:3,max:3,color:"#86efac",label:"Green Belt"},
+ {min:4,max:4,color:"#93c5fd",label:"Blue Belt"},
+ {min:5,max:5,color:"#c4b5fd",label:"Red Belt"},
+ {min:6,max:6,color:"#f87171",label:"Red/Black Belt"},
+ {min:7,max:7,color:"#374151",label:"⚫ Black Belt — All 7 Mastered!"}
 ];
 
-const TMISSIONS=[
-  {main:"Today's mission is about <strong>awareness</strong>. As you go through today, notice how many times you react to something WITHOUT choosing your response — just automatic. At the end of the day, write down: (1) the one situation where you felt most in control of yourself, and (2) the one where you felt least in control. Be honest.",
-   prompts:["🌊 Did you flow or fight today?","🎯 Was anything you did today aimed at Shenton?","📋 What did you do FIRST — important or urgent?","🤝 Was there a moment where you could have made someone feel like a winner?","👂 Did you actually hear someone today — or just wait for your turn?","🌪️ Did anyone's different view help you see something better?","🌿 Did you do ONE thing today just to restore yourself?"]},
-  {main:"Today, pick <strong>one specific habit</strong> — whichever felt hardest yesterday. Find a real situation today where you can deliberately practise it. Before you practise it, write what you're going to do differently. After, write what actually happened. One habit. One real situation. Done honestly.",
-   prompts:["🌊 Did you catch yourself blaming — and redirect?","🎯 Did you make ONE decision today with Shenton in mind?","📋 Did you schedule something important before something urgent?","🤝 Did you try to find a solution where BOTH sides won?","👂 Did you repeat back what someone said before responding?","🌪️ Did you look for a way to combine your strength with someone else's?","🌿 How did you recharge your energy today?"]},
-  {main:"Final trial day. Pick the habit you feel <strong>most confident</strong> about and write a specific example from the last 3 days where you genuinely lived it. Then pick the one you find <strong>hardest</strong>. Write honestly about why — what specifically gets in the way for you?",
-   prompts:["🌊 What's one thing you CAN control that you've been ignoring?","🎯 Is the person you're becoming right now the one you want to be?","📋 Honestly — did first things come first today?","🤝 Where could you be more generous in a relationship right now?","👂 Who in your life needs to feel more understood by you?","🌪️ What would be possible if you combined your skills with someone different?","🌿 What does your body and mind need most right now?"]}
-];
-
+/* ── STATE ── */
 let ST={};
 const SK="musa-v4";
 const PIN="UnlockMusaPower137(*";
-
 function ld(){try{ST=JSON.parse(localStorage.getItem(SK)||"{}");}catch{ST={};}
   if(!ST.aa)ST.aa={};if(!ST.ad)ST.ad=false;if(!ST.td)ST.td={};
   if(!ST.tc)ST.tc=false;if(!ST.wd)ST.wd={};if(!ST.cw)ST.cw=1;
-  if(!ST.wp)ST.wp={};if(!ST.pvd)ST.pvd=0;}
+  if(!ST.wp)ST.wp={};if(!ST.pvd)ST.pvd=0;if(!ST.adate)ST.adate="";}
 function sv(){try{localStorage.setItem(SK,JSON.stringify(ST));}catch{}}
 const tdk=()=>new Date().toISOString().split("T")[0];
 const wkd=()=>{const d=[];for(let i=6;i>=0;i--){const x=new Date();x.setDate(x.getDate()-i);d.push(x.toISOString().split("T")[0]);}return d;};
-
 let curL=0,puL=false,stc=0,stT=null,hlpT=null,aIdx=0,aAns={};
 
+/* ── VIEW SWITCHING ── */
 function showView(n,btn){
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
   document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
@@ -375,24 +361,68 @@ function showView(n,btn){
   if(n==="daily")rdl();
   if(n==="progress")rpg();
   if(n==="parent")rpar();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-/* HOME */
+/* ── HOME ── */
+const SCHED=[
+  {date:"2026-03-29",day:"Sun 29 Mar",time:"11:30 – 13:30",icon:"📖",label:"Learn Habits 1–4",desc:"Read each card fully. Avatar connections and real-life challenges included.",done:()=>ST.ad||ST.tc},
+  {date:"2026-03-30",day:"Mon 30 Mar",time:"11:30 – 13:00",icon:"📖",label:"Learn Habits 5–7",desc:"Finish the syllabus. Short break before the assessment.",done:()=>ST.ad||ST.tc},
+  {date:"2026-03-30",day:"Mon 30 Mar",time:"13:00 – 13:30",icon:"📊",label:"Complete Assessment",desc:"21 honest questions. Your starting point — like a grading evaluation.",done:()=>ST.ad||ST.tc},
+  {date:"2026-04-01",day:"Tue 1 Apr",time:"11:30 – 12:15",icon:"✅",label:"Trial Day 1 Missions",desc:"4 real-life missions + honest reflections. ~45 minutes.",done:()=>Object.keys(ST.td||{}).length>=1},
+  {date:"2026-04-02",day:"Wed 2 Apr",time:"11:30 – 12:15",icon:"✅",label:"Trial Day 2 Missions",desc:"Pick your hardest habit. Practise it deliberately today.",done:()=>Object.keys(ST.td||{}).length>=2},
+  {date:"2026-04-03",day:"Thu 3 Apr",time:"11:30 – 12:15",icon:"✅",label:"Trial Day 3 Missions",desc:"Final reflection. Taekwondo in the afternoon 🥋",done:()=>ST.tc},
+  {date:"2026-04-03",day:"Thu 3 Apr",time:"Evening",icon:"👨‍👩‍👦",label:"Parent Reviews Dashboard",desc:"Screenshots go to Claude → Week 1 program written together.",done:()=>!!(ST.wp&&ST.wp[1]&&ST.wp[1].approved)},
+  {date:"2026-04-05",day:"Sat 5 Apr",time:"Morning",icon:"🚀",label:"Week 1 Program Begins",desc:"Your personalised training plan unlocks in the Daily tab.",done:()=>!!(ST.wp&&ST.wp[1]&&ST.wp[1].approved)},
+];
+
 function rhm(){
   const el=document.getElementById("homeContent");
   ["homeG1","homeG2","homeG3"].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML="";});
+  const today=tdk();
+  const upcoming=SCHED.find(s=>!s.done()&&s.date>=today);
+  const schedHTML=SCHED.map(s=>{
+    const isDone=s.done();
+    const isToday=s.date===today;
+    const isNext=s===upcoming;
+    let bg="transparent",brd="transparent",op="0.42",dot="#444";
+    if(isDone){bg="rgba(16,185,129,0.08)";brd="rgba(16,185,129,0.2)";op="0.72";dot="#10b981";}
+    else if(isToday||isNext){bg="rgba(251,191,36,0.12)";brd="rgba(251,191,36,0.35)";op="1";dot="#fbbf24";}
+    return`<div style="display:flex;gap:10px;padding:8px 10px;border-radius:10px;background:${bg};border:1px solid ${brd};margin-bottom:4px;opacity:${op}">
+      <div style="width:8px;height:8px;border-radius:50%;background:${dot};flex-shrink:0;margin-top:5px"></div>
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span>${s.icon}</span>
+          <span style="font-size:13px;font-weight:800">${s.label}</span>
+          ${isDone?`<span style="font-size:10px;background:rgba(16,185,129,0.2);color:#6ee7b7;padding:1px 7px;border-radius:99px;font-weight:800">✓ Done</span>`:""}
+          ${isToday&&!isDone?`<span style="font-size:10px;background:rgba(251,191,36,0.2);color:#fbbf24;padding:1px 7px;border-radius:99px;font-weight:800;animation:pulse 2s infinite">Today!</span>`:""}
+          ${isNext&&!isToday?`<span style="font-size:10px;background:rgba(251,191,36,0.2);color:#fbbf24;padding:1px 7px;border-radius:99px;font-weight:800">Up next →</span>`:""}
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px">${s.day} · ${s.time}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:1px">${s.desc}</div>
+      </div>
+    </div>`;
+  }).join("");
+
   el.innerHTML=`
   <div class="intro-hero">
     <p class="aq">"Mastering the elements takes a lifetime — mastering yourself takes the same." — inspired by Avatar</p>
     <h2>Hey Musa! 👋</h2>
-    <p>You've been doing taekwondo since you were 8. You know that becoming great isn't just about kicking harder — it's about training your mind and character every single day.<br><br>
-    The <strong>7 Habits of Highly Effective People</strong> is your mental training syllabus. Think of it as your inner belt ranking — the one no-one can take from you.<br><br>
-    You left Surabaya, built a new life in Perth, and next year you're walking into Shenton College Year 8. These 7 habits are the foundation that gets you there confidently. 💪</p>
+    <p>You've been doing taekwondo since you were 8. You know that becoming great isn't just about kicking harder — it's about training your mind, your discipline, and your character every single day.<br><br>
+    The <strong>7 Habits of Highly Effective People</strong> is your mental training syllabus. Think of it as the inner belt ranking no-one can take from you.<br><br>
+    You left Surabaya, built a new life in Perth, and next year you're walking into Shenton College Year 8. These 7 habits are the foundation that will make that landing confident. 💪</p>
   </div>
   <div class="goal-card">
     <div class="gi">🎯</div>
     <div><h3>Your Big Goal: Shenton College, Year 8</h3>
     <p>New school, new people, new chapter. The habits you build NOW — before you walk through those gates — shape your entire high school experience.</p></div>
+  </div>
+  <div style="background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(251,191,36,0.03));border:2px solid rgba(251,191,36,0.3);border-radius:18px;overflow:hidden;margin-bottom:18px">
+    <div style="padding:14px 16px 10px;border-bottom:1px solid rgba(255,255,255,0.07)">
+      <p style="font-family:'Fredoka One',cursive;font-size:17px;margin-bottom:2px">📅 Your Journey Schedule</p>
+      <p style="font-size:11px;color:rgba(255,255,255,0.45);font-weight:700">Starts Sunday 29 March · Homeschool block: 11:30am</p>
+    </div>
+    <div style="padding:10px 16px 14px">${schedHTML}</div>
   </div>
   <p style="text-align:center;font-family:'Fredoka One',cursive;font-size:16px;margin-bottom:12px">The 7 Habits — Your Training Syllabus</p>
   <div style="margin-bottom:5px"><span class="chip">🌊 Master yourself — Habits 1, 2 & 3</span></div>
@@ -410,14 +440,13 @@ function rhm(){
     e.onclick=()=>{curL=h.id-1;showView("learn");};
     document.getElementById(h.group===1?"homeG1":h.group===2?"homeG2":"homeG3").appendChild(e);
   });
-
   const cta=document.getElementById("hmcta");
   if(ST.tc){cta.innerHTML=`<button class="btn-primary" onclick="showView('daily')">Open Daily Check-in →</button>`;}
   else if(ST.ad){cta.innerHTML=`<button class="btn-primary" onclick="showView('daily')">Continue 3-Day Trial →</button><p style="margin-top:9px;font-size:11px;color:rgba(255,255,255,0.45)">Assessment done — Day ${Object.keys(ST.td).length+1} of 3</p>`;}
-  else{cta.innerHTML=`<button class="btn-primary" onclick="showView('assess')">Begin Training → Take Assessment</button><p style="margin-top:9px;font-size:11px;color:rgba(255,255,255,0.45)">Start with the assessment (~10 minutes)</p>`;}
+  else{cta.innerHTML=`<button class="btn-primary" onclick="showView('assess')">Begin Training → Take Assessment</button><p style="margin-top:9px;font-size:11px;color:rgba(255,255,255,0.45)">Start with the assessment (~15 minutes)</p>`;}
 }
 
-/* LEARN */
+/* ── LEARN ── */
 function rlc(){
   const h=HABITS[curL];
   document.getElementById("lrnPrg").textContent=`Habit ${h.id} of 7`;
@@ -437,8 +466,8 @@ function rlc(){
       <div class="badge">${h.subtitle}</div>
     </div>
     <div class="lcb" style="margin-top:4px">
-      <div class="sblk" style="border-left-color:${h.color};margin-top:15px"><span class="si">🤔</span><h3>What does it mean?</h3><p>${h.what}</p></div>
-      <div class="sblk" style="border-left-color:${h.color}99"><span class="si">💥</span><h3>Why does it matter for you?</h3><p>${h.why}</p></div>
+      <div class="sblk" style="border-left-color:${h.color};margin-top:15px"><h3>🤔 What does it mean?</h3><p>${h.what}</p></div>
+      <div class="sblk" style="border-left-color:${h.color}99"><h3>💥 Why does it matter for you?</h3><p>${h.why}</p></div>
       <h3 style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;opacity:0.58;margin-bottom:8px">Real examples from your life</h3>
       <div class="exgrid">${h.examples.map(ex=>`<div class="exc" style="border-color:${h.color}28"><span class="ei">${ex.icon}</span><h4>${ex.label}</h4><p>${ex.text}</p></div>`).join("")}</div>
       <div class="qblk">&ldquo;${h.quote}&rdquo;</div>
@@ -449,18 +478,26 @@ function rlc(){
 }
 
 function chH(d){
-  const nx=curL+d;
-  if(nx<0)return;
+  const nx=curL+d;if(nx<0)return;
   if(nx>=7){showView("assess");return;}
   curL=nx;rlc();window.scrollTo({top:0,behavior:"smooth"});
 }
 
-/* ASSESSMENT */
+/* ── ASSESSMENT ── */
 function rasc(){
   const el=document.getElementById("assessContent");
   if(ST.ad){rar(el);return;}
   if(aIdx===0&&Object.keys(aAns).length===0){
-    el.innerHTML=`<div class="ass-intro"><span class="ai">🥋</span><h2>Habit Assessment</h2>
+    el.innerHTML=`
+    <div style="background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(16,185,129,0.03));border:2px solid rgba(16,185,129,0.3);border-radius:16px;padding:16px;margin-bottom:16px;animation:fadeUp 0.35s ease">
+      <p style="font-family:'Fredoka One',cursive;font-size:16px;margin-bottom:6px">⏳ What happens after this?</p>
+      <p style="font-size:12px;color:rgba(255,255,255,0.78);line-height:1.7">Once you finish the 21 questions, your <strong>3-Day Trial</strong> unlocks — real-life missions tied to YOUR weakest habits.<br><br>
+      📅 <strong>Trial Day 1</strong> — Tuesday 1 April · 11:30am (45 mins)<br>
+      📅 <strong>Trial Day 2</strong> — Wednesday 2 April · 11:30am (45 mins)<br>
+      📅 <strong>Trial Day 3</strong> — Thursday 3 April · 11:30am · taekwondo evening 🥋<br><br>
+      After Day 3 your parent reviews your data here and builds your personalised Week 1 program.</p>
+    </div>
+    <div class="ass-intro"><span class="ai">🥋</span><h2>Habit Assessment</h2>
     <p>Before your 3-day training trial, let's find out where you stand right now.<br><br>
     <strong>21 questions.</strong> No right or wrong answers — just honest ones. This is your starting point, like a grading evaluation before your next belt.<br><br>
     The more honest you are, the more useful your results will be. This is just between you and you. 🙏</p>
@@ -493,10 +530,8 @@ function raq(el){
 function selA(sc,idx){aAns[idx]=sc;raq(document.getElementById("assessContent"));}
 function aBack(){if(aIdx>0){aIdx--;raq(document.getElementById("assessContent"));}}
 function aNext(){
-  if(!aAns[aIdx])return;
-  aIdx++;
-  if(aIdx>=QS.length){finA();}
-  else{raq(document.getElementById("assessContent"));}
+  if(!aAns[aIdx])return;aIdx++;
+  if(aIdx>=QS.length){finA();}else{raq(document.getElementById("assessContent"));}
 }
 
 function finA(){
@@ -514,84 +549,89 @@ function gTier(s){
 
 function bRad(sc){
   const cx=140,cy=140,r=100;const n=HABITS.length;
-  const pts=HABITS.map((h,i)=>{const a=(Math.PI*2*i/n)-Math.PI/2;const v=((sc[h.id]||0)/9)*r;return{x:cx+v*Math.cos(a),y:cy+v*Math.sin(a),lx:cx+(r+22)*Math.cos(a),ly:cy+(r+22)*Math.sin(a),e:h.emoji};});
-  const grids=[0.33,0.67,1].map(l=>{const gp=HABITS.map((_,i)=>{const a=(Math.PI*2*i/n)-Math.PI/2;return`${cx+r*l*Math.cos(a)},${cy+r*l*Math.sin(a)}`;});return`<polygon points="${gp.join(" ")}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;});
-  const axes=HABITS.map((_,i)=>{const a=(Math.PI*2*i/n)-Math.PI/2;return`<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;});
-  const pp=pts.map(p=>`${p.x},${p.y}`).join(" ");
-  return`<svg width="280" height="280" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-    ${grids.join("")}${axes.join("")}
-    <polygon points="${pp}" fill="rgba(59,130,246,0.2)" stroke="#3b82f6" stroke-width="2"/>
-    ${pts.map((p,i)=>`<circle cx="${p.x}" cy="${p.y}" r="4" fill="${HABITS[i].color}"/>`).join("")}
-    ${pts.map(p=>`<text x="${p.lx}" y="${p.ly}" text-anchor="middle" dominant-baseline="middle" font-size="16">${p.e}</text>`).join("")}
-  </svg>`;
+  const vals=HABITS.map(h=>(sc[h.id]||0)/9);
+  const pts=HABITS.map((_,i)=>{const a=(i/n)*Math.PI*2-Math.PI/2;const v=vals[i];return{x:cx+Math.cos(a)*r*v,y:cy+Math.sin(a)*r*v,lx:cx+Math.cos(a)*(r+20),ly:cy+Math.sin(a)*(r+20)};});
+  const gridLines=[1,2,3].map(ring=>{const pts2=HABITS.map((_,i)=>{const a=(i/n)*Math.PI*2-Math.PI/2;return`${cx+Math.cos(a)*r*ring/3},${cy+Math.sin(a)*r*ring/3}`;}).join(" ");return`<polygon points="${pts2}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;}).join("");
+  const spokes=HABITS.map((_,i)=>{const a=(i/n)*Math.PI*2-Math.PI/2;return`<line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*r}" y2="${cy+Math.sin(a)*r}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;}).join("");
+  const shape=`<polygon points="${pts.map(p=>`${p.x},${p.y}`).join(" ")}" fill="rgba(99,102,241,0.25)" stroke="#6366f1" stroke-width="2"/>`;
+  const dots=pts.map((p,i)=>`<circle cx="${p.x}" cy="${p.y}" r="5" fill="${HABITS[i].color}"/>`).join("");
+  const labels=pts.map((p,i)=>`<text x="${p.lx}" y="${p.ly}" text-anchor="middle" dominant-baseline="middle" font-size="18">${HABITS[i].emoji}</text>`).join("");
+  return`<div class="radwrap"><h3>🌊 Your Bending Profile</h3><p>Radar chart of all 7 habits</p><svg width="280" height="280" viewBox="0 0 280 280">${gridLines}${spokes}${shape}${dots}${labels}</svg></div>`;
 }
 
 function rar(el){
   const sc=ST.as||{};
-  const strong=[],growing=[],needs=[];
-  HABITS.forEach(h=>{const s=sc[h.id]||0;const t=gTier(s);if(s>=7)strong.push({h,s,t});else if(s>=4)growing.push({h,s,t});else needs.push({h,s,t});});
-  el.innerHTML=`<div style="animation:fadeUp 0.4s ease">
-  <div style="text-align:center;margin-bottom:18px"><span style="font-size:44px">🎉</span>
-  <h2 style="font-family:'Fredoka One',cursive;font-size:22px;margin:8px 0 5px">Assessment Complete!</h2>
-  <p style="font-size:12px;color:rgba(255,255,255,0.45)">Here's your bending profile, Musa</p></div>
-  <div class="radwrap"><h3>Your Habit Bending Profile</h3><p>Where you stand across all 7 habits right now</p>
+  el.innerHTML=`
+  <div style="text-align:center;margin-bottom:18px;animation:fadeUp 0.4s ease">
+    <div style="font-size:40px;margin-bottom:8px">🎉</div>
+    <h2 style="font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:6px">Your Bending Profile, Musa</h2>
+    <p style="font-size:13px;color:rgba(255,255,255,0.5)">Here's where you stand across all 7 habits</p>
+  </div>
   ${bRad(sc)}
-  <div class="radscores">${HABITS.map(h=>{const s=sc[h.id]||0;const t=gTier(s);const pct=Math.round((s/9)*100);return`<div class="rsi"><span style="font-size:18px">${h.emoji}</span><div style="flex:1"><div style="font-size:12px;font-weight:800;line-height:1.2">${h.name}</div><div class="rsibw"><div class="rsib" style="width:${pct}%;background:${h.color}"></div></div></div><span style="font-size:13px;font-weight:900;flex-shrink:0;color:${t.color}">${s}/9</span></div>`;}).join("")}</div>
-  <div class="tleg"><div class="tld"><span style="background:#10b981"></span>Strong (7-9)</div><div class="tld"><span style="background:#f59e0b"></span>Growing (4-6)</div><div class="tld"><span style="background:#ef4444"></span>Needs Work (1-3)</div></div></div>
-  ${strong.length?`<div style="margin-bottom:14px"><p class="chip" style="background:rgba(16,185,129,0.15);color:#10b981">💪 Your Natural Element</p>${strong.map(({h,s,t})=>`<div class="rhc" style="background:${t.bg};border-color:${t.brd}"><span style="font-size:22px">${h.emoji}</span><div style="flex:1"><div style="font-size:13px;font-weight:800">${h.name}</div><div style="font-size:11px;opacity:0.6;margin-top:1px">${h.subtitle}</div></div><span style="font-size:18px;font-weight:900;color:${t.color}">${s}/9</span><span class="tbdg" style="background:${t.bg};color:${t.color};border:1px solid ${t.brd}">${t.lbl}</span></div>`).join("")}</div>`:""}
-  ${growing.length?`<div style="margin-bottom:14px"><p class="chip" style="background:rgba(245,158,11,0.15);color:#f59e0b">📈 In Training</p>${growing.map(({h,s,t})=>`<div class="rhc" style="background:${t.bg};border-color:${t.brd}"><span style="font-size:22px">${h.emoji}</span><div style="flex:1"><div style="font-size:13px;font-weight:800">${h.name}</div><div style="font-size:11px;opacity:0.6;margin-top:1px">${h.subtitle}</div></div><span style="font-size:18px;font-weight:900;color:${t.color}">${s}/9</span><span class="tbdg" style="background:${t.bg};color:${t.color};border:1px solid ${t.brd}">${t.lbl}</span></div>`).join("")}</div>`:""}
-  ${needs.length?`<div style="margin-bottom:14px"><p class="chip" style="background:rgba(239,68,68,0.15);color:#ef4444">🎯 Priority Focus</p>${needs.map(({h,s,t})=>`<div class="rhc" style="background:${t.bg};border-color:${t.brd}"><span style="font-size:22px">${h.emoji}</span><div style="flex:1"><div style="font-size:13px;font-weight:800">${h.name}</div><div style="font-size:11px;opacity:0.6;margin-top:1px">${h.subtitle}</div></div><span style="font-size:18px;font-weight:900;color:${t.color}">${s}/9</span><span class="tbdg" style="background:${t.bg};color:${t.color};border:1px solid ${t.brd}">${t.lbl}</span></div>`).join("")}</div>`:""}
-  <div style="background:rgba(59,130,246,0.1);border:2px solid rgba(59,130,246,0.3);border-radius:16px;padding:16px 18px;margin-bottom:14px">
-  <h3 style="font-family:'Fredoka One',cursive;font-size:17px;color:#93c5fd;margin-bottom:8px">🥋 What happens next?</h3>
-  <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,0.82)">Your <strong>3-Day Training Trial</strong> starts now. Each day you'll get a focused mission and check in on all 7 habits.<br><br>After 3 days, your parent will review your data and work with Claude to build your personalised Week 1 program. The assessment shows where you <em>think</em> you are — the trial shows where you <em>actually</em> are.</p></div>
-  <div style="text-align:center"><button class="btn-primary" onclick="showView('daily')">Start Day 1 of 3 Trial →</button></div>
+  <div style="margin:16px 0">
+    ${HABITS.map(h=>{const s=sc[h.id]||0;const t=gTier(s);return`<div class="rhc" style="background:${t.bg};border-color:${t.brd}">
+      <span style="font-size:22px">${h.emoji}</span>
+      <div style="flex:1"><div style="font-size:12px;font-weight:800;opacity:0.7">Habit ${h.id}</div><div style="font-size:14px;font-weight:900">${h.name}</div></div>
+      <div style="text-align:right"><div style="font-family:'Fredoka One',cursive;font-size:22px;color:${t.color}">${s}/9</div>
+      <span class="tbdg" style="background:${t.brd};color:${t.color}">${t.lbl}</span></div>
+    </div>`;}).join("")}
+  </div>
+  <div style="text-align:center;margin-top:20px">
+    <button class="btn-primary" onclick="showView('daily')">Start 3-Day Trial →</button>
+    <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:8px">Trial Day 1 begins Tuesday 1 April · 11:30am</p>
   </div>`;
 }
 
-/* DAILY */
+/* ── DAILY ── */
 function rdl(){
   const el=document.getElementById("dailyContent");
-  if(!ST.ad){el.innerHTML=`<div style="text-align:center;padding:40px 20px"><span style="font-size:48px;display:block;margin-bottom:14px">📊</span><h2 style="font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:10px">Complete Your Assessment First</h2><p style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:18px">Take your habit assessment before starting the trial.</p><button class="btn-primary" onclick="showView('assess')">Go to Assessment →</button></div>`;return;}
+  if(!ST.ad){
+    el.innerHTML=`<div style="text-align:center;padding:32px 16px;animation:fadeUp 0.4s ease">
+      <div style="font-size:48px;margin-bottom:14px">📊</div>
+      <h2 style="font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:10px">Assessment First!</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:18px">Complete your 21-question assessment before starting your trial missions.<br><br>
+      <strong style="color:#fbbf24">⏰ When:</strong> Monday 30 March · 13:00–13:30<br>
+      <strong style="color:#fbbf24">⏰ Trial Day 1:</strong> Tuesday 1 April · 11:30am<br><br>
+      Once you've finished the assessment, your Day 1 missions will unlock here automatically. 🥋</p>
+      <button class="btn-primary" onclick="showView('assess')">Go to Assessment →</button>
+    </div>`;
+    return;
+  }
   if(ST.tc){rwck(el);return;}
-  const tk=Object.keys(ST.td).sort();const tod=tdk();
-  const td=ST.td[tod]||{};const dn=tk.indexOf(tod)!==-1?tk.indexOf(tod)+1:tk.length+1;
-  const mis=TMISSIONS[Math.min(dn-1,2)];
-  const th=td.habits||{};const tn=td.notes||{};const done=HABITS.filter(h=>th[h.id]).length;
+  const tk=Object.keys(ST.td||{}).sort();
+  const dayNum=tk.length+1;
+  if(dayNum>3){rthf(el);return;}
+  const tod=tdk();
+  if(!ST.td[tod])ST.td[tod]={habits:{},notes:{},complete:false};sv();
+  const dd=ST.td[tod]||{};const hb=dd.habits||{};const tn=dd.notes||{};
+  const done=HABITS.filter(h=>hb[h.id]).length;
   const belt=BELTS.find(b=>done>=b.min&&done<=b.max)||BELTS[0];
-  const cdone=tk.filter(k=>ST.td[k]&&ST.td[k].complete).length;
-  if(cdone>=3){rthf(el);return;}
+  const tm=TMISSIONS[dayNum-1]||TMISSIONS[0];
   el.innerHTML=`
   <div class="trial-hdr">
-    <h2>3-Day Training Trial 🥋</h2>
-    <div class="tdi">${[1,2,3].map(d=>{const dk=tk[d-1];const id=dk&&ST.td[dk]&&ST.td[dk].complete;const ia=d===dn;return`<div class="tdidot ${id?"done":ia?"active":""}">${d}</div>`;}).join("")}</div>
-    <div class="beltrow"><span>Today:</span><div class="beltstrip" style="background:${belt.color}"></div><span>${belt.label}</span></div>
+    <h2>Trial Day ${dayNum} of 3 🌱</h2>
+    <p style="font-size:12px;color:rgba(255,255,255,0.45);margin:4px 0 10px">${new Date().toLocaleDateString("en",{weekday:"long",month:"long",day:"numeric"})}</p>
+    <div class="beltrow"><div class="beltstrip" style="background:${belt.color}"></div><span>${belt.label}</span></div>
     <div class="pwrap"><div class="pbar" style="width:${(done/7)*100}%"></div></div>
-    <p class="plbl">${done}/7 habits practised${done===7?" 🔥":""}</p>
+    <p class="plbl">${done}/7 habits today${done===7?" 🔥":""}</p>
   </div>
   <div class="miscard">
-    <h3>🎯 Day ${dn} Mission</h3>
-    <p>${mis.main}</p>
-    <textarea class="misinp" id="misinp" placeholder="Write your response here — be honest, Musa...">${td.mr||""}</textarea>
-    <button style="margin-top:8px;padding:7px 14px;border-radius:8px;border:none;background:rgba(59,130,246,0.28);color:#93c5fd;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:pointer;" onclick="svMis()">Save Response</button>
+    <h3>📝 Today's Mission</h3>
+    <p>${tm.main}</p>
+    <textarea class="misinp" id="misinp" placeholder="Write your honest response here...">${dd.mr||""}</textarea>
+    <button class="btn-fl" style="background:#6366f1;width:100%;margin-top:8px" onclick="svMis()">Save Mission Response</button>
   </div>
-  <p style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:10px">Check in on all 7 habits:</p>
-  <div id="thcards"></div>
-  <div class="winban ${done===7?"show":""}"><div class="tr">🏆</div><h2>Black Belt Day ${dn}!</h2><p>All 7 practised. Aang would be proud. 🌊🔥🌪️🪨</p></div>
-  ${done>0?`<button class="daycbtn" onclick="cmpDay(${dn})">Mark Day ${dn} Complete ✓</button>`:""}`;
-  rthc(th,tn,mis.prompts);
-}
-
-function rthc(th,tn,pr){
-  const c=document.getElementById("thcards");if(!c)return;
-  c.innerHTML=HABITS.map((h,i)=>{
-    const id=!!th[h.id];const nt=tn[h.id]||"";
-    const pv=nt?`📝 "${nt.length>38?nt.slice(0,38)+"…":nt}"`:"＋ Write reflection";
+  <p style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin:14px 0 10px">7 Habit Check-in + Reflections:</p>
+  <div id="trcards"></div>
+  <div class="winban ${done===7?"show":""}"><div class="tr">🏆</div><h2>Black Belt Day!</h2><p>All 7 mastered. 🌊🔥🌪️🌿</p></div>
+  ${dd.complete?"":`<button class="daycbtn" onclick="cmpDay(${dayNum})">Complete Day ${dayNum} →</button>`}`;
+  const prompts=tm.prompts||[];
+  document.getElementById("trcards").innerHTML=HABITS.map((h,i)=>{
+    const id=!!hb[h.id];const nt2=tn[h.id]||"";const pv=nt2?`📝 "${nt2.length>38?nt2.slice(0,38)+"…":nt2}"`:"＋ Write reflection";
     return`<div class="hcc ${id?"done":""}" style="--hc:${h.color};animation-delay:${i*0.04}s">
-      <div class="hccm" onclick="tgTH(${h.id})">
-        <div class="hccbox">${id?"✓":""}</div>
-        <div class="hcct"><div class="hccn">${h.emoji} Habit ${h.id}: ${h.name}</div><div class="hccs">${h.subtitle}</div></div>
-      </div>
-      <div class="hccp" onclick="tgTN(${h.id})">${id?pv:pr[i]}</div>
+      <div class="hccm" onclick="tgTH(${h.id})"><div class="hccbox">${id?"✓":""}</div>
+      <div class="hcct"><div class="hccn">${h.emoji} Habit ${h.id}: ${h.name}</div><div class="hccs">${h.subtitle}</div></div></div>
+      <div class="hccp" onclick="tgTN(${h.id})">${id?pv:(prompts[i]||"＋ Add reflection")}</div>
       <div class="hccnr" id="tnr-${h.id}">
         <textarea class="hccni" id="tn-${h.id}" placeholder="Be honest — what actually happened?">${(tn[h.id]||"").replace(/"/g,"&quot;")}</textarea>
         <button class="hccnsv" style="background:${h.color}" onclick="svTN(${h.id})">Save</button>
@@ -632,7 +672,7 @@ function rwck(el){
   <p>${wp.content}</p></div>`:`<div class="lockprog"><span class="li">🔒</span><p>Your Week ${cw} program is being prepared.<br>Your parent will unlock it soon.</p></div>`}
   <p style="font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.45);margin:14px 0 10px">Today's habit check-in:</p>
   <div id="whcards"></div>
-  <div class="winban ${done===7?"show":""}"><div class="tr">🏆</div><h2>Black Belt Day!</h2><p>All 7 mastered. 🌊🔥🌪️🪨</p></div>`;
+  <div class="winban ${done===7?"show":""}"><div class="tr">🏆</div><h2>Black Belt Day!</h2><p>All 7 mastered. 🌊🔥🌪️🌿</p></div>`;
   const wp2=["🌊 What can you control today?","🎯 Is today building toward Shenton?","📋 First things first?","🤝 Win-win opportunity today?","👂 Who needs to feel heard by you?","🌪️ Can you combine with someone today?","🌿 How are you restoring yourself?"];
   document.getElementById("whcards").innerHTML=HABITS.map((h,i)=>{
     const id=!!hb[h.id];const nt2=nt[h.id]||"";const pv=nt2?`📝 "${nt2.length>38?nt2.slice(0,38)+"…":nt2}"`:"＋ Write reflection";
@@ -652,7 +692,7 @@ function tgWH(id){const tod=tdk();if(!ST.wd[tod])ST.wd[tod]={habits:{},notes:{}}
 function tgWN(id){const r=document.getElementById("wnr-"+id);const i=document.getElementById("wn-"+id);if(r&&r.classList.toggle("open")&&i)i.focus();}
 function svWN(id){const tod=tdk();if(!ST.wd[tod])ST.wd[tod]={habits:{},notes:{}};const i=document.getElementById("wn-"+id);if(i)ST.wd[tod].notes[id]=i.value;sv();rwck(document.getElementById("dailyContent"));}
 
-/* PROGRESS */
+/* ── PROGRESS ── */
 function gStr(id){
   let s=0;const d=new Date();
   while(true){const k=d.toISOString().split("T")[0];const a=(ST.td[k]&&ST.td[k].habits&&ST.td[k].habits[id])||(ST.wd[k]&&ST.wd[k].habits&&ST.wd[k].habits[id]);if(a){s++;d.setDate(d.getDate()-1);}else break;}
@@ -661,7 +701,7 @@ function gStr(id){
 
 function rpg(){
   const el=document.getElementById("progContent");
-  if(!ST.ad){el.innerHTML=`<div class="ndmsg">Complete your assessment first to see progress data.</div>`;return;}
+  if(!ST.ad){el.innerHTML=`<div class="ndmsg"><span style="font-size:40px;display:block;margin-bottom:12px">📊</span><p>Complete your assessment first to see progress data.</p><br><button class="btn-primary" onclick="showView('assess')">Go to Assessment →</button></div>`;return;}
   const wd=wkd();const tod=tdk();
   const bars=wd.map(day=>{
     const td=ST.td[day];const wdd=ST.wd[day];const hb=(td&&td.habits)||(wdd&&wdd.habits)||{};
@@ -676,12 +716,13 @@ function rpg(){
     const dots=wd.map(d=>{const td=ST.td[d];const wdd=ST.wd[d];const f=(td&&td.habits&&td.habits[h.id])||(wdd&&wdd.habits&&wdd.habits[h.id]);const t=d===tod;return`<div class="sdot" style="${f?`background:${h.color}`:""};${t?`border:2px solid ${h.color}`:""}"></div>`;}).join("");
     return`<div class="strow"><div style="font-size:18px">${h.emoji}</div><div style="flex:1"><div style="font-weight:800;font-size:12px">Habit ${h.id}: ${h.name}</div><div class="sdots">${dots}</div></div><div class="str">${str>0?`<div class="sfire">🔥 ${str}d</div>`:""}<div class="sdlbl">${wc}/7 days</div></div></div>`;
   }).join("");
-  el.innerHTML=`<div class="bchwrap"><div class="bars">${bars}</div></div>
+  el.innerHTML=`<div class="prog-hdr"><h2>📈 My Progress</h2><p>Your journey so far</p></div>
+  <div class="bchwrap"><div class="bars">${bars}</div></div>
   ${ST.as?`<div style="margin-bottom:16px"><p style="font-size:13px;font-weight:800;margin-bottom:10px">Your Assessment Radar</p>${bRad(ST.as)}<p style="font-size:11px;color:rgba(255,255,255,0.45);text-align:center;margin-top:6px">Taken on ${ST.adate||"Day 1"}</p></div>`:""}
   <p style="font-weight:800;font-size:13px;margin-bottom:10px">This Week's Habit Streaks</p>${strs}`;
 }
 
-/* PARENT */
+/* ── PARENT ── */
 function handleSecTap(){
   stc++;clearTimeout(stT);stT=setTimeout(()=>{stc=0;},2000);
   if(stc>=5){stc=0;document.getElementById("ptabBtn").style.display="";showView("parent");}
@@ -698,7 +739,7 @@ function rpins(el){
   <p>Enter your PIN to access Musa's progress data</p>
   <input class="pininp" type="password" id="pinInp" placeholder="Enter PIN" onkeydown="if(event.key==='Enter')chkPin()"/>
   <p class="pinerr" id="pinErr">Incorrect PIN. Try again.</p>
-  <button class="btn-primary" onclick="chkPin()">Unlock Dashboard</button></div>`;
+  <br/><br/><button class="btn-primary" onclick="chkPin()">Unlock Dashboard</button></div>`;
 }
 
 function chkPin(){
@@ -728,7 +769,7 @@ function rpdb(el){
 
   <div class="pdsec"><p class="pdst">📊 Assessment Scores + Radar</p>
   ${bRad(sc)}
-  <div style="margin-top:10px">${hs.map(x=>`<div class="phr"><span style="font-size:18px">${x.h.emoji}</span><div style="flex:1"><div class="phrn">${x.h.name}</div><div class="phrs" style="color:${x.t.color}">Assessment: ${x.as}/9 · Practised in trial: ${x.th}/${totD} days</div></div><span class="phrt" style="background:${x.t.bg};color:${x.t.color};border:1px solid ${x.t.brd}">${x.t.lbl}</span></div>`).join("")}</div></div>
+  <div style="margin-top:10px">${hs.map(x=>`<div class="phr"><span style="font-size:18px">${x.h.emoji}</span><div style="flex:1"><div class="phrn">${x.h.name}</div><div class="phrs" style="color:${x.t.color}">Assessment: ${x.as}/9 · Practised in trial: ${x.th}/${totD} days</div></div><span class="tbdg" style="background:${x.t.bg};color:${x.t.color};border:1px solid ${x.t.brd}">${x.t.lbl}</span></div>`).join("")}</div></div>
 
   ${gaps.length||surp.length?`<div class="pdsec"><p class="pdst">🔍 Behaviour Gaps & Surprises</p>
   ${gaps.map(x=>`<div class="gapcard"><h4>⚠️ Gap: ${x.h.emoji} ${x.h.name}</h4><p>Scored himself ${x.as}/9 (confident) but only practised ${x.th}/${totD} trial days. Worth a conversation.</p></div>`).join("")}
@@ -745,7 +786,7 @@ function rpdb(el){
     const dd=ST.td[day]||{};const mr=dd.mr||"";
     return`<div style="margin-bottom:14px">
     <p style="font-size:12px;font-weight:800;color:rgba(251,191,36,0.8);margin-bottom:8px">— Day ${di+1} (${day}) —</p>
-    ${mr?`<div class="prc"><div class="prch"><span style="font-size:16px">🎯</span><span style="font-size:12px;font-weight:800">Mission Response</span><span style="font-size:10px;color:rgba(255,255,255,0.45);margin-left:auto">Day ${di+1}</span></div><p class="prct">${mr}</p></div>`:`<p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:8px;font-style:italic">No mission response for Day ${di+1}.</p>`}
+    ${mr?`<div class="prc"><div class="prch"><span style="font-size:16px">🎯</span><span style="font-size:12px;font-weight:800">Mission Response</span></div><p class="prct">${mr}</p></div>`:`<p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:8px;font-style:italic">No mission response for Day ${di+1}.</p>`}
     ${HABITS.map(h=>{const nt=dd.notes&&dd.notes[h.id];const dn=dd.habits&&dd.habits[h.id];if(!nt&&!dn)return"";return`<div class="prc"><div class="prch"><span style="font-size:16px">${h.emoji}</span><span style="font-size:12px;font-weight:800">${h.name}</span><span style="font-size:10px;color:rgba(255,255,255,0.45);margin-left:auto">${dn?"✅":"⬜"}</span></div>${nt?`<p class="prct">${nt}</p>`:`<p class="prct" style="opacity:0.4">No reflection written.</p>`}</div>`;}).join("")}
     </div>`;
   }).join("")}</div>`:`<div class="pdsec"><p class="pdst">📝 Reflections</p><div class="ndmsg">No trial days completed yet.</div></div>`}
@@ -754,7 +795,6 @@ function rpdb(el){
   <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:10px;line-height:1.6">
     📸 Screenshot this dashboard → share it in claude.ai → Claude writes Musa's program → paste it below → approve it.
   </p>
-  <p style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.45);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Program content from Claude:</p>
   <textarea class="progta" id="progInp" placeholder="Paste Musa's Week ${cw} program here after getting it from Claude...">${wp.content||""}</textarea>
   <p style="font-size:11px;font-weight:800;color:rgba(255,255,255,0.45);margin:10px 0 6px;text-transform:uppercase;letter-spacing:0.5px">Your personal note to Musa (optional):</p>
   <textarea class="noteta" id="noteInp" placeholder="Add a personal message for Musa...">${wp.pn||""}</textarea>
@@ -780,15 +820,7 @@ function appProg(){
 function setCW(w){ST.cw=w;sv();rpdb(document.getElementById("parentContent"));}
 function lkPar(){puL=false;rpins(document.getElementById("parentContent"));}
 
-/* SECRET — hold header title 3s */
-const ht=document.getElementById("headerTitle");
-function shwPTab(){document.getElementById("ptabBtn").style.display="";showView("parent");}
-ht.addEventListener("mousedown",()=>{hlpT=setTimeout(shwPTab,3000);});
-ht.addEventListener("mouseup",()=>clearTimeout(hlpT));
-ht.addEventListener("touchstart",()=>{hlpT=setTimeout(shwPTab,3000);},{passive:true});
-ht.addEventListener("touchend",()=>clearTimeout(hlpT));
-
-/* INIT */
+/* ── INIT ── */
 ld();rhm();rlc();
 if(ST.tc)document.getElementById("ptabBtn").style.display="";
 </script>
