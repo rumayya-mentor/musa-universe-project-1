@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musa — Year 7 Diagnostic Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f; --surface: #111118; --surface2: #18181f;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+  --text: #f0eee8; --muted: rgba(240,238,232,0.48); --dim: rgba(240,238,232,0.25);
+  --a1: #f5a623; --a2: #e8533a; --a3: #7c6af5;
+  --correct: #34c97a; --wrong: #e8533a; --hint: #f5a623;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);font-family:'Syne',sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* grain */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.35;}
+.glow{position:fixed;top:-20%;left:-10%;width:55vw;height:55vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,166,35,0.07) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.glow2{position:fixed;bottom:-15%;right:-10%;width:45vw;height:45vw;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,106,245,0.07) 0%,transparent 65%);pointer-events:none;z-index:0;}
+
+.wrap{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:0 22px 80px;}
+
+/* ── VIEWS ── */
+.view{display:none;} .view.active{display:block;}
+
+/* ══ SPLASH ══ */
+.splash{padding:80px 0 60px;text-align:center;animation:fadeUp .7s ease both;}
+.splash-eye{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--a1);border:1px solid rgba(245,166,35,0.3);
+  border-radius:20px;padding:5px 16px;margin-bottom:26px;
+}
+.splash h1{
+  font-family:'DM Serif Display',serif;font-size:clamp(36px,8vw,64px);
+  line-height:1.05;margin-bottom:14px;
+  background:linear-gradient(135deg,var(--text) 0%,rgba(240,238,232,0.5) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.splash h1 em{
+  font-style:italic;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.splash-desc{font-size:15px;color:var(--muted);line-height:1.75;max-width:480px;margin:0 auto 36px;}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:520px;margin:0 auto 40px;}
+.info-card{background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:16px 18px;}
+.info-val{font-size:20px;font-weight:700;color:var(--a1);display:block;margin-bottom:3px;}
+.info-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.btn-start{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  color:#0a0a0f;border:none;border-radius:12px;padding:16px 40px;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 4px 30px rgba(245,166,35,0.3);transition:all .25s;
+}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(245,166,35,0.45);}
+
+/* ══ TEST ══ */
+.test-top{padding:36px 0 20px;animation:fadeDown .5s ease both;}
+.test-top h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,4vw,32px);margin-bottom:6px;}
+.test-top h2 em{font-style:italic;color:var(--a1);}
+.test-top p{font-size:13px;color:var(--muted);}
+
+.q-meta-row{display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--dim);font-family:'DM Mono',monospace;margin:18px 0 7px;}
+.prog-wrap{background:rgba(255,255,255,0.05);border-radius:20px;height:3px;margin-bottom:24px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--a1),var(--a2));border-radius:20px;
+  transition:width .5s ease;box-shadow:0 0 8px rgba(245,166,35,0.45);}
+
+/* question card */
+.q-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;padding:30px 32px;position:relative;
+  overflow:hidden;animation:fadeUp .4s ease both;
+}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:18px 18px 0 0;}
+.q-card.cat-fractions::before  {background:linear-gradient(90deg,#2196b8,#5bc8e8);}
+.q-card.cat-integers::before   {background:linear-gradient(90deg,#7c6af5,#b0a8ff);}
+.q-card.cat-algebra::before    {background:linear-gradient(90deg,var(--a2),#ff9a6a);}
+.q-card.cat-geometry::before   {background:linear-gradient(90deg,#34c97a,#7eedb4);}
+.q-card.cat-percentage::before {background:linear-gradient(90deg,var(--a1),#ffd080);}
+.q-card.cat-statistics::before {background:linear-gradient(90deg,#e8533a,#ff9a6a);}
+
+.q-top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.q-cat-tag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.dok-tag{font-size:10px;letter-spacing:1px;font-family:'DM Mono',monospace;
+  padding:3px 10px;border-radius:6px;}
+.dok-1{background:rgba(255,255,255,0.04);color:#888;border:1px solid var(--border);}
+.dok-2{background:rgba(245,166,35,0.09);color:var(--a1);border:1px solid rgba(245,166,35,0.22);}
+.dok-3{background:rgba(232,83,58,0.09);color:var(--a2);border:1px solid rgba(232,83,58,0.22);}
+
+.q-text{font-size:clamp(15px,2.2vw,18px);line-height:1.78;color:var(--text);font-weight:400;margin-bottom:24px;}
+.q-text strong{color:var(--a1);font-weight:700;}
+
+.opts{display:grid;gap:9px;margin-bottom:18px;}
+.opt{
+  display:flex;align-items:center;gap:13px;
+  background:rgba(255,255,255,0.03);border:1px solid var(--border);
+  border-radius:10px;padding:12px 16px;cursor:pointer;
+  transition:all .2s;text-align:left;color:var(--text);
+  font-family:'Syne',sans-serif;font-size:14px;position:relative;overflow:hidden;
+}
+.opt::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;
+  background:linear-gradient(90deg,rgba(245,166,35,0.07),transparent);}
+.opt:hover:not(:disabled)::before{opacity:1;}
+.opt:hover:not(:disabled){border-color:rgba(245,166,35,0.38);transform:translateX(3px);}
+.opt:disabled{cursor:not-allowed;}
+.opt.correct{background:rgba(52,201,122,0.1);border-color:rgba(52,201,122,0.5);transform:translateX(3px);}
+.opt.wrong  {background:rgba(232,83,58,0.09);border-color:rgba(232,83,58,0.4);}
+.opt-lbl{
+  width:24px;height:24px;border-radius:6px;flex-shrink:0;
+  background:rgba(255,255,255,0.06);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--a1);font-family:'DM Mono',monospace;transition:all .2s;
+}
+.opt.correct .opt-lbl{background:rgba(52,201,122,0.22);border-color:var(--correct);color:#34c97a;}
+.opt.wrong   .opt-lbl{background:rgba(232,83,58,0.18);border-color:var(--wrong);color:#e8533a;}
+
+.chances{display:flex;align-items:center;gap:7px;margin-bottom:14px;}
+.chances-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-right:4px;}
+.flame{font-size:17px;transition:all .3s;}
+.flame.out{filter:grayscale(1) brightness(0.22);transform:scale(0.78);}
+
+.hint-box{background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);
+  border-radius:10px;padding:13px 17px;margin-bottom:14px;display:none;animation:slideIn .3s ease;}
+.hint-box.show{display:block;}
+.hint-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--a1);margin-bottom:5px;}
+.hint-txt{font-size:13px;color:rgba(240,238,232,0.72);line-height:1.65;font-style:italic;}
+
+.reveal-box{background:rgba(52,201,122,0.07);border:1px solid rgba(52,201,122,0.22);
+  border-radius:10px;padding:14px 18px;margin-bottom:14px;display:none;animation:slideIn .3s ease;}
+.reveal-box.show{display:block;}
+.reveal-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--correct);margin-bottom:5px;}
+.reveal-txt{font-size:13px;color:rgba(240,238,232,0.8);line-height:1.7;}
+.reveal-txt .math{color:var(--a1);font-weight:700;font-family:'DM Mono',monospace;}
+
+.ok-box{background:rgba(52,201,122,0.07);border:1px solid rgba(52,201,122,0.2);
+  border-radius:10px;padding:12px 17px;margin-bottom:14px;display:none;animation:slideIn .3s ease;}
+.ok-box.show{display:block;}
+.ok-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--correct);margin-bottom:4px;}
+.ok-txt{font-size:13px;color:rgba(240,238,232,0.7);font-style:italic;}
+
+.next-btn{
+  display:none;background:linear-gradient(135deg,var(--a1),var(--a2));
+  color:#0a0a0f;border:none;border-radius:10px;padding:12px 26px;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .25s;
+  box-shadow:0 4px 20px rgba(245,166,35,0.28);
+}
+.next-btn.show{display:inline-flex;align-items:center;gap:8px;}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,166,35,0.42);}
+
+/* ══ RESULTS ══ */
+.results-wrap{padding:40px 0;animation:fadeUp .7s ease both;}
+.r-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:22px;padding:44px 38px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.r-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--correct));}
+.r-big{
+  font-family:'DM Serif Display',serif;font-size:clamp(56px,14vw,96px);font-weight:400;line-height:1;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;
+}
+.r-frac{font-size:16px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:4px;}
+.r-title{font-family:'DM Serif Display',serif;font-size:clamp(18px,4vw,28px);margin-bottom:4px;}
+.r-sub{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:32px;}
+
+/* category bars */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:11px;margin:24px 0;text-align:left;}
+.cat-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:15px 16px;}
+.cat-name{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.cat-score-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.cat-score{font-size:20px;font-weight:700;}
+.cat-level{font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:6px;}
+.lv-strong {background:rgba(52,201,122,0.15);color:#34c97a;border:1px solid rgba(52,201,122,0.3);}
+.lv-ok     {background:rgba(245,166,35,0.12);color:var(--a1);border:1px solid rgba(245,166,35,0.28);}
+.lv-weak   {background:rgba(232,83,58,0.12); color:var(--a2);border:1px solid rgba(232,83,58,0.28);}
+.cat-bar-bg{background:rgba(255,255,255,0.06);border-radius:4px;height:4px;}
+.cat-bar{height:100%;border-radius:4px;transition:width .9s ease;}
+
+/* diagnosis */
+.diag-box{
+  background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.18);
+  border-radius:14px;padding:20px 24px;margin:16px 0;text-align:left;
+}
+.diag-box h3{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--a1);margin-bottom:10px;}
+.diag-box p{font-size:14px;color:var(--muted);line-height:1.75;}
+.diag-box strong{color:var(--text);}
+
+.focus-list{margin:16px 0 24px;text-align:left;}
+.focus-list li{
+  list-style:none;padding:9px 0;border-bottom:1px solid var(--border);
+  font-size:13px;color:var(--muted);display:flex;gap:11px;align-items:flex-start;
+}
+.focus-list li:last-child{border-bottom:none;}
+.focus-num{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;
+  background:linear-gradient(135deg,var(--a1),var(--a2));color:#0a0a0f;
+  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;
+}
+
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+.btn-pri{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--a1),var(--a2));color:#0a0a0f;
+  border:none;border-radius:10px;padding:14px 30px;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .25s;
+  box-shadow:0 4px 24px rgba(245,166,35,0.28);
+}
+.btn-pri:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(245,166,35,0.42);}
+.btn-sec{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;color:var(--text);border:1px solid var(--border2);
+  border-radius:10px;padding:12px 24px;font-family:'Syne',sans-serif;font-size:12px;
+  font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .25s;
+}
+.btn-sec:hover{background:var(--surface2);}
+
+@keyframes fadeUp  {from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-13px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn {from{opacity:0;transform:translateX(-7px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:560px){.q-card{padding:22px 18px;}.r-card{padding:28px 18px;}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="glow2"></div>
+<div class="wrap">
+
+<!-- ══ SPLASH ══ -->
+<div id="v-splash" class="view active">
+  <div class="splash">
+    <div class="splash-eye">📋 Phase 1 — Diagnostic Assessment</div>
+    <h1>Musa's<br><em>Math Check-Up</em></h1>
+    <p class="splash-desc">Before we plan anything, let's find out exactly where Musa stands. This test covers all key Year 7 topics. Results will shape his personalised roadmap.</p>
+    <div class="info-grid">
+      <div class="info-card"><span class="info-val">16</span><span class="info-lbl">Questions</span></div>
+      <div class="info-card"><span class="info-val">6</span><span class="info-lbl">Topic Areas</span></div>
+      <div class="info-card"><span class="info-val">DOK 1–3</span><span class="info-lbl">Complexity Range</span></div>
+      <div class="info-card"><span class="info-val">~25 min</span><span class="info-lbl">Est. Duration</span></div>
+    </div>
+    <button class="btn-start" onclick="startTest()">Start Diagnostic →</button>
+  </div>
+</div>
+
+<!-- ══ TEST ══ -->
+<div id="v-test" class="view">
+  <div class="test-top">
+    <h2>Diagnostic — <em>Year 7</em></h2>
+    <p>Answer each question. You have 3 attempts per question — wrong answers reveal hints.</p>
+  </div>
+  <div class="q-meta-row">
+    <span id="q-label">Question 1 of 16</span>
+    <span id="q-cat">—</span>
+  </div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+  <div id="q-wrap"></div>
+</div>
+
+<!-- ══ RESULTS ══ -->
+<div id="v-results" class="view">
+  <div class="results-wrap">
+    <div class="r-card">
+      <div class="r-big" id="r-pct"></div>
+      <div class="r-frac" id="r-frac"></div>
+      <div class="r-title" id="r-title"></div>
+      <div class="r-sub" id="r-sub"></div>
+      <div class="cat-grid" id="r-cats"></div>
+      <div class="diag-box" id="r-diag"></div>
+      <ul class="focus-list" id="r-focus"></ul>
+      <div class="btn-row">
+        <button class="btn-pri" id="btn-roadmap" onclick="alert('Roadmap will be generated based on these results!\n\nNext step: share these results and we will build Musa\'s personalised plan.')">📋 Generate Musa\'s Roadmap</button>
+        <button class="btn-sec" onclick="restartTest()">🔄 Retake Test</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<script>
+const QS = [
+  // ── FRACTIONS & DECIMALS ─────────────────────────────────
+  { cat:'fractions', catLabel:'Fractions & Decimals', dok:1,
+    q:'Which fraction is equivalent to <strong>0.6</strong>?',
+    opts:['3/5','6/100','2/3','3/4'], ans:0,
+    hints:[
+      'Write 0.6 as a fraction over 10: that gives you 6/10. Can you simplify it?',
+      '6 ÷ 2 = 3 and 10 ÷ 2 = 5. So 6/10 simplifies to 3/5.',
+    ],
+    explain:'0.6 = 6/10 = <span class="math">3/5</span>.',
+  },
+  { cat:'fractions', catLabel:'Fractions & Decimals', dok:2,
+    q:'Calculate: <strong>2/3 + 3/4</strong>',
+    opts:['17/12','5/7','5/12','6/7'], ans:0,
+    hints:[
+      'To add fractions, find the Lowest Common Denominator (LCD) of 3 and 4.',
+      'LCD = 12. Convert: 2/3 = 8/12 and 3/4 = 9/12. Now add the numerators.',
+    ],
+    explain:'2/3 = 8/12 and 3/4 = 9/12. Sum = <span class="math">17/12</span>.',
+  },
+  { cat:'fractions', catLabel:'Fractions & Decimals', dok:3,
+    q:'A recipe needs <strong>2½ cups of flour</strong>. Musa wants to make <strong>⅔ of the recipe</strong>. How much flour does he need?',
+    opts:['1⅔ cups','2 cups','3⅓ cups','1½ cups'], ans:0,
+    hints:[
+      'Convert 2½ to an improper fraction first: 2½ = 5/2.',
+      'Multiply: 5/2 × 2/3 = 10/6. Simplify 10/6.',
+    ],
+    explain:'5/2 × 2/3 = 10/6 = <span class="math">5/3 = 1⅔ cups</span>.',
+  },
+
+  // ── INTEGERS ────────────────────────────────────────────
+  { cat:'integers', catLabel:'Integers', dok:1,
+    q:'Calculate: <strong>−8 + 15 − 4</strong>',
+    opts:['3','−27','7','27'], ans:0,
+    hints:[
+      'Work left to right: start with −8 + 15.',
+      '−8 + 15 = 7, then 7 − 4 = 3.',
+    ],
+    explain:'−8 + 15 = 7, then 7 − 4 = <span class="math">3</span>.',
+  },
+  { cat:'integers', catLabel:'Integers', dok:2,
+    q:'Temperature was <strong>−12°C</strong>, dropped <strong>7°C</strong>, then rose <strong>20°C</strong>. Final temperature?',
+    opts:['1°C','−19°C','25°C','15°C'], ans:0,
+    hints:[
+      'Start at −12 and subtract 7: −12 − 7 = ?',
+      '−12 − 7 = −19. Then −19 + 20 = 1°C.',
+    ],
+    explain:'−12 − 7 = −19, then −19 + 20 = <span class="math">1°C</span>.',
+  },
+
+  // ── ALGEBRA ─────────────────────────────────────────────
+  { cat:'algebra', catLabel:'Algebra & Equations', dok:1,
+    q:'If <strong>x = 4</strong>, what is the value of <strong>3x − 5</strong>?',
+    opts:['7','17','12','−2'], ans:0,
+    hints:[
+      'Substitute x = 4: replace x with 4 in the expression.',
+      '3 × 4 − 5 = 12 − 5 = 7.',
+    ],
+    explain:'3(4) − 5 = 12 − 5 = <span class="math">7</span>.',
+  },
+  { cat:'algebra', catLabel:'Algebra & Equations', dok:2,
+    q:'Solve: <strong>5x + 3 = 28</strong>',
+    opts:['x = 5','x = 3','x = 6','x = 7'], ans:0,
+    hints:[
+      'Subtract 3 from both sides first: 5x = 28 − 3.',
+      '5x = 25. Divide both sides by 5.',
+    ],
+    explain:'5x = 25 → <span class="math">x = 5</span>.',
+  },
+  { cat:'algebra', catLabel:'Algebra & Equations', dok:3,
+    q:'Two numbers add to <strong>40</strong>. One is <strong>3 times the other</strong>. What are they?',
+    opts:['10 and 30','8 and 32','15 and 25','12 and 28'], ans:0,
+    hints:[
+      'Let the smaller number = x. Then the larger = 3x. Write: x + 3x = 40.',
+      '4x = 40, so x = 10. The numbers are 10 and 30.',
+    ],
+    explain:'4x = 40 → x = 10. Numbers: <span class="math">10 and 30</span>.',
+  },
+
+  // ── GEOMETRY ────────────────────────────────────────────
+  { cat:'geometry', catLabel:'Geometry & Measurement', dok:1,
+    q:'A rectangle is <strong>12 cm</strong> long and <strong>7 cm</strong> wide. What is its area?',
+    opts:['84 cm²','38 cm²','19 cm²','168 cm²'], ans:0,
+    hints:[
+      'Area of a rectangle = length × width.',
+      '12 × 7 = 84 cm².',
+    ],
+    explain:'Area = 12 × 7 = <span class="math">84 cm²</span>.',
+  },
+  { cat:'geometry', catLabel:'Geometry & Measurement', dok:2,
+    q:'A triangle has base <strong>14 cm</strong> and height <strong>9 cm</strong>. What is its area?',
+    opts:['63 cm²','126 cm²','46 cm²','23 cm²'], ans:0,
+    hints:[
+      'Area of a triangle = ½ × base × height.',
+      '½ × 14 × 9 = 7 × 9 = 63 cm².',
+    ],
+    explain:'Area = ½ × 14 × 9 = <span class="math">63 cm²</span>.',
+  },
+  { cat:'geometry', catLabel:'Geometry & Measurement', dok:3,
+    q:'A circle has radius <strong>5 m</strong>. What is its area? (π ≈ 3.14)',
+    opts:['78.5 m²','31.4 m²','15.7 m²','314 m²'], ans:0,
+    hints:[
+      'Area of a circle = π × r². Square the radius first: 5² = 25.',
+      '3.14 × 25 = 78.5 m².',
+    ],
+    explain:'Area = π × r² = 3.14 × 25 = <span class="math">78.5 m²</span>.',
+  },
+
+  // ── PERCENTAGES, RATIO & RATES ──────────────────────────
+  { cat:'percentage', catLabel:'Percentages, Ratio & Rates', dok:1,
+    q:'What is <strong>20%</strong> of <strong>150</strong>?',
+    opts:['30','20','15','50'], ans:0,
+    hints:[
+      'Convert 20% to a decimal: 20% = 0.20.',
+      '0.20 × 150 = 30.',
+    ],
+    explain:'20% of 150 = 0.20 × 150 = <span class="math">30</span>.',
+  },
+  { cat:'percentage', catLabel:'Percentages, Ratio & Rates', dok:2,
+    q:'A shirt costs <strong>$80</strong>, on sale for <strong>$60</strong>. What is the percentage discount?',
+    opts:['25%','20%','33%','15%'], ans:0,
+    hints:[
+      'Percentage discount = (amount saved ÷ original price) × 100.',
+      'Saved = $20. 20 ÷ 80 × 100 = 25%.',
+    ],
+    explain:'20 ÷ 80 × 100 = <span class="math">25%</span>.',
+  },
+  { cat:'percentage', catLabel:'Percentages, Ratio & Rates', dok:3,
+    q:'Concrete uses cement, sand and gravel in ratio <strong>1 : 3 : 5</strong>. To make <strong>180 kg</strong> of concrete, how much sand is needed?',
+    opts:['60 kg','20 kg','100 kg','36 kg'], ans:0,
+    hints:[
+      'Total parts = 1 + 3 + 5 = 9. Each part = 180 ÷ 9 = 20 kg.',
+      'Sand is 3 parts: 3 × 20 = 60 kg.',
+    ],
+    explain:'Each part = 180 ÷ 9 = 20 kg. Sand = 3 × 20 = <span class="math">60 kg</span>.',
+  },
+
+  // ── STATISTICS ──────────────────────────────────────────
+  { cat:'statistics', catLabel:'Statistics & Probability', dok:2,
+    q:'Scores: <strong>55, 72, 48, 90, 60</strong>. What is the <strong>mean</strong>?',
+    opts:['65','60','72','325'], ans:0,
+    hints:[
+      'Mean = total ÷ number of values. Add all scores first.',
+      '55+72+48+90+60 = 325. Then 325 ÷ 5 = 65.',
+    ],
+    explain:'Sum = 325. Mean = 325 ÷ 5 = <span class="math">65</span>.',
+  },
+  { cat:'statistics', catLabel:'Statistics & Probability', dok:2,
+    q:'A bag has <strong>3 red</strong>, <strong>5 blue</strong> and <strong>2 green</strong> marbles. What is the probability of picking a <strong>blue</strong> marble?',
+    opts:['1/2','1/3','5/3','3/10'], ans:0,
+    hints:[
+      'Probability = number of favourable outcomes ÷ total outcomes.',
+      'Total = 3+5+2 = 10. Blue = 5. P(blue) = 5/10 = 1/2.',
+    ],
+    explain:'P(blue) = 5/10 = <span class="math">1/2</span>.',
+  },
+];
+
+// ── STATE ──
+let cur = 0, attempts = 3, results = [];
+
+// ── VIEWS ──
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function startTest() { cur=0; attempts=3; results=[]; showView('v-test'); renderQ(); }
+function restartTest() { startTest(); }
+
+// ── RENDER QUESTION ──
+function renderQ() {
+  const q = QS[cur];
+  attempts = 3;
+  const pct = (cur / QS.length) * 100;
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('q-label').textContent = `Question ${cur+1} of ${QS.length}`;
+  document.getElementById('q-cat').textContent = q.catLabel;
+
+  const letters = ['A','B','C','D'];
+  const optsHTML = q.opts.map((o,i) =>
+    `<button class="opt" id="o${i}" onclick="pick(${i})">
+      <span class="opt-lbl">${letters[i]}</span>${o}
+    </button>`).join('');
+
+  const dokClass = `dok-${q.dok}`;
+  const dokLabel = q.dok === 1 ? 'DOK 1 · Recall' : q.dok === 2 ? 'DOK 2 · Skill' : 'DOK 3 · Strategic';
+
+  document.getElementById('q-wrap').innerHTML = `
+    <div class="q-card cat-${q.cat}" id="qcard">
+      <div class="q-top-row">
+        <span class="q-cat-tag">${q.catLabel}</span>
+        <span class="dok-tag ${dokClass}">${dokLabel}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      <div class="chances">
+        <span class="chances-lbl">Chances</span>
+        <span class="flame" id="f0">🔥</span>
+        <span class="flame" id="f1">🔥</span>
+        <span class="flame" id="f2">🔥</span>
+      </div>
+      <div class="hint-box" id="hbox"><div class="hint-lbl" id="hlbl">💡 Hint</div><div class="hint-txt" id="htxt"></div></div>
+      <div class="reveal-box" id="rbox"><div class="reveal-lbl">📖 Explanation</div><div class="reveal-txt" id="rtxt"></div></div>
+      <div class="ok-box" id="okbox"><div class="ok-lbl">✅ Correct!</div><div class="ok-txt" id="oktxt"></div></div>
+      <div class="opts">${optsHTML}</div>
+      <button class="next-btn" id="nbtn" onclick="nextQ()">
+        ${cur < QS.length-1 ? 'Next Question →' : 'See Results →'}
+      </button>
+    </div>`;
+}
+
+function pick(idx) {
+  const q = QS[cur];
+  if (idx === q.ans) {
+    document.getElementById(`o${idx}`).classList.add('correct');
+    disableAll();
+    const used = 3 - attempts;
+    results.push({ cat: q.cat, dok: q.dok, correct: true, firstTry: used === 0 });
+    const msgs = [
+      'Perfect — answered on the first try! 🌟',
+      'Got it with some help — keep practising this type.',
+      'Got there in the end — review the explanation above.',
+    ];
+    const ob = document.getElementById('okbox');
+    document.getElementById('oktxt').textContent = msgs[Math.min(used,2)];
+    ob.classList.add('show');
+    document.getElementById('nbtn').classList.add('show');
+  } else {
+    attempts--;
+    document.getElementById(`o${idx}`).classList.add('wrong');
+    document.getElementById(`o${idx}`).disabled = true;
+    const flameIdx = 3 - attempts;
+    document.getElementById(`f${flameIdx-1}`).classList.add('out');
+    if (attempts > 0) {
+      const hi = 3 - attempts - 1;
+      const levels = ['💡 Hint 1','💡 Hint 2 — Going deeper','💡 Hint 3 — Almost there'];
+      document.getElementById('hlbl').textContent = levels[hi];
+      document.getElementById('htxt').textContent = q.hints[hi] || q.hints[q.hints.length-1];
+      document.getElementById('hbox').classList.add('show');
+    } else {
+      document.getElementById('f0').classList.add('out');
+      document.getElementById('f1').classList.add('out');
+      document.getElementById('f2').classList.add('out');
+      document.getElementById(`o${q.ans}`).classList.add('correct');
+      disableAll();
+      document.getElementById('rtxt').innerHTML = q.explain;
+      document.getElementById('rbox').classList.add('show');
+      document.getElementById('hbox').classList.remove('show');
+      results.push({ cat: q.cat, dok: q.dok, correct: false, firstTry: false });
+      document.getElementById('nbtn').classList.add('show');
+    }
+  }
+}
+
+function disableAll() {
+  for (let i=0;i<4;i++){const e=document.getElementById(`o${i}`);if(e)e.disabled=true;}
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= QS.length) showResults();
+  else renderQ();
+}
+
+// ── RESULTS ──
+function showResults() {
+  showView('v-results');
+
+  const total = QS.length;
+  const correct = results.filter(r=>r.correct).length;
+  const pct = Math.round(correct/total*100);
+
+  document.getElementById('r-pct').textContent = pct + '%';
+  document.getElementById('r-frac').textContent = `${correct} / ${total} correct`;
+
+  let title, sub;
+  if (pct>=90){title='Outstanding result!'; sub='Musa shows strong Year 7 mastery — ready to push into Year 8 content.';}
+  else if(pct>=70){title='Solid foundation!'; sub='Good overall with some clear areas to strengthen before moving forward.';}
+  else if(pct>=50){title='Developing — gaps identified.'; sub='Several areas need focused work. The roadmap will prioritise these first.';}
+  else {title='Early stage — let\'s build from here.'; sub='Significant gaps found. The roadmap will start with solid foundation work.';}
+  document.getElementById('r-title').textContent = title;
+  document.getElementById('r-sub').textContent = sub;
+
+  // per-category stats
+  const cats = [
+    {key:'fractions',  label:'Fractions & Decimals',       color:'#2196b8', barColor:'#5bc8e8'},
+    {key:'integers',   label:'Integers',                    color:'#7c6af5', barColor:'#b0a8ff'},
+    {key:'algebra',    label:'Algebra & Equations',         color:'#e8533a', barColor:'#ff9a6a'},
+    {key:'geometry',   label:'Geometry & Measurement',      color:'#34c97a', barColor:'#7eedb4'},
+    {key:'percentage', label:'Percentages, Ratio & Rates',  color:'#f5a623', barColor:'#ffd080'},
+    {key:'statistics', label:'Statistics & Probability',    color:'#e8533a', barColor:'#ff9a6a'},
+  ];
+  const catTotals = {};
+  QS.forEach(q => { catTotals[q.cat] = (catTotals[q.cat]||0)+1; });
+  const catCorrect = {};
+  results.forEach(r => { if(r.correct) catCorrect[r.cat] = (catCorrect[r.cat]||0)+1; });
+
+  const weakCats=[], okCats=[], strongCats=[];
+  let catsHTML='';
+  cats.forEach(c=>{
+    const tot = catTotals[c.key]||0;
+    const cor = catCorrect[c.key]||0;
+    const p = tot>0 ? Math.round(cor/tot*100) : 0;
+    let lvl, lvlClass;
+    if(p>=80){lvl='Strong'; lvlClass='lv-strong'; strongCats.push(c.label);}
+    else if(p>=50){lvl='OK'; lvlClass='lv-ok'; okCats.push(c.label);}
+    else{lvl='Needs Work'; lvlClass='lv-weak'; weakCats.push(c.label);}
+    catsHTML+=`<div class="cat-item">
+      <div class="cat-name" style="color:${c.color}">${c.label}</div>
+      <div class="cat-score-row">
+        <span class="cat-score" style="color:${c.color}">${cor}/${tot}</span>
+        <span class="cat-level ${lvlClass}">${lvl}</span>
+      </div>
+      <div class="cat-bar-bg"><div class="cat-bar" style="width:${p}%;background:${c.barColor}"></div></div>
+    </div>`;
+  });
+  document.getElementById('r-cats').innerHTML = catsHTML;
+
+  // diagnosis text
+  let diagText='';
+  if(weakCats.length){
+    diagText += `<strong>Priority areas (need focused work):</strong> ${weakCats.join(', ')}. `;
+  }
+  if(okCats.length){
+    diagText += `<strong>Developing areas (need consolidation):</strong> ${okCats.join(', ')}. `;
+  }
+  if(strongCats.length){
+    diagText += `<strong>Strong areas (ready to extend):</strong> ${strongCats.join(', ')}.`;
+  }
+  document.getElementById('r-diag').innerHTML=`<h3>📊 Diagnostic Finding</h3><p>${diagText || 'Complete all questions for a full diagnosis.'}</p>`;
+
+  // next focus list
+  const focusItems = [];
+  if(weakCats.length) weakCats.forEach(c => focusItems.push(`Start with <strong>${c}</strong> — build from scratch with DOK 1 exercises`));
+  if(okCats.length)   okCats.forEach(c => focusItems.push(`Consolidate <strong>${c}</strong> — push from DOK 2 to DOK 3`));
+  if(strongCats.length) focusItems.push(`Extend <strong>${strongCats.join(' & ')}</strong> — introduce Year 8 complexity`);
+
+  document.getElementById('r-focus').innerHTML = focusItems.slice(0,5).map((t,i)=>
+    `<li><span class="focus-num">${i+1}</span><span>${t}</span></li>`).join('');
+}
+</script>
+</body>
+</html>
