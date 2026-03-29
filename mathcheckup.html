@@ -453,6 +453,17 @@ const QS = [
 
 // ── STATE ──
 let cur = 0, attempts = 3, results = [];
+let shuffledOpts = [], shuffledAns = 0; // track shuffled order per question
+
+// ── SHUFFLE helper ──
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 // ── VIEWS ──
 function showView(id) {
@@ -472,8 +483,13 @@ function renderQ() {
   document.getElementById('q-label').textContent = `Question ${cur+1} of ${QS.length}`;
   document.getElementById('q-cat').textContent = q.catLabel;
 
+  // Shuffle options and track where the correct answer landed
+  const correctText = q.opts[q.ans];
+  shuffledOpts = shuffle(q.opts);
+  shuffledAns = shuffledOpts.indexOf(correctText);
+
   const letters = ['A','B','C','D'];
-  const optsHTML = q.opts.map((o,i) =>
+  const optsHTML = shuffledOpts.map((o,i) =>
     `<button class="opt" id="o${i}" onclick="pick(${i})">
       <span class="opt-lbl">${letters[i]}</span>${o}
     </button>`).join('');
@@ -506,7 +522,7 @@ function renderQ() {
 
 function pick(idx) {
   const q = QS[cur];
-  if (idx === q.ans) {
+  if (idx === shuffledAns) {
     document.getElementById(`o${idx}`).classList.add('correct');
     disableAll();
     const used = 3 - attempts;
@@ -516,9 +532,8 @@ function pick(idx) {
       'Got it with some help — keep practising this type.',
       'Got there in the end — review the explanation above.',
     ];
-    const ob = document.getElementById('okbox');
     document.getElementById('oktxt').textContent = msgs[Math.min(used,2)];
-    ob.classList.add('show');
+    document.getElementById('okbox').classList.add('show');
     document.getElementById('nbtn').classList.add('show');
   } else {
     attempts--;
@@ -536,7 +551,7 @@ function pick(idx) {
       document.getElementById('f0').classList.add('out');
       document.getElementById('f1').classList.add('out');
       document.getElementById('f2').classList.add('out');
-      document.getElementById(`o${q.ans}`).classList.add('correct');
+      document.getElementById(`o${shuffledAns}`).classList.add('correct');
       disableAll();
       document.getElementById('rtxt').innerHTML = q.explain;
       document.getElementById('rbox').classList.add('show');
