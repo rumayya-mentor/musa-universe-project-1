@@ -11,6 +11,38 @@
 body{min-height:100vh;background:linear-gradient(160deg,#0a1628 0%,#0f2040 50%,#0a1a35 100%);font-family:'Nunito',sans-serif;color:#e8f0ff;padding-bottom:80px;overflow-x:hidden;}
 body::before{content:'';position:fixed;width:600px;height:600px;top:-200px;right:-200px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.08),transparent 70%);pointer-events:none;z-index:0;}
 body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;left:-150px;border-radius:50%;background:radial-gradient(circle,rgba(239,68,68,0.07),transparent 70%);pointer-events:none;z-index:0;}
+
+/* ── CLOCK BAR ── */
+#clockBar{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:7px 16px;background:rgba(8,20,38,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);transition:background 0.4s,border-color 0.4s;}
+#clockBar.warn-orange{background:rgba(180,80,0,0.92);border-color:rgba(251,191,36,0.4);}
+#clockBar.warn-red{background:rgba(140,0,20,0.92);border-color:rgba(239,68,68,0.5);}
+.clock-time{font-family:'Cinzel Decorative',cursive;font-size:18px;font-weight:700;color:#fff;letter-spacing:1px;flex-shrink:0;}
+.clock-center{flex:1;text-align:center;padding:0 10px;}
+.clock-block-now{font-size:11px;font-weight:800;color:rgba(255,255,255,0.55);margin-bottom:1px;}
+.clock-block-label{font-size:12px;font-weight:900;color:#fbbf24;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.clock-block-label.idle{color:rgba(255,255,255,0.3);}
+.clock-right{text-align:right;flex-shrink:0;}
+.clock-next{font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;}
+.clock-countdown{font-size:12px;font-weight:900;color:#fbbf24;margin-top:1px;}
+.clock-countdown.urgent{color:#f87171;animation:pulse 0.8s infinite;}
+
+/* Progress ring on clock bar */
+.clock-ring-wrap{position:relative;width:32px;height:32px;flex-shrink:0;margin-right:6px;}
+.clock-ring-wrap svg{transform:rotate(-90deg);}
+.clock-ring-bg{stroke:rgba(255,255,255,0.1);}
+.clock-ring-fill{stroke:#fbbf24;stroke-linecap:round;transition:stroke-dashoffset 1s linear;}
+.clock-ring-wrap.done .clock-ring-fill{stroke:#10b981;}
+.clock-time-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:900;color:rgba(255,255,255,0.6);}
+
+/* ── TOAST WARNING ── */
+#toastWrap{position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:500;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:8px;width:92%;max-width:400px;}
+.toast{background:linear-gradient(135deg,rgba(251,120,0,0.97),rgba(220,38,38,0.97));border-radius:16px;border:2px solid rgba(251,191,36,0.6);padding:14px 18px;color:#fff;font-weight:800;font-size:13px;line-height:1.55;box-shadow:0 8px 32px rgba(0,0,0,0.5);pointer-events:auto;opacity:0;transform:translateY(-14px) scale(0.94);transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);}
+.toast.show{opacity:1;transform:translateY(0) scale(1);}
+.toast .toast-emoji{font-size:22px;display:block;margin-bottom:5px;}
+.toast .toast-title{font-family:'Cinzel Decorative',cursive;font-size:14px;color:#fde68a;margin-bottom:3px;}
+.toast .toast-close{float:right;background:none;border:none;color:rgba(255,255,255,0.6);font-size:16px;cursor:pointer;pointer-events:auto;padding:0 0 0 10px;line-height:1;}
+/* ── END TOAST ── */
+
 .header{background:linear-gradient(135deg,#081426,#0f2a50,#081426);padding:22px 20px 0;text-align:center;border-bottom:2px solid rgba(255,255,255,0.07);position:relative;z-index:10;overflow:hidden;}
 .header::after{content:'🌊🔥🌪️🪨';position:absolute;top:10px;right:14px;font-size:16px;opacity:0.18;letter-spacing:3px;}
 .header-band{display:inline-block;height:3px;width:70px;border-radius:99px;background:linear-gradient(90deg,#3b82f6,#ef4444,#6366f1,#84cc16);margin-bottom:10px;}
@@ -26,6 +58,8 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 @keyframes popIn{from{opacity:0;transform:scale(0.88)}to{opacity:1;transform:scale(1)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+@keyframes ringPulse{0%{box-shadow:0 0 0 0 rgba(251,191,36,0.5)}70%{box-shadow:0 0 0 10px rgba(251,191,36,0)}100%{box-shadow:0 0 0 0 rgba(251,191,36,0)}}
+
 /* HOME */
 .intro-hero{background:linear-gradient(135deg,rgba(59,130,246,0.14),rgba(99,102,241,0.07));border-radius:20px;border:2px solid rgba(59,130,246,0.28);padding:24px 20px;margin-bottom:18px;}
 .intro-hero .aq{font-style:italic;font-size:13px;color:rgba(255,255,255,0.55);border-left:3px solid #3b82f6;padding-left:11px;margin-bottom:14px;}
@@ -40,9 +74,7 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .thpill:hover{transform:translateX(5px);}
 .btn-primary{display:inline-block;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;padding:13px 30px;border-radius:99px;border:none;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 4px 18px rgba(245,158,11,0.35);}
 .btn-primary:hover{transform:translateY(-2px);}
-/* SCHEDULE BANNER */
 .sched-item{display:flex;gap:10px;padding:8px 10px;border-radius:10px;margin-bottom:4px;}
-/* LEARN */
 .learn-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
 .btn-icon{background:rgba(255,255,255,0.1);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
 .btn-icon:hover{background:rgba(255,255,255,0.2);}
@@ -77,7 +109,6 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .btn-ol:disabled{opacity:0.25;cursor:default;}
 .btn-fl{padding:11px 20px;border-radius:12px;border:none;color:#fff;font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(0,0,0,0.3);}
 .btn-fl:hover{transform:translateY(-1px);}
-/* ASSESSMENT */
 .ass-intro{text-align:center;padding:24px 20px;background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(59,130,246,0.07));border-radius:20px;border:2px solid rgba(99,102,241,0.3);margin-bottom:20px;animation:fadeUp 0.4s ease;}
 .ass-intro .ai{font-size:48px;margin-bottom:10px;display:block;}
 .ass-intro h2{font-family:'Cinzel Decorative',cursive;font-size:24px;margin-bottom:10px;}
@@ -94,13 +125,11 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .qopt.sel{border-color:var(--sc);background:color-mix(in srgb,var(--sc) 18%,transparent);color:#fff;}
 .qnav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
 .qctr{font-size:12px;color:rgba(255,255,255,0.45);font-weight:700;}
-/* RADAR */
 .radwrap{display:flex;flex-direction:column;align-items:center;padding:20px;background:rgba(255,255,255,0.055);border:1px solid rgba(255,255,255,0.09);border-radius:20px;margin-bottom:16px;}
 .radwrap h3{font-family:'Cinzel Decorative',cursive;font-size:20px;margin-bottom:4px;}
 .radwrap p{font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:16px;text-align:center;}
 .rhc{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:13px;border:2px solid;margin-bottom:7px;}
 .tbdg{padding:3px 10px;border-radius:99px;font-size:11px;font-weight:800;}
-/* DAILY */
 .trial-hdr{text-align:center;margin-bottom:18px;}
 .trial-hdr h2{font-family:'Cinzel Decorative',cursive;font-size:22px;}
 .beltrow{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.45);}
@@ -146,7 +175,6 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .lockprog{text-align:center;padding:24px;background:rgba(255,255,255,0.04);border-radius:18px;border:2px dashed rgba(255,255,255,0.15);}
 .lockprog .li{font-size:42px;margin-bottom:10px;display:block;}
 .lockprog p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.65;}
-/* PROGRESS */
 .prog-hdr{text-align:center;margin-bottom:18px;}
 .prog-hdr h2{font-family:'Cinzel Decorative',cursive;font-size:22px;}
 .prog-hdr p{font-size:12px;color:rgba(255,255,255,0.45);margin-top:4px;}
@@ -164,7 +192,6 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 .sfire{color:#fbbf24;font-weight:800;font-size:13px;}
 .sdlbl{color:rgba(255,255,255,0.45);font-size:11px;margin-top:2px;}
 .ndmsg{text-align:center;padding:30px 16px;color:rgba(255,255,255,0.4);font-size:14px;line-height:1.7;}
-/* PARENT */
 .pinsc{text-align:center;padding:40px 20px;}
 .pinsc .pi{font-size:44px;margin-bottom:12px;display:block;}
 .pinsc h2{font-family:'Cinzel Decorative',cursive;font-size:24px;margin-bottom:8px;}
@@ -203,6 +230,33 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 </style>
 </head>
 <body>
+
+<!-- ── CLOCK BAR ── -->
+<div id="clockBar">
+  <div style="display:flex;align-items:center;gap:6px">
+    <div class="clock-ring-wrap" id="clockRingWrap">
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <circle class="clock-ring-bg" cx="16" cy="16" r="13" fill="none" stroke-width="3"/>
+        <circle class="clock-ring-fill" id="clockRingFill" cx="16" cy="16" r="13" fill="none" stroke-width="3"
+          stroke-dasharray="81.7" stroke-dashoffset="81.7"/>
+      </svg>
+      <div class="clock-time-inner" id="clockRingPct">0%</div>
+    </div>
+    <div class="clock-time" id="clockTime">00:00</div>
+  </div>
+  <div class="clock-center">
+    <div class="clock-block-now" id="clockBlockNow">NOW</div>
+    <div class="clock-block-label" id="clockBlockLabel">Loading…</div>
+  </div>
+  <div class="clock-right">
+    <div class="clock-next" id="clockNext">Next:</div>
+    <div class="clock-countdown" id="clockCountdown">—</div>
+  </div>
+</div>
+
+<!-- ── TOAST CONTAINER ── -->
+<div id="toastWrap"></div>
+
 <div class="header">
   <div class="header-band"></div>
   <h1 id="headerTitle" onclick="handleSecTap()">Musa's 7 Habits Journey</h1>
@@ -237,7 +291,214 @@ body::after{content:'';position:fixed;width:500px;height:500px;bottom:-150px;lef
 <div class="view" id="view-parent"><div id="parentContent"></div></div>
 
 <script>
-/* ── HABITS DATA ── */
+/* ══════════════════════════════════════════
+   CLOCK + SCHEDULE AWARENESS SYSTEM
+══════════════════════════════════════════ */
+const SCHED_BLOCKS = [
+  { start:"09:00", end:"11:00", label:"Future-Proof Human 🧠", icon:"🧠", color:"#10b981",
+    endWarn:"🧠 Future-Proof selesai sebentar lagi!", nextLabel:"Break (11:00)" },
+  { start:"11:00", end:"11:30", label:"Break ☕", icon:"☕", color:"#6b7280",
+    endWarn:"☕ Break hampir habis!", nextLabel:"7 Habits Journey (11:30)" },
+  { start:"11:30", end:"13:30", label:"7 Habits Journey 🌊", icon:"🌊", color:"#fbbf24",
+    endWarn:"🌊 7 Habits hampir selesai!", nextLabel:"Break / Lunch (13:30)" },
+  { start:"13:30", end:"14:00", label:"Break / Lunch 🍽️", icon:"🍽️", color:"#6b7280",
+    endWarn:"🍽️ Lunch break hampir habis!", nextLabel:"Death of the Sun ☀️ (14:00)" },
+  { start:"14:00", end:"16:00", label:"Death of the Sun ☀️", icon:"☀️", color:"#6366f1",
+    endWarn:"☀️ Death of the Sun hampir selesai!", nextLabel:"Free time 🎉" },
+];
+
+// Warning messages at each :00 and :30
+const HALF_HOUR_MSGS = {
+  "09:00": { emoji:"🌅", title:"Pagi, Musa!", body:"09:00 — Saatnya mulai Future-Proof Human Program. Siap? 💪" },
+  "09:30": { emoji:"⏱️", title:"30 Menit Jalan!", body:"Sudah 30 menit. Tetap fokus — 90 menit lagi sampai break." },
+  "10:00": { emoji:"⚡", title:"Satu Jam Selesai!", body:"1 jam Future-Proof sudah done. Jangan sampai buyar sekarang!" },
+  "10:30": { emoji:"🔔", title:"Persiapan Break", body:"30 menit lagi break. Selesaikan yang sedang dikerjakan 👊" },
+  "11:00": { emoji:"☕", title:"Break Time!", body:"Future-Proof selesai! Istirahat 30 menit. Siap-siap 7 Habits jam 11:30 🌊" },
+  "11:30": { emoji:"🌊", title:"7 Habits Dimulai!", body:"11:30 — Saatnya 7 Habits Journey. Jangan terlambat ke tab ini!" },
+  "12:00": { emoji:"⏳", title:"30 Menit 7 Habits", body:"Setengah jam sudah jalan. Masih ada 90 menit lagi — tetap deep work!" },
+  "12:30": { emoji:"🔥", title:"Satu Jam 7 Habits!", body:"Sudah 1 jam. Kalau belum check habit apapun, sekarang saatnya 💪" },
+  "13:00": { emoji:"⚠️", title:"30 Menit Lagi!", body:"30 menit sebelum Lunch. Selesaikan refleksi dan simpan progressmu." },
+  "13:30": { emoji:"🍽️", title:"Lunch / Break!", body:"7 Habits selesai! Makan siang & istirahat. Lanjut 14:00 — Death of the Sun ☀️" },
+  "14:00": { emoji:"☀️", title:"Death of the Sun!", body:"14:00 — Saatnya sesi terakhir. Apa yang terjadi kalau matahari mati? 🌌" },
+  "14:30": { emoji:"🌌", title:"30 Menit Sains!", body:"Setengah jam jalan. Tetap penasaran — 90 menit lagi selesai." },
+  "15:00": { emoji:"🔭", title:"Satu Jam Tersisa!", body:"1 jam Death of the Sun. Hampir di pertengahan — jangan loss fokus." },
+  "15:30": { emoji:"🏁", title:"30 Menit Terakhir!", body:"30 menit lagi selesai! Selesaikan strong. Habis ini free time 🎉" },
+  "16:00": { emoji:"🎉", title:"Semua Sesi Selesai!", body:"Kerja bagus hari ini, Musa! Semua sesi sudah done. Taekwondo malam ini? 🥋" },
+};
+
+function parseMinutes(t){ const[h,m]=t.split(":").map(Number); return h*60+m; }
+
+function getCurrentBlock(now){
+  const mins=now.getHours()*60+now.getMinutes();
+  return SCHED_BLOCKS.find(b=>mins>=parseMinutes(b.start)&&mins<parseMinutes(b.end))||null;
+}
+function getNextBlock(now){
+  const mins=now.getHours()*60+now.getMinutes();
+  return SCHED_BLOCKS.find(b=>parseMinutes(b.start)>mins)||null;
+}
+function minsToNext(now, endStr){
+  const endM=parseMinutes(endStr);
+  const curM=now.getHours()*60+now.getMinutes();
+  const curS=now.getSeconds();
+  return Math.max(0,(endM-curM)*60-curS);
+}
+function blockProgress(now, startStr, endStr){
+  const s=parseMinutes(startStr), e=parseMinutes(endStr);
+  const cur=now.getHours()*60+now.getMinutes()+now.getSeconds()/60;
+  if(cur<=s)return 0; if(cur>=e)return 1;
+  return(cur-s)/(e-s);
+}
+
+// Toast system
+let toastQueue=[], toastShowing=false;
+function showToast(cfg, duration=8000){
+  toastQueue.push({...cfg, duration});
+  if(!toastShowing) nextToast();
+}
+function nextToast(){
+  if(!toastQueue.length){toastShowing=false;return;}
+  toastShowing=true;
+  const cfg=toastQueue.shift();
+  const wrap=document.getElementById("toastWrap");
+  const div=document.createElement("div");
+  div.className="toast";
+  div.innerHTML=`
+    <button class="toast-close" onclick="this.parentElement.remove();nextToast();">✕</button>
+    <span class="toast-emoji">${cfg.emoji||"⏰"}</span>
+    <div class="toast-title">${cfg.title||""}</div>
+    <div>${cfg.body||""}</div>`;
+  wrap.appendChild(div);
+  requestAnimationFrame(()=>{ setTimeout(()=>div.classList.add("show"),20); });
+  setTimeout(()=>{
+    div.classList.remove("show");
+    setTimeout(()=>{ div.remove(); toastShowing=false; setTimeout(nextToast,300); },400);
+  }, cfg.duration);
+}
+
+// Track which half-hours we've already toasted
+const shownWarnings=new Set();
+let lastMinuteTick=-1;
+
+function updateClock(){
+  const now=new Date();
+  const H=String(now.getHours()).padStart(2,"0");
+  const M=String(now.getMinutes()).padStart(2,"0");
+  const S=now.getSeconds();
+  const timeStr=`${H}:${M}`;
+  const blockNowEl=document.getElementById("clockBlockNow");
+  const blockLabelEl=document.getElementById("clockBlockLabel");
+  const clockNextEl=document.getElementById("clockNext");
+  const clockCdEl=document.getElementById("clockCountdown");
+  const clockBarEl=document.getElementById("clockBar");
+  const ringFill=document.getElementById("clockRingFill");
+  const ringPct=document.getElementById("clockRingPct");
+  const ringWrap=document.getElementById("clockRingWrap");
+
+  document.getElementById("clockTime").textContent=timeStr+":"+String(S).padStart(2,"0");
+
+  const block=getCurrentBlock(now);
+  const nextBlock=getNextBlock(now);
+
+  // Clock bar state
+  clockBarEl.classList.remove("warn-orange","warn-red");
+
+  if(block){
+    blockNowEl.textContent="NOW";
+    blockLabelEl.textContent=block.label;
+    blockLabelEl.className="clock-block-label";
+    blockLabelEl.style.color=block.color;
+
+    const secLeft=minsToNext(now, block.end);
+    const minsLeft=Math.floor(secLeft/60);
+    const secsLeft=secLeft%60;
+
+    // Countdown ring (progress of current block)
+    const prog=blockProgress(now, block.start, block.end);
+    const circ=81.7;
+    ringFill.style.strokeDashoffset=String(circ*(1-prog));
+    ringFill.style.stroke=block.color;
+    ringWrap.classList.toggle("done", prog>=0.95);
+    const pctNum=Math.round(prog*100);
+    ringPct.textContent=pctNum+"%";
+
+    // Countdown to end of block
+    if(minsLeft<=5){
+      clockBarEl.classList.add("warn-red");
+      clockCdEl.classList.add("urgent");
+      clockCdEl.textContent=`${minsLeft}m ${String(secsLeft).padStart(2,"0")}s tersisa`;
+    } else if(minsLeft<=15){
+      clockBarEl.classList.add("warn-orange");
+      clockCdEl.classList.remove("urgent");
+      clockCdEl.textContent=`${minsLeft}m ${String(secsLeft).padStart(2,"0")}s tersisa`;
+    } else {
+      clockCdEl.classList.remove("urgent");
+      clockCdEl.textContent=`${minsLeft}m tersisa`;
+    }
+
+    if(nextBlock){
+      clockNextEl.textContent=`Berikutnya: ${nextBlock.icon} ${nextBlock.label.split(" ").slice(0,3).join(" ")} jam ${nextBlock.start}`;
+    } else {
+      clockNextEl.textContent="Berikutnya: Free Time 🎉";
+    }
+  } else {
+    // Outside schedule
+    blockNowEl.textContent="";
+    const h=now.getHours();
+    if(h<9){
+      blockLabelEl.textContent="Belum mulai — siap-siap jam 09:00 🌅";
+      blockLabelEl.style.color="rgba(255,255,255,0.4)";
+    } else if(h>=16){
+      blockLabelEl.textContent="Semua sesi selesai! 🎉";
+      blockLabelEl.style.color="#10b981";
+    } else {
+      blockLabelEl.textContent="Di luar jadwal";
+      blockLabelEl.style.color="rgba(255,255,255,0.35)";
+    }
+    // ring — blank
+    ringFill.style.strokeDashoffset="81.7";
+    ringPct.textContent="";
+    clockCdEl.textContent="";
+    if(nextBlock) clockNextEl.textContent=`Berikutnya: ${nextBlock.icon} ${nextBlock.label.split(" ").slice(0,3).join(" ")} jam ${nextBlock.start}`;
+    else clockNextEl.textContent="";
+  }
+
+  // Half-hour warning logic — fire once per :00/:30 mark
+  const curMinTotal=now.getHours()*60+now.getMinutes();
+  if(curMinTotal!==lastMinuteTick){
+    lastMinuteTick=curMinTotal;
+    const key=`${H}:${M}`;
+    if((M==="00"||M==="30") && !shownWarnings.has(key)){
+      shownWarnings.add(key);
+      const msg=HALF_HOUR_MSGS[key];
+      if(msg) showToast(msg, 9000);
+      // Also warn 5 minutes before a block ends
+    }
+    // 5-min before block end warning
+    if(block){
+      const secLeft2=minsToNext(now, block.end);
+      const minsLeft2=Math.floor(secLeft2/60);
+      const warnKey5="5min-"+block.end;
+      if(minsLeft2===5 && S<10 && !shownWarnings.has(warnKey5)){
+        shownWarnings.add(warnKey5);
+        showToast({emoji:"⚠️", title:"5 Menit Lagi!", body:block.endWarn+" Setelah ini: "+block.nextLabel}, 10000);
+      }
+      // 1-min warning
+      const warnKey1="1min-"+block.end;
+      if(minsLeft2===1 && S<10 && !shownWarnings.has(warnKey1)){
+        shownWarnings.add(warnKey1);
+        showToast({emoji:"🚨", title:"1 Menit Lagi!", body:"Hampir selesai! "+block.endWarn+" → "+block.nextLabel, duration:12000}, 12000);
+      }
+    }
+  }
+}
+
+// Start the clock immediately and then every second
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ══════════════════════════════════════════
+   HABITS DATA
+══════════════════════════════════════════ */
 const HABITS=[
 {id:1,emoji:"🌊",color:"#3b82f6",name:"Be Proactive",subtitle:"You're in Charge",group:1,element:"🌊",ename:"Water — adapt and flow",
  what:"Being proactive means YOU decide how you react to things. Life will throw problems — bad days, unfair situations, people being difficult. A reactive person blames others. A proactive person asks: <em>what can I actually do about this?</em>",
@@ -481,7 +742,6 @@ function rhm(){
 /* ── LEARN ── */
 function rlc(){
   const h=HABITS[curL];
-  // mark this habit as seen
   ST.lv[h.id]=true;sv();
   document.getElementById("lrnPrg").textContent=`Habit ${h.id} of 7`;
   document.getElementById("prevBtn").disabled=curL===0;
@@ -628,9 +888,7 @@ function rar(el){
 }
 
 /* ── DAILY ── */
-let viewingDay=1; // which day tab is showing (1,2,3)
-
-// Fixed keys per trial day — independent of actual date
+let viewingDay=1;
 const dayKey = d => "trial-day-"+d;
 
 function rdl(){
@@ -653,7 +911,6 @@ function rdl(){
     return;
   }
   if(ST.tc){rwck(el);return;}
-  // count completed days by fixed keys
   const completedCount=[1,2,3].filter(d=>ST.td[dayKey(d)]&&ST.td[dayKey(d)].complete).length;
   const activeDayNum=Math.min(completedCount+1,3);
   if(viewingDay<1)viewingDay=1;
@@ -671,7 +928,6 @@ function rdlDay(el,dayNum,activeDayNum){
   const tm=TMISSIONS[dayNum-1]||TMISSIONS[0];
   const isComplete=!!dd.complete;
 
-  // Build day tabs — all unlocked up to activeDayNum, all editable
   const tabs=[1,2,3].map(d=>{
     const unlocked=d<=activeDayNum;
     const isComp=ST.td[dayKey(d)]&&ST.td[dayKey(d)].complete;
@@ -811,7 +1067,7 @@ function rthf(el){
 }
 
 function rwck(el){
-  const tod=tdk();const wd=ST.wd[tod]||{};const hb=wd.habits||{};const nt=wd.notes||{};
+  const tod=tdk();const wd2=ST.wd[tod]||{};const hb=wd2.habits||{};const nt=wd2.notes||{};
   const done=HABITS.filter(h=>hb[h.id]).length;const belt=BELTS.find(b=>done>=b.min&&done<=b.max)||BELTS[0];
   const cw=ST.cw||1;const wp=ST.wp[cw];
   el.innerHTML=`
@@ -857,8 +1113,8 @@ function gStr(id){
 function rpg(){
   const el=document.getElementById("progContent");
   if(!ST.ad){el.innerHTML=`<div class="ndmsg"><span style="font-size:40px;display:block;margin-bottom:12px">📊</span><p>Complete your assessment first to see progress data.</p><br><button class="btn-primary" onclick="showView('assess')">Go to Assessment →</button></div>`;return;}
-  const wd=wkd();const tod=tdk();
-  const bars=wd.map(day=>{
+  const wd2=wkd();const tod=tdk();
+  const bars=wd2.map(day=>{
     const td=ST.td[day];const wdd=ST.wd[day];const hb=(td&&td.habits)||(wdd&&wdd.habits)||{};
     const cnt=HABITS.filter(h=>hb[h.id]).length;const it=day===tod;
     const hp=Math.max(4,Math.round((cnt/7)*88));
@@ -867,8 +1123,8 @@ function rpg(){
     return`<div class="bc"><div class="bcc">${cnt>0?cnt:""}</div><div class="b" style="height:${hp}px;background:${bg}"></div><div class="bl${it?" today":""}">${lb}</div></div>`;
   }).join("");
   const strs=HABITS.map(h=>{
-    const str=gStr(h.id);const wc=wd.filter(d=>{const td=ST.td[d];const wdd=ST.wd[d];return(td&&td.habits&&td.habits[h.id])||(wdd&&wdd.habits&&wdd.habits[h.id]);}).length;
-    const dots=wd.map(d=>{const td=ST.td[d];const wdd=ST.wd[d];const f=(td&&td.habits&&td.habits[h.id])||(wdd&&wdd.habits&&wdd.habits[h.id]);const t=d===tod;return`<div class="sdot" style="${f?`background:${h.color}`:""};${t?`border:2px solid ${h.color}`:""}"></div>`;}).join("");
+    const str=gStr(h.id);const wc=wd2.filter(d=>{const td=ST.td[d];const wdd=ST.wd[d];return(td&&td.habits&&td.habits[h.id])||(wdd&&wdd.habits&&wdd.habits[h.id]);}).length;
+    const dots=wd2.map(d=>{const td=ST.td[d];const wdd=ST.wd[d];const f=(td&&td.habits&&td.habits[h.id])||(wdd&&wdd.habits&&wdd.habits[h.id]);const t=d===tod;return`<div class="sdot" style="${f?`background:${h.color}`:""};${t?`border:2px solid ${h.color}`:""}"></div>`;}).join("");
     return`<div class="strow"><div style="font-size:18px">${h.emoji}</div><div style="flex:1"><div style="font-weight:800;font-size:12px">Habit ${h.id}: ${h.name}</div><div class="sdots">${dots}</div></div><div class="str">${str>0?`<div class="sfire">🔥 ${str}d</div>`:""}<div class="sdlbl">${wc}/7 days</div></div></div>`;
   }).join("");
   el.innerHTML=`<div class="prog-hdr"><h2>📈 My Progress</h2><p>Your journey so far</p></div>
