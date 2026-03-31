@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Musa TKD Program</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=DM+Sans:wght@300;400;500;600&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --red:#E8192C; --dark:#0A0A0F; --card:#13131A; --border:#1E1E2A;
+  --text:#E8E8F0; --muted:#6B6B80; --gold:#F5A623; --green:#2ECC71; --blue:#3498DB;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden;}
+
+/* HERO */
+.hero{position:relative;padding:48px 24px 36px;text-align:center;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(232,25,44,0.15) 0%,transparent 65%);pointer-events:none;}
+.belt-tag{display:inline-block;background:var(--red);color:#fff;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;padding:5px 14px;border-radius:2px;margin-bottom:14px;}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(46px,11vw,78px);line-height:.9;letter-spacing:2px;margin-bottom:8px;}
+.hero h1 span{color:var(--red);}
+.hero p{color:var(--muted);font-size:11px;letter-spacing:2px;font-family:'Space Mono',monospace;}
+
+/* TABS */
+.tabs{display:flex;margin:24px 16px 0;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--card);}
+.tab{flex:1;padding:12px 4px;text-align:center;font-size:10px;font-weight:600;letter-spacing:.3px;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:'Space Mono',monospace;transition:all .2s;}
+.tab.active{background:var(--red);color:#fff;}
+
+/* SECTIONS */
+.section{display:none;padding:18px 16px 90px;animation:fadeIn .3s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+.card-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.icon-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ic-red{background:rgba(232,25,44,.15);}
+.ic-gold{background:rgba(245,166,35,.15);}
+.ic-blue{background:rgba(52,152,219,.15);}
+.ic-green{background:rgba(46,204,113,.15);}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;}
+.card-sub{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;}
+.section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:10px;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+
+/* SCHEDULE */
+.sched-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:12px;}
+.sched-day{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:7px 3px;text-align:center;}
+.sched-day.active-day{border-color:var(--red);background:rgba(232,25,44,.1);}
+.sched-day.dojang-day{border-color:var(--blue);background:rgba(52,152,219,.1);}
+.sched-day.rest-day{opacity:.4;}
+.sched-day-name{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:3px;}
+.sched-day-icon{font-size:15px;}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;}
+.legend-dot{width:7px;height:7px;border-radius:50%;}
+
+/* DAY CARDS */
+.day-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:9px;}
+.day-header{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;cursor:pointer;user-select:none;}
+.day-header:active{background:rgba(255,255,255,.03);}
+.day-name{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;}
+.day-focus{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:1px;}
+.day-meta{display:flex;align-items:center;gap:7px;}
+.day-tag{font-size:9px;font-family:'Space Mono',monospace;padding:3px 7px;border-radius:3px;letter-spacing:1px;}
+.tag-speed{background:rgba(232,25,44,.2);color:var(--red);}
+.tag-power{background:rgba(245,166,35,.2);color:var(--gold);}
+.tag-stamina{background:rgba(52,152,219,.2);color:var(--blue);}
+.tag-dojang{background:rgba(52,152,219,.15);color:var(--blue);}
+.tag-rest{background:rgba(107,107,128,.15);color:var(--muted);}
+.chevron{transition:transform .2s;color:var(--muted);font-size:11px;}
+.chevron.open{transform:rotate(180deg);}
+.day-body{display:none;border-top:1px solid var(--border);}
+.day-body.open{display:block;}
+.session-banner{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:rgba(232,25,44,.07);border-bottom:1px solid rgba(232,25,44,.15);}
+.session-banner-left{font-size:11px;font-family:'Space Mono',monospace;color:var(--red);}
+.btn-start-session{background:var(--red);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;cursor:pointer;}
+
+/* EXERCISE BLOCKS */
+.ex-block{padding:13px 15px;border-bottom:1px solid rgba(255,255,255,.04);}
+.ex-block:last-child{border-bottom:none;}
+.ex-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.ex-name{font-size:14px;font-weight:600;line-height:1.3;}
+.ex-sets{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);text-align:right;flex-shrink:0;line-height:1.7;}
+
+/* TIMER WIDGET */
+.timer-widget{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px;margin:8px 0;}
+.timer-display{text-align:center;margin-bottom:10px;}
+.timer-time{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;letter-spacing:2px;transition:color .3s;}
+.timer-time.running{color:var(--green);}
+.timer-time.paused{color:var(--gold);}
+.timer-time.done{color:var(--red);}
+.timer-time.idle{color:var(--text);}
+.timer-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:2px;margin-bottom:4px;}
+.timer-progress{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:10px;}
+.timer-bar{height:100%;background:var(--green);border-radius:2px;transition:width .5s linear,background .3s;}
+.timer-controls{display:flex;gap:8px;}
+.timer-btn{flex:1;padding:10px;border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;cursor:pointer;transition:opacity .15s;}
+.timer-btn:active{opacity:.75;}
+.btn-go{background:var(--green);color:#000;}
+.btn-pause{background:var(--gold);color:#000;}
+.btn-reset-t{background:var(--border);color:var(--muted);}
+.timer-done-msg{text-align:center;font-size:12px;color:var(--green);font-family:'Space Mono',monospace;padding:6px;display:none;}
+
+
+/* STOPWATCH WIDGET */
+.stopwatch-widget{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px;margin:8px 0;}
+.stopwatch-display{text-align:center;margin-bottom:10px;}
+.stopwatch-time{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;letter-spacing:2px;transition:color .3s;}
+.stopwatch-time.running{color:var(--green);}
+.stopwatch-time.paused{color:var(--gold);}
+.stopwatch-time.idle{color:var(--text);}
+.stopwatch-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:2px;margin-bottom:4px;}
+.stopwatch-controls{display:flex;gap:8px;}
+.stopwatch-btn{flex:1;padding:10px;border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;cursor:pointer;transition:opacity .15s;}
+.stopwatch-btn:active{opacity:.75;}
+
+/* ROLE BOXES */
+.role-boxes{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:6px;}
+.role-box{border-radius:7px;padding:9px 11px;}
+.role-ayah{background:rgba(52,152,219,.08);border:1px solid rgba(52,152,219,.2);}
+.role-musa{background:rgba(232,25,44,.08);border:1px solid rgba(232,25,44,.2);}
+.role-label{font-size:9px;font-family:'Space Mono',monospace;letter-spacing:2px;margin-bottom:4px;}
+.role-ayah .role-label{color:var(--blue);}
+.role-musa .role-label{color:var(--red);}
+.role-text{font-size:11px;color:var(--text);line-height:1.65;}
+.why-box{background:rgba(245,166,35,.06);border-left:3px solid rgba(245,166,35,.4);border-radius:0 6px 6px 0;padding:8px 11px;margin-top:7px;font-size:11px;color:#c8b87a;line-height:1.6;}
+.why-box strong{color:var(--gold);}
+.warn-box{background:rgba(232,25,44,.06);border-left:3px solid rgba(232,25,44,.35);border-radius:0 6px 6px 0;padding:8px 11px;margin-top:7px;font-size:11px;color:#c87a7a;line-height:1.6;}
+
+/* PHASE */
+.phase-banner{background:linear-gradient(135deg,rgba(232,25,44,.12),rgba(232,25,44,.04));border:1px solid rgba(232,25,44,.25);border-radius:10px;padding:13px 15px;margin-bottom:10px;display:flex;gap:12px;align-items:center;}
+.phase-num{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--red);line-height:1;flex-shrink:0;}
+.phase-info h3{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1px;margin-bottom:2px;}
+.phase-info p{font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* ASSESSMENT STEPS */
+.step{display:flex;gap:11px;margin-bottom:13px;align-items:flex-start;}
+.step-num{min-width:25px;height:25px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;flex-shrink:0;}
+.step-content h4{font-size:13px;font-weight:600;margin-bottom:2px;}
+.step-content p{font-size:12px;color:var(--muted);line-height:1.6;}
+.step-role{display:inline-block;font-size:8px;font-family:'Space Mono',monospace;padding:2px 5px;border-radius:3px;margin-bottom:3px;letter-spacing:1px;}
+.sr-ayah{background:rgba(52,152,219,.15);color:var(--blue);}
+.sr-musa{background:rgba(232,25,44,.15);color:var(--red);}
+.sr-both{background:rgba(46,204,113,.15);color:var(--green);}
+.formula{background:rgba(232,25,44,.07);border:1px solid rgba(232,25,44,.2);border-radius:8px;padding:11px 13px;margin:9px 0;font-family:'Space Mono',monospace;font-size:11px;line-height:1.8;}
+.formula strong{color:var(--gold);}
+.benchmark{background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.18);border-radius:8px;padding:10px 12px;margin-top:9px;font-size:11px;line-height:1.9;}
+
+/* TRACKER INPUTS */
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px;}
+.input-group label{display:block;font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;margin-bottom:4px;}
+.input-group input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--text);font-size:14px;font-family:'Space Mono',monospace;outline:none;transition:border-color .2s;}
+.input-group input:focus{border-color:var(--red);}
+.btn-save{width:100%;padding:12px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;cursor:pointer;margin-top:5px;}
+.btn-outline{width:100%;padding:10px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;margin-top:7px;letter-spacing:1px;}
+.quick-save-box{margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.06);border-radius:10px;background:rgba(255,255,255,.02);}
+.quick-save-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
+.quick-save-box .btn-save{margin-top:0;}
+
+/* LOG TABLE */
+.log-table{width:100%;border-collapse:collapse;font-size:11px;font-family:'Space Mono',monospace;}
+.log-table th{text-align:left;padding:6px 7px;color:var(--muted);border-bottom:1px solid var(--border);font-size:9px;letter-spacing:1px;}
+.log-table td{padding:8px 7px;border-bottom:1px solid rgba(255,255,255,.04);}
+.log-table tr:last-child td{border-bottom:none;}
+.val-good{color:var(--green);font-weight:700;}
+.val-ok{color:var(--gold);font-weight:700;}
+.val-bad{color:var(--red);font-weight:700;}
+
+/* TALLY */
+.tally-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0;}
+.tally-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:11px;text-align:center;}
+.tally-label{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;margin-bottom:7px;}
+.tally-val{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:1;margin-bottom:7px;}
+.tally-btn{display:flex;gap:6px;justify-content:center;}
+.tally-btn button{width:33px;height:33px;border-radius:50%;border:none;cursor:pointer;font-size:16px;font-weight:700;transition:transform .1s;}
+.tally-btn button:active{transform:scale(.88);}
+.btn-plus{background:var(--red);color:#fff;}
+.btn-minus{background:var(--border);color:var(--muted);}
+.result-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px;text-align:center;}
+.result-label{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:2px;margin-bottom:4px;}
+.result-val{font-family:'Bebas Neue',sans-serif;font-size:32px;}
+.empty{text-align:center;padding:26px 16px;color:var(--muted);font-size:11px;font-family:'Space Mono',monospace;line-height:1.9;}
+.empty .e-icon{font-size:26px;margin-bottom:7px;}
+
+/* MODAL OVERLAY */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;width:100%;max-width:360px;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:4px;}
+.modal-sub{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:18px;line-height:1.5;}
+.modal .input-row{margin-bottom:6px;}
+.modal-note{font-size:11px;color:var(--muted);line-height:1.5;margin:10px 0 16px;}
+.modal-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.modal-btns .btn-save{margin-top:0;}
+.btn-skip{padding:12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;letter-spacing:1px;}
+
+/* CHART */
+.chart-wrap{position:relative;margin-top:14px;}
+canvas{width:100%!important;border-radius:8px;}
+.chart-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:2px;margin-top:12px;margin-bottom:4px;}
+
+/* PROGRAM OVERVIEW */
+.program-strip{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 16px 0;}
+.program-stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 11px;}
+.program-stat-label{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace;letter-spacing:1px;margin-bottom:5px;}
+.program-stat-value{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;letter-spacing:1px;}
+.program-stat-sub{font-size:10px;color:var(--muted);line-height:1.5;margin-top:4px;}
+.info-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:13px 14px;margin-bottom:12px;}
+.info-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:6px;}
+.info-meta{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:1px;line-height:1.8;}
+.today-card{background:linear-gradient(135deg,rgba(232,25,44,.14),rgba(232,25,44,.04));border:1px solid rgba(232,25,44,.25);border-radius:12px;padding:14px 15px;margin-bottom:12px;}
+.today-card .info-title{margin-bottom:4px;}
+.today-card p{font-size:12px;color:var(--text);line-height:1.7;}
+.day-chip{display:inline-block;font-size:9px;font-family:'Space Mono',monospace;letter-spacing:1px;padding:3px 6px;border-radius:4px;background:rgba(255,255,255,.06);color:var(--text);margin-bottom:8px;}
+.sched-day.today-day{box-shadow:0 0 0 1px rgba(245,166,35,.45) inset;background:rgba(245,166,35,.12);}
+.day-card.today-card-outline{border-color:var(--gold);box-shadow:0 0 0 1px rgba(245,166,35,.25) inset;}
+.assess-meta{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin:0 0 12px;font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:1px;line-height:1.9;}
+@media (max-width:420px){.program-strip{grid-template-columns:1fr;}}
+
+</style>
+</head>
+<body>
+<!-- HERO -->
+<div class="hero">
+<div class="belt-tag">🥋 SABUK MERAH · 13 TAHUN · PERTH WA</div>
+<h1>MUSA<br/><span>TKD</span><br/>PROGRAM</h1>
+<p>LATIHAN RUMAH · 30 MENIT · BERSAMA AYAH</p>
+</div>
+<div class="program-strip">
+<div class="program-stat">
+<div class="program-stat-label">MODE PROGRAM</div>
+<div class="program-stat-value" id="program-week-chip">WEEK 1 / 4</div>
+<div class="program-stat-sub">Pakai jadwal yang sama selama 4 minggu, lalu re-test.</div>
+</div>
+<div class="program-stat">
+<div class="program-stat-label">HARI INI</div>
+<div class="program-stat-value" id="program-today-chip">MENYIAPKAN PROGRAM</div>
+<div class="program-stat-sub" id="program-today-sub">Lihat Misi → Tes Awal → baru masuk Jadwal.</div>
+</div>
+</div>
+<div class="info-card" style="margin:12px 16px 0;">
+<div class="info-title">KONTROL SIKLUS 4 MINGGU</div>
+<div class="info-meta">Atur sendiri tanggal mulai program. Week akan berubah otomatis tiap 7 hari berdasarkan tanggal ini.</div>
+<div class="input-row" style="margin-top:10px;">
+<div class="input-group"><label>PROGRAM START DATE (DD/MM/YYYY)</label><input id="program-start-date" type="text" inputmode="numeric" placeholder="dd/mm/yyyy"/></div>
+<div class="input-group"><label>WEEK SAAT INI</label><input id="program-week-readonly" type="text" readonly/></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+<button class="btn-save" onclick="setManualProgramStart()">SET START DATE</button>
+<button class="btn-outline" onclick="resetProgramWeek()">↺ RESET PROGRAM WEEK</button>
+</div>
+</div>
+<div class="tabs">
+<button class="tab active" data-tab="misi" onclick="switchTab('misi')">🎯 Misi</button>
+<button class="tab" data-tab="assess" onclick="switchTab('assess')">📋 Tes Awal</button>
+<button class="tab" data-tab="jadwal" onclick="switchTab('jadwal')">🗓 Jadwal</button>
+<button class="tab" data-tab="tracker" onclick="switchTab('tracker')">📈 Tracker</button>
+</div>
+<!-- ============================================================ MISI -->
+<div class="section active" id="tab-misi">
+<p class="section-label">COACH BRIEFING · UNTUK MUSA</p>
+<div class="card" style="background:linear-gradient(135deg,rgba(232,25,44,.14),rgba(232,25,44,.04));border-color:rgba(232,25,44,.28);">
+<div class="card-header">
+<div class="icon-circle ic-red">🎯</div>
+<div>
+<div class="card-title">INI BUKAN LATIHAN ASAL CAPEK</div>
+<div class="card-sub">INI PROGRAM UNTUK NAIK LEVEL</div>
+</div>
+</div>
+<div style="font-size:13px;line-height:1.75;color:var(--text);">
+      Program ini dibuat supaya kamu jadi atlet yang <strong style="color:var(--gold)">lebih cepat</strong>,
+      <strong style="color:var(--gold)">lebih kuat</strong>,
+      <strong style="color:var(--gold)">lebih tahan</strong>,
+      dan <strong style="color:var(--gold)">lebih pintar baca lawan</strong>.
+      Jadi tiap bagian di sini punya tujuan. Bukan asal keringatan. Bukan asal repot.
+    </div>
+</div>
+<div class="tally-grid" style="margin-top:0">
+<div class="tally-item">
+<div class="tally-label">TARGET 1</div>
+<div class="tally-val" style="font-size:28px">LEBIH CEPAT</div>
+<div style="font-size:11px;color:var(--muted);line-height:1.6">masuk jarak, reaksi, dan start</div>
+</div>
+<div class="tally-item">
+<div class="tally-label">TARGET 2</div>
+<div class="tally-val" style="font-size:28px">LEBIH KUAT</div>
+<div style="font-size:11px;color:var(--muted);line-height:1.6">ledakan kaki dan tendangan</div>
+</div>
+<div class="tally-item">
+<div class="tally-label">TARGET 3</div>
+<div class="tally-val" style="font-size:28px">LEBIH TAHAN</div>
+<div style="font-size:11px;color:var(--muted);line-height:1.6">tidak habis bensin di ronde akhir</div>
+</div>
+<div class="tally-item">
+<div class="tally-label">TARGET 4</div>
+<div class="tally-val" style="font-size:28px">LEBIH PINTAR</div>
+<div style="font-size:11px;color:var(--muted);line-height:1.6">baca lawan dan pilih momen</div>
+</div>
+</div>
+<div class="divider"></div>
+<p class="section-label">3 FASE PROGRAM — 12 MINGGU</p>
+<div class="phase-banner">
+<div class="phase-num">1</div>
+<div class="phase-info"><h3>FONDASI (Minggu 1–4)</h3><p>Biasakan tubuh dengan ritme latihan. Utamakan teknik yang benar. Lakukan Tes Awal dulu, lalu ikuti jadwal mingguan yang sama.</p></div>
+</div>
+<div class="phase-banner" style="background:linear-gradient(135deg,rgba(245,166,35,.1),rgba(245,166,35,.03));border-color:rgba(245,166,35,.25);">
+<div class="phase-num" style="color:var(--gold)">2</div>
+<div class="phase-info"><h3>INTENSIFIKASI (Minggu 5–8)</h3><p>Tambah kualitas dan disiplin. Set bisa bertambah, istirahat bisa sedikit dikurangi, dan hasil mulai harus naik lebih jelas.</p></div>
+</div>
+<div class="phase-banner" style="background:linear-gradient(135deg,rgba(46,204,113,.1),rgba(46,204,113,.03));border-color:rgba(46,204,113,.25);">
+<div class="phase-num" style="color:var(--green)">3</div>
+<div class="phase-info"><h3>PUNCAK (Minggu 9–12)</h3><p>Intensitas tinggi, recovery rapi. Re-test final untuk lihat seberapa jauh level Musa sudah naik dibanding baseline awal.</p></div>
+</div>
+<div class="divider"></div>
+<p class="section-label">KENAPA TIAP HARI BEDANYA PENTING</p>
+<div class="phase-banner">
+<div class="phase-num">MON</div>
+<div class="phase-info">
+<h3>SENIN = SPEED DAY</h3>
+<p>Hari ini melatih langkah pertama, reaksi, dan ledakan masuk jarak. Di pertandingan, momen awal sering menentukan siapa kena duluan.</p>
+</div>
+</div>
+<div class="phase-banner" style="background:linear-gradient(135deg,rgba(245,166,35,.1),rgba(245,166,35,.03));border-color:rgba(245,166,35,.25);">
+<div class="phase-num" style="color:var(--gold)">WED</div>
+<div class="phase-info">
+<h3>RABU = POWER DAY</h3>
+<p>Hari ini membangun kaki tumpuan, lompatan, dan tenaga ledakan. Tendangan cepat tanpa power itu setengah jadi.</p>
+</div>
+</div>
+<div class="phase-banner" style="background:linear-gradient(135deg,rgba(52,152,219,.12),rgba(52,152,219,.03));border-color:rgba(52,152,219,.25);">
+<div class="phase-num" style="color:var(--blue)">FRI</div>
+<div class="phase-info">
+<h3>JUMAT = ENGINE DAY</h3>
+<p>Hari ini melatih stamina pertandingan. Bukan cuma kuat di menit pertama, tapi masih tajam saat lawan mulai lelah.</p>
+</div>
+</div>
+<div class="phase-banner" style="background:linear-gradient(135deg,rgba(46,204,113,.1),rgba(46,204,113,.03));border-color:rgba(46,204,113,.25);">
+<div class="phase-num" style="color:var(--green)">IQ</div>
+<div class="phase-info">
+<h3>DOJANG + VIDEO = FIGHT IQ</h3>
+<p>Di sini kamu belajar bukan cuma gerak, tapi juga baca timing, lihat kebiasaan sendiri, dan tahu kapan harus serang atau balas.</p>
+</div>
+</div>
+<div class="divider"></div>
+<p class="section-label">ATURAN ATLET SERIUS</p>
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-content">
+<h4>Ikuti detail, jangan asal selesai</h4>
+<p>Kalau instruksinya 6 sprint, ya 6 sprint. Kalau istirahatnya 60 detik, ya 60 detik. Atlet berkembang dari detail kecil yang dilakukan benar berulang-ulang.</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-content">
+<h4>Catat hasil, jangan menebak</h4>
+<p>Tracker ada supaya kamu bisa lihat bukti. Lebih cepat berapa? Lompatan naik berapa? Rasio balasan membaik atau tidak? Atlet serius pakai data, bukan perasaan.</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-content">
+<h4>Lelah itu normal, asal tetap rapi</h4>
+<p>Akan ada hari capek, malas, atau bosan. Itu normal. Yang penting kamu tetap datang, tetap jujur sama hasil, dan tetap jaga teknik.</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num">4</div>
+<div class="step-content">
+<h4>Video bukan untuk cari salah, tapi cari level berikutnya</h4>
+<p>Waktu lihat sparring, kamu tidak sedang dihakimi. Kamu sedang belajar dari dirimu sendiri. Itu yang bikin atlet cepat maju.</p>
+</div>
+</div>
+<div class="why-box" style="margin-top:12px">
+    💡 <strong>Ingat:</strong> atlet yang bagus bukan yang paling capek latihannya. Atlet yang bagus adalah yang melatih hal yang tepat, dengan cara yang tepat, cukup lama untuk melihat hasilnya.
+  </div>
+<div class="card" style="margin-top:14px">
+<div class="card-header">
+<div class="icon-circle ic-green">🥋</div>
+<div>
+<div class="card-title">MISI MUSA</div>
+<div class="card-sub">SETIAP MINGGU · SATU LEVEL LEBIH BAIK</div>
+</div>
+</div>
+<div class="role-boxes">
+<div class="role-box role-musa">
+<div class="role-label">TUGAS MUSA</div>
+<div class="role-text">Datang siap. Ikuti instruksi. Kerjakan dengan jujur. Isi hasil. Lihat progres. Ulang lagi minggu depan.</div>
+</div>
+<div class="role-box role-ayah">
+<div class="role-label">TUGAS AYAH</div>
+<div class="role-text">Mandu timer. Catat data. Rekam video. Bantu jaga kualitas. Ingatkan saat detail mulai berantakan.</div>
+</div>
+</div>
+<div class="formula" style="margin-top:10px">
+<strong>Rumus sederhana:</strong><br/>
+      Latihan benar + konsisten + data jujur = level naik
+    </div>
+<div class="today-card" style="margin-top:14px">
+<div class="day-chip">CARA PAKAI PROGRAM</div>
+<div class="info-title">URUTANNYA: MISI → TES AWAL → JADWAL → TRACKER</div>
+<p>Mulai dari tab Misi dulu. Setelah itu ambil angka awal di Tes Awal. Lalu ikuti jadwal mingguan yang sama selama 3–4 minggu. Setelah Week 4, buka Tracker dan kirim datanya untuk feedback tentang bagian mana yang sudah naik level dan bagian mana yang masih perlu dikejar.</p>
+</div>
+</div>
+</div>
+<!-- ============================================================ JADWAL -->
+<div class="section" id="tab-jadwal">
+<p class="section-label">GAMBARAN MINGGUAN</p>
+<div class="sched-grid">
+<div class="sched-day active-day" data-day="1"><div class="sched-day-name">SEN</div><div class="sched-day-icon">⚡</div></div>
+<div class="sched-day rest-day" data-day="2"><div class="sched-day-name">SEL</div><div class="sched-day-icon">😴</div></div>
+<div class="sched-day active-day" data-day="3"><div class="sched-day-name">RAB</div><div class="sched-day-icon">💥</div></div>
+<div class="sched-day dojang-day" data-day="4"><div class="sched-day-name">KAM</div><div class="sched-day-icon">🥋</div></div>
+<div class="sched-day active-day" data-day="5"><div class="sched-day-name">JUM</div><div class="sched-day-icon">🫁</div></div>
+<div class="sched-day dojang-day" data-day="6"><div class="sched-day-name">SAB</div><div class="sched-day-icon">🥋</div></div>
+<div class="sched-day rest-day" data-day="0"><div class="sched-day-name">MIN</div><div class="sched-day-icon">😴</div></div>
+</div>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Latihan rumah (30 mnt)</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Dojang Perth</div>
+<div class="legend-item"><div class="legend-dot" style="background:var(--muted)"></div>Istirahat</div>
+</div>
+<div class="divider"></div>
+<p class="section-label">KETUK HARI → BUKA DETAIL &amp; TIMER</p>
+<!-- ── SENIN ── -->
+<div class="day-card" data-day="1" data-duration="30 menit" data-focus="KECEPATAN SPRINT" data-time="4:30–5:00 PM">
+<div class="day-header" onclick="toggleDay(this)">
+<div><div class="day-name">SENIN</div><div class="day-focus">KECEPATAN SPRINT</div></div>
+<div class="day-meta"><span class="day-tag tag-speed">SPEED</span><span class="chevron">▼</span></div>
+</div>
+<div class="day-body">
+<div class="session-banner">
+<div class="session-banner-left">⏱ Total 30 menit · Jam saran 4:30–5:00 pm · Playground Nedlands</div>
+<button class="btn-start-session" onclick="finishSession('senin')">✅ SELESAI</button>
+</div>
+<!-- PEMANASAN -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🔥 PEMANASAN</div><div class="ex-sets">5 menit</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Temani Musa jalan cepat 2 putaran lapangan. Ajak ngobrol supaya badan mulai hangat.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Jalan cepat 2 putaran → ayun kaki 10x → putar pinggul 10x → goyang pergelangan kaki 10x tiap kaki.</div></div>
+</div>
+<div class="warn-box">⚠️ Jangan langsung sprint tanpa pemanasan — otot yang belum hangat sangat mudah cedera.</div>
+
+<div class="timer-widget" data-duration="300" data-id="sen-1">
+<div class="timer-label">COUNTDOWN</div>
+<div class="timer-display"><div class="timer-time idle">5:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ START</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Selesai! Lanjut ke latihan berikutnya.</div>
+</div></div>
+<!-- SPRINT 10M -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">⚡ SPRINT PENDEK 10 METER</div><div class="ex-sets">6 kali<br/>istirahat 60 detik</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">AYAH — ABA-ABA</div><div class="role-text">Berdiri di garis finish (10m). Hitung keras: "SATU… DUA… TIGA… YA!" Turunkan tangan saat bilang YA. Tekan timer istirahat setelah tiap sprint.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA — POSISI START</div><div class="role-text">Condong ke depan 45°, kaki kanan di belakang, lutut sedikit ditekuk. Saat YA — langkah PERTAMA harus sekeras mungkin. Fokus hanya di 3 langkah pertama.</div></div>
+</div>
+<div class="why-box">💡 <strong>Kenapa 10 meter?</strong> Jarak antar atlet TKD sangat pendek. Kecepatan ledakan di 10 meter pertama jauh lebih berpengaruh di pertandingan.</div>
+
+<div class="timer-widget" data-duration="60" data-id="sen-2">
+<div class="timer-label">TIMER ISTIRAHAT ANTAR SPRINT</div>
+<div class="timer-display"><div class="timer-time idle">1:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ 60 detik selesai! Siap untuk sprint berikutnya.</div>
+</div></div>
+<!-- SPRINT 30M -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">⚡ SPRINT PENUH 30 METER</div><div class="ex-sets">3 kali<br/>istirahat 2 menit</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">AYAH — REKAM VIDEO</div><div class="role-text">Buka kamera HP → Slow Motion (240fps). Pegang setinggi pinggang dari samping — pastikan garis START dan FINISH keduanya kelihatan. Tekan rekam sebelum Musa lari.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Lari sekencang mungkin. Jangan kurangi kecepatan sebelum garis — terus lari 2-3 langkah setelah garis. Tiap sprint = 100% usaha.</div></div>
+</div>
+<div class="why-box">💡 <strong>Cara ukur waktu dari video:</strong> Geser timeline perlahan → catat detik saat kaki melewati START dan saat dada melewati FINISH → kurangi = waktu sprint. Catat di Tracker.</div>
+<div class="quick-save-box">
+<div class="quick-save-title">CATAT HASIL → LANGSUNG KE TRACKER</div>
+<div class="input-row">
+<div class="input-group"><label>TANGGAL</label><input id="senin-sprint-date" type="date"/></div>
+<div class="input-group"><label>SPRINT 30M TERBAIK (detik)</label><input id="senin-sprint-value" placeholder="mis. 4.8" step="0.01" type="number"/></div>
+</div>
+<button class="btn-save" onclick="saveQuickMetric('senin-sprint')">💾 SIMPAN KE TRACKER</button>
+</div>
+
+<div class="timer-widget" data-duration="120" data-id="sen-3">
+<div class="timer-label">TIMER ISTIRAHAT ANTAR SPRINT</div>
+<div class="timer-display"><div class="timer-time idle">2:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Selesai! Sprint berikutnya.</div>
+</div></div>
+<!-- ZIGZAG -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">⚡ SPRINT REAKSI ZIGZAG</div><div class="ex-sets">4 kali<br/>istirahat 60 detik</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">AYAH — SETUP</div><div class="role-text">Letakkan 3 botol minum dalam satu garis, jarak 5 meter tiap botol. Tunjuk tangan ke KIRI atau KANAN secara acak — Musa harus langsung berlari ke arah itu, sentuh botol ujung, lalu balik.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Mulai dari botol tengah. Fokus pada tangan Ayah, bukan menebak arah. Semakin cepat reaksimu dari melihat sinyal ke langkah pertama, semakin bagus.</div></div>
+</div>
+<div class="why-box">💡 Melatih otak merespons sinyal visual dengan cepat — persis seperti membaca gerakan lawan di arena.</div>
+
+<div class="timer-widget" data-duration="60" data-id="sen-4">
+<div class="timer-label">TIMER ISTIRAHAT</div>
+<div class="timer-display"><div class="timer-time idle">1:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Siap! Lakukan zigzag berikutnya.</div>
+</div></div>
+<!-- COOL DOWN SENIN -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🧘 PENDINGINAN</div><div class="ex-sets">5 menit</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Jalan santai 1 putaran → regangkan paha depan (tahan 20 detik) → betis (tahan 20 detik) → hamstring (tahan 20 detik).</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Tanya Musa: "Tadi sprint yang mana terasa paling cepat?" Ini membantu Musa sadar tentang tubuhnya sendiri.</div></div>
+</div>
+
+<div class="timer-widget" data-duration="300" data-id="sen-5">
+<div class="timer-label">COUNTDOWN</div>
+<div class="timer-display"><div class="timer-time idle">5:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ START</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Latihan hari ini selesai! Luar biasa Musa!</div>
+</div></div>
+</div>
+</div>
+<!-- ── SELASA ── -->
+<div class="day-card" data-day="2" data-duration="10 menit opsional" data-focus="ISTIRAHAT AKTIF" data-time="fleksibel">
+<div class="day-header" onclick="toggleDay(this)">
+<div><div class="day-name">SELASA</div><div class="day-focus">ISTIRAHAT AKTIF</div></div>
+<div class="day-meta"><span class="day-tag tag-rest">REST</span><span class="chevron">▼</span></div>
+</div>
+<div class="day-body">
+<div class="ex-block">
+<div class="ex-name" style="font-size:13px;margin-bottom:9px">😴 Tidak ada latihan berat hari ini</div>
+<div class="assess-meta">⏱ TOTAL 0 MENIT WAJIB · OPSIONAL 10 MENIT STRETCHING/JALAN SANTAI · JAM FLEKSIBEL</div>
+<div class="why-box">💡 <strong>Ini bagian dari program.</strong> Otot tumbuh saat istirahat, bukan saat latihan. Tidur 8-9 jam malam ini sama pentingnya dengan latihan sprint.</div>
+<div class="role-boxes" style="margin-top:9px">
+<div class="role-box role-ayah"><div class="role-label">OPSIONAL</div><div class="role-text">Ajak jalan santai ke pantai Nedlands. Bukan latihan — hanya bergerak ringan dan menikmati Perth.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Boleh stretching ringan 10 menit. Yang terpenting: tidur malam cukup. Di usia 13, tubuh masih tumbuh.</div></div>
+</div>
+</div>
+</div>
+</div>
+<!-- ── RABU ── -->
+<div class="day-card" data-day="3" data-duration="30 menit" data-focus="KEKUATAN KAKI + UKUR LOMPATAN" data-time="4:30–5:00 PM">
+<div class="day-header" onclick="toggleDay(this)">
+<div><div class="day-name">RABU</div><div class="day-focus">KEKUATAN KAKI + UKUR LOMPATAN</div></div>
+<div class="day-meta"><span class="day-tag tag-power">POWER</span><span class="chevron">▼</span></div>
+</div>
+<div class="day-body">
+<div class="session-banner">
+<div class="session-banner-left">⏱ Total 30 menit · Jam saran 4:30–5:00 pm · Rumah atau playground</div>
+<button class="btn-start-session" onclick="finishSession('rabu')">✅ SELESAI</button>
+</div>
+<!-- PEMANASAN RAB -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🔥 PEMANASAN</div><div class="ex-sets">5 menit</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Jumping jacks 30 detik → high knees 30 detik → loncat kecil di tempat 30 detik. Ulangi 3 putaran penuh.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Hitung waktu di HP. Ingatkan kalau lutut tidak terangkat tinggi saat high knees.</div></div>
+</div>
+
+<div class="timer-widget" data-duration="300" data-id="rab-1">
+<div class="timer-label">COUNTDOWN</div>
+<div class="timer-display"><div class="timer-time idle">5:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ START</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Selesai! Lanjut ke latihan utama.</div>
+</div></div>
+<!-- SQUAT JUMP -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">💥 SQUAT JUMP</div><div class="ex-sets">4 set × 8 kali<br/>istirahat 60 detik</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA — LANGKAH DEMI LANGKAH</div><div class="role-text">1. Kaki selebar bahu.<br/>2. Turun jongkok paha SEJAJAR lantai.<br/>3. Dari bawah — LOMPAT sekuat mungkin ke atas.<br/>4. Mendarat lutut mengeper, jangan kaku.<br/>5. Langsung turun lagi.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Pastikan Musa turun cukup dalam — paha harus sejajar lantai. Hitung keras tiap repetisi. Tekan timer istirahat setelah tiap set selesai.</div></div>
+</div>
+<div class="why-box">💡 <strong>Kenapa squat jump?</strong> Tendangan TKD butuh kekuatan ledakan dari paha. Ini cara paling efektif melatihnya tanpa alat — sama dengan yang dipakai atlet olimpik TKD.</div>
+<div class="warn-box">⚠️ Kalau lutut berbunyi atau sakit saat mendarat, Musa mendarat terlalu kaku. Ingatkan selalu mendarat dengan lutut mengeper.</div>
+
+<div class="timer-widget" data-duration="60" data-id="rab-2">
+<div class="timer-label">TIMER ISTIRAHAT ANTAR SET</div>
+<div class="timer-display"><div class="timer-time idle">1:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Istirahat selesai! Set berikutnya.</div>
+</div></div>
+<!-- PISTOL SQUAT -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">💥 SQUAT SATU KAKI</div><div class="ex-sets">3 set × 6 kali/kaki<br/>istirahat 60 detik</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">1. Berdiri dekat dinding atau pegang tangan Ayah.<br/>2. Angkat satu kaki ke depan.<br/>3. Perlahan turun jongkok pada kaki yang di tanah.<br/>4. Naik lagi perlahan. Ganti kaki tiap 6 kali.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Minggu 1-2: Musa boleh pegang tangan Ayah. Jangan dipaksa dalam kalau lutut gemetar keras. Progres perlahan.</div></div>
+</div>
+<div class="why-box">💡 Kaki tumpuan yang kuat = tendangan lebih stabil, lebih keras, dan lebih akurat.</div>
+
+<div class="timer-widget" data-duration="60" data-id="rab-3">
+<div class="timer-label">TIMER ISTIRAHAT ANTAR SET</div>
+<div class="timer-display"><div class="timer-time idle">1:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Siap! Set berikutnya.</div>
+</div></div>
+<!-- BOUNDING -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">💥 BOUNDING (LOMPAT LANGKAH BESAR)</div><div class="ex-sets">4 kali × 20 meter<br/>istirahat 60 detik</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Langkah sangat besar dan tinggi — seperti lari dalam slow motion. Tiap langkah: dorong KUAT dari ujung jari kaki, angkat lutut tinggi, melayang selama mungkin. Bukan soal cepat — soal KUAT.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Hitung jumlah langkah Musa dalam 20 meter. Catat di HP. Semakin sedikit langkah minggu ke minggu = otot makin kuat.</div></div>
+</div>
+
+<div class="timer-widget" data-duration="60" data-id="rab-4">
+<div class="timer-label">TIMER ISTIRAHAT</div>
+<div class="timer-display"><div class="timer-time idle">1:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Siap! Bounding berikutnya.</div>
+</div></div>
+<!-- UKUR LOMPATAN -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">📏 UKUR LOMPATAN VERTIKAL</div><div class="ex-sets">3 percobaan<br/>ambil terbaik</div></div>
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">AYAH — CARA MENGUKUR</div><div class="role-text">1. Kapur ke jari tengah Musa.<br/>2. Musa berdiri menyamping ke dinding, raih setinggi mungkin → tandai (jangkauan berdiri).<br/>3. Oleskan kapur lagi → Musa lompat tepuk dinding setinggi mungkin → tandai.<br/>4. Ukur jarak dua tanda itu = tinggi lompatan. Catat di Tracker.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Ayunkan kedua tangan ke atas saat melompat untuk momentum tambahan. Lakukan 3 kali, ambil yang terbaik.</div></div>
+</div>
+<div class="quick-save-box">
+<div class="quick-save-title">CATAT HASIL → LANGSUNG KE TRACKER</div>
+<div class="input-row">
+<div class="input-group"><label>TANGGAL</label><input id="rabu-jump-date" type="date"/></div>
+<div class="input-group"><label>LOMPAT VERTIKAL TERBAIK (cm)</label><input id="rabu-jump-value" placeholder="mis. 37" step="1" type="number"/></div>
+</div>
+<button class="btn-save" onclick="saveQuickMetric('rabu-jump')">💾 SIMPAN KE TRACKER</button>
+</div>
+</div>
+<!-- COOL DOWN RAB -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🧘 PENDINGINAN + FLEKSIBILITAS</div><div class="ex-sets">5 menit</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Duduk buka kaki selebar mungkin (side split). Tahan 30 detik. Istirahat, ulangi 3 kali. Tidak harus langsung split penuh.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Duduk di depan Musa, pegang kedua tangannya dan tarik perlahan ke depan. Jangan paksa kalau Musa bilang sakit. Lakukan sambil ngobrol santai.</div></div>
+</div>
+
+<div class="timer-widget" data-duration="300" data-id="rab-5">
+<div class="timer-label">COUNTDOWN</div>
+<div class="timer-display"><div class="timer-time idle">5:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ START</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Hebat! Latihan Rabu selesai!</div>
+</div></div>
+</div>
+</div>
+<!-- ── KAMIS ── -->
+<div class="day-card" data-day="4" data-duration="sesuai jadwal klub" data-focus="DOJANG — TEKNIK &amp; SPARRING" data-time="ikut jadwal klub">
+<div class="day-header" onclick="toggleDay(this)">
+<div><div class="day-name">KAMIS</div><div class="day-focus">DOJANG — TEKNIK &amp; SPARRING</div></div>
+<div class="day-meta"><span class="day-tag tag-dojang">DOJANG</span><span class="chevron">▼</span></div>
+</div>
+<div class="day-body">
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🥋 Latihan di Klub TKD Perth</div></div>
+<div class="assess-meta">⏱ TOTAL SESUAI JADWAL DOJANG · JAM IKUT JADWAL KLUB · TARGET: REKAM 1–2 SPARRING</div>
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">TUGAS AYAH</div><div class="role-text">Minta izin coach rekam 1-2 sesi sparring Musa. Pasang HP di sudut ruangan setinggi dada. Video ini akan dianalisis bersama Musa malam ini atau hari Sabtu di Tes 3.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Fokus penuh di dojang. Perhatikan: kapan kamu menyerang sendiri vs kapan kamu membalas? Ini yang akan dianalisis bersama Ayah.</div></div>
+</div>
+<div class="why-box">💡 Video sparring = data paling berharga dalam program ini. Dari sana kita ukur Rasio Serangan Balasan yang langsung berpengaruh ke peluang menang turnamen.</div>
+<div class="quick-save-box" style="margin-top:10px;">
+<div class="quick-save-title">SETELAH DOJANG → BUKA TES 3</div>
+<div style="font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:10px;">Kalau hari ini sempat rekam sparring, selesai dojang langsung buka Tes 3 untuk hitung Inisiatif, Balasan, Berhasil, dan Gagal.</div>
+<button class="btn-save" onclick="goToAssessSparringLog()">🥊 BUKA TES 3</button>
+</div>
+</div>
+</div>
+</div>
+<!-- ── JUMAT ── -->
+<div class="day-card" data-day="5" data-duration="30 menit" data-focus="STAMINA &amp; DAYA TAHAN" data-time="4:30–5:00 PM">
+<div class="day-header" onclick="toggleDay(this)">
+<div><div class="day-name">JUMAT</div><div class="day-focus">STAMINA &amp; DAYA TAHAN</div></div>
+<div class="day-meta"><span class="day-tag tag-stamina">STAMINA</span><span class="chevron">▼</span></div>
+</div>
+<div class="day-body">
+<div class="session-banner">
+<div class="session-banner-left">⏱ Total 30 menit · Jam saran 4:30–5:00 pm · Playground Nedlands</div>
+<button class="btn-start-session" onclick="finishSession('jumat')">✅ SELESAI</button>
+</div>
+<!-- PEMANASAN JUM -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🔥 PEMANASAN</div><div class="ex-sets">5 menit</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Jalan cepat 2 menit → jogging santai 2 menit → jalan 1 menit sambil atur nafas. Badan harus terasa hangat sebelum HIIT.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Temani jogging bersama kalau bisa — ini waktu bonding yang bagus.</div></div>
+</div>
+
+<div class="timer-widget" data-duration="300" data-id="jum-1">
+<div class="timer-label">COUNTDOWN</div>
+<div class="timer-display"><div class="timer-time idle">5:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ START</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Selesai! Lanjut ke HIIT.</div>
+</div></div>
+<!-- HIIT -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🫁 INTERVAL SPRINT (HIIT)</div><div class="ex-sets">8 putaran<br/>sprint 10 detik<br/>jalan 20 detik</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0;">
+<div class="timer-widget" data-duration="10" data-id="jum-sprint" style="margin:0">
+<div class="timer-label">SPRINT 🔴</div>
+<div class="timer-display"><div class="timer-time idle" style="font-size:42px">0:10</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%;background:var(--red)"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)" style="font-size:12px">▶ GO</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)" style="font-size:12px">↺</button>
+</div>
+<div class="timer-done-msg">JALAN!</div>
+</div>
+<div class="timer-widget" data-duration="20" data-id="jum-jalan" style="margin:0">
+<div class="timer-label">JALAN 🟢</div>
+<div class="timer-display"><div class="timer-time idle" style="font-size:42px">0:20</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)" style="font-size:12px">▶ GO</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)" style="font-size:12px">↺</button>
+</div>
+<div class="timer-done-msg">SPRINT!</div>
+</div>
+</div>
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Saat Ayah teriak "SPRINT!" — lari sekencang mungkin 10 detik penuh. Saat "JALAN!" — langsung perlambat, atur nafas 20 detik. Ulangi 8 kali.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH — CARA MEMANDU</div><div class="role-text">Tekan timer Sprint → teriak "SPRINT!". Saat bunyi → tekan timer Jalan → teriak "JALAN!". Hitung putaran dengan jari. Setelah putaran 4, tanya: "Masih kuat?"</div></div>
+</div>
+<div class="why-box">💡 <strong>Kenapa 10 detik sprint, 20 detik jalan?</strong> Ritme ini meniru persis kondisi pertandingan TKD nyata — ledakan intens singkat diselingi jeda.</div>
+<div class="warn-box">⚠️ Minggu pertama mungkin di putaran ke-6 Musa sudah tidak bisa sprint penuh. Normal. Kurangi ke 5-6 putaran dulu, tambah ke 8 di minggu berikutnya.</div>
+</div>
+<!-- BOX JUMP -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">💥 LOMPAT NAIK BANGKU / ANAK TANGGA</div><div class="ex-sets">3 set × 8 kali<br/>istirahat 45 detik</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Bangku atau anak tangga setinggi 30-40cm. Lompat naik dua kaki, mendarat lutut mengeper. Turun dengan melangkah (bukan lompat). Langsung lompat naik lagi.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Periksa permukaan bangku — jangan licin. Berdiri di samping Musa. Playground Nedlands biasanya punya platform kayu yang cocok.</div></div>
+</div>
+
+<div class="timer-widget" data-duration="45" data-id="jum-3">
+<div class="timer-label">TIMER ISTIRAHAT ANTAR SET</div>
+<div class="timer-display"><div class="timer-time idle">0:45</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Siap! Set berikutnya.</div>
+</div></div>
+<!-- TENDANGAN -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🥋 TENDANGAN CEPAT KE TARGET</div><div class="ex-sets">3 set × 30 detik<br/>ganti kaki tiap set<br/>istirahat 30 detik</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0;">
+<div class="timer-widget" data-duration="30" data-id="jum-kick" style="margin:0">
+<div class="timer-label">TENDANG 🔴</div>
+<div class="timer-display"><div class="timer-time idle" style="font-size:42px">0:30</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%;background:var(--red)"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)" style="font-size:12px">▶ GO</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)" style="font-size:12px">↺</button>
+</div>
+<div class="timer-done-msg">Istirahat!</div>
+</div>
+<div class="timer-widget" data-duration="30" data-id="jum-rest" style="margin:0">
+<div class="timer-label">ISTIRAHAT 🟢</div>
+<div class="timer-display"><div class="timer-time idle" style="font-size:42px">0:30</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)" style="font-size:12px">▶ GO</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)" style="font-size:12px">↺</button>
+</div>
+<div class="timer-done-msg">Tendang!</div>
+</div>
+</div>
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">AYAH — CARA PEGANG TARGET</div><div class="role-text">Pegang bantal sofa atau tas ransel tebal di depan perut setinggi pinggang. Berdiri stabil, kaki sedikit dibuka. Jangan tarik mundur saat Musa menendang.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Dollyo chagi (tendangan samping) berulang ke bantal Ayah. Fokusnya CEPAT, bukan keras. Tendang sebanyak mungkin dalam 30 detik.</div></div>
+</div>
+<div class="why-box">💡 Kecepatan dan kekuatan adalah dua hal berbeda. Kekuatan dilatih hari Rabu. Jumat ini = kecepatan tendangan — yang menentukan apakah tendangan Musa bisa mengenai lawan sebelum diblok.</div>
+</div>
+<!-- COOL DOWN JUM -->
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🧘 PENDINGINAN</div><div class="ex-sets">5 menit</div></div>
+
+<div class="role-boxes">
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Jalan santai 2 menit → regangkan paha depan, betis, dan punggung bawah masing-masing 30 detik tiap sisi.</div></div>
+<div class="role-box role-ayah"><div class="role-label">AYAH</div><div class="role-text">Tanya Musa: "Bagian mana yang paling berat tadi?" Jawaban ini jadi petunjuk apa yang perlu lebih dilatih minggu depan.</div></div>
+</div>
+
+<div class="timer-widget" data-duration="300" data-id="jum-5">
+<div class="timer-label">COUNTDOWN</div>
+<div class="timer-display"><div class="timer-time idle">5:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ START</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ Luar biasa! Latihan Jumat selesai!</div>
+</div></div>
+</div>
+</div>
+<!-- ── SABTU ── -->
+<div class="day-card" data-day="6" data-duration="dojang + 15–20 menit review" data-focus="DOJANG + ANALISIS VIDEO MALAM" data-time="pagi + 7:30 PM">
+<div class="day-header" onclick="toggleDay(this)">
+<div><div class="day-name">SABTU</div><div class="day-focus">DOJANG + ANALISIS VIDEO MALAM</div></div>
+<div class="day-meta"><span class="day-tag tag-dojang">DOJANG</span><span class="chevron">▼</span></div>
+</div>
+<div class="day-body">
+<div class="ex-block">
+<div class="ex-top"><div class="ex-name">🥋 Dojang pagi → Analisis video malam</div></div>
+<div class="assess-meta">⏱ TOTAL DOJANG + 15–20 MENIT REVIEW · JAM SARAN: PAGI UNTUK DOJANG, 7:30–8:00 PM UNTUK ANALISIS</div>
+<div class="role-boxes">
+<div class="role-box role-ayah"><div class="role-label">SABTU MALAM (15-20 MENIT)</div><div class="role-text">Setelah makan malam, duduk bersama Musa. Buka video sparring di VLC (kecepatan 0.5x). Tonton bersama dan hitung tally di Tes 3.</div></div>
+<div class="role-box role-musa"><div class="role-label">MUSA</div><div class="role-text">Tonton sparring kamu sendiri. Perhatikan: kapan menyerang sendiri? Kapan membalas? Poin mana berhasil vs gagal? Diskusikan dengan Ayah.</div></div>
+</div>
+<div class="why-box">💡 <strong>Analisis video = senjata rahasia atlet profesional.</strong> 15-20 menit ini nilainya setara 1 jam latihan tambahan.</div>
+<div style="font-size:12px;line-height:1.7;color:var(--muted);margin-top:10px;margin-bottom:10px;">Setelah dojang atau saat review malam, buka Tes 3 untuk hitung Inisiatif, Balasan, Berhasil, dan Gagal dari video sparring.</div>
+<button class="btn-save" onclick="switchTab('assess'); scrollToElement('tes3-card');">🥊 BUKA TES 3</button>
+</div>
+</div>
+</div>
+<!-- ── MINGGU ── -->
+<div class="day-card" data-day="0" data-duration="0 menit wajib" data-focus="ISTIRAHAT TOTAL" data-time="bebas">
+<div class="day-header" onclick="toggleDay(this)">
+<div><div class="day-name">MINGGU</div><div class="day-focus">ISTIRAHAT TOTAL</div></div>
+<div class="day-meta"><span class="day-tag tag-rest">REST</span><span class="chevron">▼</span></div>
+</div>
+<div class="day-body">
+<div class="ex-block">
+<div class="assess-meta">⏱ TOTAL 0 MENIT WAJIB · FULL REST DAY · TUBUH TUMBUH SAAT RECOVERY</div>
+<div style="font-size:12px;color:var(--muted);line-height:1.7">Tidak ada latihan hari ini. Tubuh butuh 1 hari istirahat penuh setiap minggu untuk berkembang maksimal. Musa boleh main, ke pantai, bersepeda — apapun yang menyenangkan.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ============================================================ TES AWAL -->
+<div class="section" id="tab-assess">
+<p class="section-label">LAKUKAN INI DI MINGGU PERTAMA</p>
+<div class="today-card">
+<div class="day-chip">BASELINE DULU</div>
+<div class="info-title">AMBIL ANGKA AWAL SEBELUM LATIHAN RUTIN</div>
+<p>Lakukan 3 tes ini di awal program, lalu ulang lagi di akhir Week 4. Tidak perlu setiap hari. Totalnya tidak lama. Tes ini cuma untuk tahu titik start Musa, supaya progresnya kelihatan nyata di Tracker.</p>
+</div>
+<div class="info-card">
+<div class="info-title">JAM SARAN &amp; TOTAL WAKTU</div>
+<div class="info-meta">TES 1 SPRINT 30M · ±15–20 menit · pagi atau sore saat badan segar<br/>TES 2 LOMPAT VERTIKAL · ±10–15 menit · boleh hari yang sama<br/>TES 3 ANALISIS VIDEO · ±15–20 menit · malam setelah dojang atau saat santai</div>
+</div>
+<div style="background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.2);border-radius:10px;padding:13px;margin-bottom:14px;font-size:12px;color:#c8b87a;line-height:1.7;">
+    📌 Tes ini untuk mencatat kondisi Musa <strong>sebelum</strong> program dimulai. Angka ini adalah titik awal. Tidak perlu khawatir hasilnya bagus atau tidak. Di Minggu 4, 8, 12 kita tes lagi untuk lihat kemajuannya.
+  </div>
+<div class="card">
+<div class="card-header"><div class="icon-circle ic-red">⚡</div><div><div class="card-title">TES 1 — SPRINT 30 METER</div><div class="card-sub">PLAYGROUND NEDLANDS · PAGI HARI</div></div></div>
+<div class="assess-meta">⏱ TOTAL ±15–20 MENIT · JAM SARAN 7:00–8:00 PAGI ATAU 4:30–5:30 SORE · HASIL DIAMBIL DARI VIDEO</div>
+
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><span class="step-role sr-ayah">AYAH</span><h4>Tandai jarak 30 meter</h4><p>Buka Google Maps → tahan jari di titik start → "Measure distance" → jalan sampai 30 meter → tandai finish. Bisa juga hitung 40 langkah besar. Tandai dengan kapur atau botol minum.</p></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><span class="step-role sr-ayah">AYAH</span><h4>Set kamera ke mode Slow Motion 240fps</h4><p>Buka kamera HP → geser ke mode Slow Motion. Pastikan tertulis 240fps (bukan 120fps). Pegang HP setinggi pinggang dari samping Musa — garis START dan FINISH harus keduanya kelihatan dalam satu frame. Tekan rekam, tunggu, jangan bergerak.</p></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><span class="step-role sr-musa">MUSA</span><h4>Posisi start yang benar</h4><p>Berdiri di belakang garis start. Condongkan badan 45°. Kaki kanan di belakang, kaki kiri di depan. Kedua lutut sedikit ditekuk. Tangan mengepal, siap mengayun. Tunggu aba-aba Ayah.</p></div></div>
+<div class="step"><div class="step-num">4</div><div class="step-content"><span class="step-role sr-both">BERSAMA</span><h4>3 kali sprint, istirahat 3 menit tiap percobaan</h4><p>Ayah hitung: "SATU… DUA… TIGA… YA!" Musa lari sekencang mungkin. Jangan rem sebelum garis. Istirahat 3 menit penuh sebelum percobaan berikutnya.</p></div></div>
+<div class="step"><div class="step-num">5</div><div class="step-content"><span class="step-role sr-ayah">AYAH</span><h4>Hitung waktu dari video</h4><p>Buka video di Galeri. Geser timeline perlahan. Catat detik saat kaki melewati START dan saat dada melewati FINISH. Kurangi keduanya = waktu sprint. Ambil waktu terbaik dari 3 video.</p></div></div>
+<div class="formula"><strong>Contoh:</strong><br/>Kaki melewati start = 1.20 detik<br/>Dada melewati finish = 5.96 detik<br/>Waktu sprint = 5.96 − 1.20 = <strong>4.76 detik</strong></div>
+<div class="benchmark">🟢 <strong>&lt;4.3 detik</strong> = level atlet elite<br/>🟡 <strong>4.3–4.8 detik</strong> = bagus, perlu ditingkatkan<br/>🔴 <strong>&gt;4.8 detik</strong> = target utama latihan Senin</div>
+
+<div class="stopwatch-widget" data-id="assess-sw-1">
+<div class="stopwatch-label">STOPWATCH TES 1</div>
+<div class="stopwatch-display"><div class="stopwatch-time idle">00:00</div></div>
+<div class="stopwatch-controls">
+<button class="stopwatch-btn btn-go" onclick="stopwatchStart(this)">▶ START</button>
+<button class="stopwatch-btn btn-pause" onclick="stopwatchPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="stopwatch-btn btn-reset-t" onclick="stopwatchReset(this)">↺ RESET</button>
+</div>
+</div>
+<div class="timer-widget" data-duration="180" data-id="assess-1-rest">
+<div class="timer-label">ISTIRAHAT ANTAR PERCOBAAN SPRINT</div>
+<div class="timer-display"><div class="timer-time idle">3:00</div></div>
+<div class="timer-progress"><div class="timer-bar" style="width:100%"></div></div>
+<div class="timer-controls">
+<button class="timer-btn btn-go" onclick="timerStart(this)">▶ MULAI ISTIRAHAT</button>
+<button class="timer-btn btn-pause" onclick="timerPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="timer-btn btn-reset-t" onclick="timerReset(this)">↺ RESET</button>
+</div>
+<div class="timer-done-msg">✅ 3 menit selesai! Siap untuk percobaan sprint berikutnya.</div>
+</div><div class="quick-save-box">
+<div class="quick-save-title">CATAT HASIL → LANGSUNG KE TRACKER</div>
+<div class="input-row">
+<div class="input-group"><label>TANGGAL</label><input id="assess-sprint-date" type="date"/></div>
+<div class="input-group"><label>HASIL TES SPRINT 30M (detik)</label><input id="assess-sprint-value" placeholder="mis. 4.76" step="0.01" type="number"/></div>
+</div>
+<button class="btn-save" onclick="saveQuickMetric('assess-sprint')">💾 SIMPAN KE TRACKER</button>
+</div>
+</div>
+<div class="card">
+<div class="card-header"><div class="icon-circle ic-gold">💥</div><div><div class="card-title">TES 2 — LOMPAT VERTIKAL</div><div class="card-sub">DINDING POLOS · BUTUH: KAPUR TULIS</div></div></div>
+<div class="assess-meta">⏱ TOTAL ±10–15 MENIT · JAM SARAN SETELAH TES 1 ATAU HARI YANG SAMA SAAT MASIH SEGAR</div>
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><span class="step-role sr-ayah">AYAH</span><h4>Siapkan dinding dan kapur</h4><p>Cari dinding polos yang bisa dikotori sementara. Kapur tulis beli di toko alat tulis, murah. Bisa juga pakai spidol papan tulis yang mudah dihapus.</p></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><span class="step-role sr-musa">MUSA</span><h4>Tandai jangkauan berdiri (Standing Reach)</h4><p>Oleskan kapur ke ujung jari tengah. Berdiri tegak menyamping ke dinding — kaki rapat, tidak berjinjit. Raih setinggi mungkin dan tepuk dinding. Ayah ukur tinggi tanda ini dari lantai dan catat.</p></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><span class="step-role sr-musa">MUSA</span><h4>Lompat dan tandai titik tertinggi</h4><p>Oleskan kapur lagi. Lompat setinggi mungkin sambil mengayun kedua tangan ke atas. Tepuk dinding di titik tertinggi. Lakukan 3 kali, ambil tanda paling tinggi.</p></div></div>
+<div class="step"><div class="step-num">4</div><div class="step-content"><span class="step-role sr-ayah">AYAH</span><h4>Ukur selisih kedua tanda</h4><p>Ukur jarak dari tanda berdiri ke tanda lompatan tertinggi menggunakan penggaris atau pita ukur. Selisihnya dalam cm = tinggi lompatan. Catat di tab Tracker.</p></div></div>
+<div class="benchmark">🟢 <strong>&gt;43 cm</strong> = level atlet elite junior<br/>🟡 <strong>35–43 cm</strong> = rata-rata atlet aktif usia 13<br/>🔴 <strong>&lt;35 cm</strong> = target utama latihan Rabu</div>
+
+<div class="stopwatch-widget" data-id="assess-sw-2">
+<div class="stopwatch-label">STOPWATCH TES 2</div>
+<div class="stopwatch-display"><div class="stopwatch-time idle">00:00</div></div>
+<div class="stopwatch-controls">
+<button class="stopwatch-btn btn-go" onclick="stopwatchStart(this)">▶ START</button>
+<button class="stopwatch-btn btn-pause" onclick="stopwatchPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="stopwatch-btn btn-reset-t" onclick="stopwatchReset(this)">↺ RESET</button>
+</div>
+</div><div class="quick-save-box">
+<div class="quick-save-title">CATAT HASIL → LANGSUNG KE TRACKER</div>
+<div class="input-row">
+<div class="input-group"><label>TANGGAL</label><input id="assess-jump-date" type="date"/></div>
+<div class="input-group"><label>HASIL TES LOMPAT VERTIKAL (cm)</label><input id="assess-jump-value" placeholder="mis. 39" step="1" type="number"/></div>
+</div>
+<button class="btn-save" onclick="saveQuickMetric('assess-jump')">💾 SIMPAN KE TRACKER</button>
+</div>
+</div>
+<div class="card">
+<div class="card-header"><div class="icon-circle ic-blue">🥊</div><div><div class="card-title">TES 3 — RASIO SERANGAN BALASAN</div><div class="card-sub">DIUKUR DARI VIDEO SPARRING DI DOJANG</div></div></div>
+<div class="assess-meta">⏱ TOTAL ±15–20 MENIT · JAM SARAN MALAM SETELAH DOJANG ATAU SABTU MALAM BERSAMA AYAH</div>
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><span class="step-role sr-ayah">AYAH</span><h4>Rekam sparring di dojang</h4><p>Minta izin coach: "Boleh saya rekam sparring anak saya untuk analisis di rumah?" Pasang HP di sudut ruangan setinggi dada. Rekam minimal 2 ronde penuh (@ 2 menit).</p></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><span class="step-role sr-ayah">AYAH</span><h4>Install VLC di HP (gratis)</h4><p>Google Play Store → cari "VLC" → install gratis. Buka video sparring di VLC → cari ikon kecepatan "1.00x" → ubah ke "0.50x". Video setengah kecepatan sehingga gerakan lebih mudah diamati.</p></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><span class="step-role sr-both">BERSAMA</span><h4>Tonton dan hitung di Log Sparring</h4><p>Setiap kali Musa bergerak menyerang, tekan tombol yang tepat di Log Sparring: Inisiatif (Musa yang mulai duluan) atau Balasan (Musa bereaksi setelah lawan bergerak). Lalu Berhasil atau Gagal.</p></div></div>
+<div class="benchmark">🟢 <strong>Rasio balasan &gt;40%</strong> = taktik sudah sangat baik<br/>🟡 <strong>25%–40%</strong> = sedang berkembang<br/>🔴 <strong>&lt;25%</strong> = perlu lebih banyak belajar membaca lawan</div>
+
+<div class="stopwatch-widget" data-id="assess-sw-3">
+<div class="stopwatch-label">STOPWATCH ANALISIS VIDEO</div>
+<div class="stopwatch-display"><div class="stopwatch-time idle">00:00</div></div>
+<div class="stopwatch-controls">
+<button class="stopwatch-btn btn-go" onclick="stopwatchStart(this)">▶ START</button>
+<button class="stopwatch-btn btn-pause" onclick="stopwatchPause(this)" style="display:none">⏸ PAUSE</button>
+<button class="stopwatch-btn btn-reset-t" onclick="stopwatchReset(this)">↺ RESET</button>
+</div>
+</div><div class="quick-save-box">
+<div class="quick-save-title">CATAT HASIL → LANGSUNG KE TRACKER</div>
+<div class="input-row">
+<div class="input-group"><label>TANGGAL</label><input id="assess-counter-date" type="date"/></div>
+<div class="input-group"><label>HASIL TES RASIO BALASAN (%)</label><input id="assess-counter-value" placeholder="mis. 35" step="1" type="number"/></div>
+</div>
+<button class="btn-save" onclick="saveQuickMetric('assess-counter')">💾 SIMPAN KE TRACKER</button>
+</div>
+</div>
+
+<div id="sparring-log"></div><p class="section-label">LOG SPARRING — PAKAI INI SAAT MENONTON VIDEO</p>
+<div style="background:rgba(52,152,219,.07);border:1px solid rgba(52,152,219,.18);border-radius:10px;padding:11px 13px;margin-bottom:12px;font-size:11px;color:#8ab8d4;line-height:1.7;">
+    📱 Putar video sparring di VLC kecepatan 0.5x. Tiap kali Musa bergerak, tekan tombol yang sesuai. <strong>Inisiatif</strong> = Musa yang mulai duluan. <strong>Balasan</strong> = Musa bereaksi setelah lawan bergerak.
+  </div>
+<div class="tally-grid">
+<div class="tally-item"><div class="tally-label">SERANGAN<br/>INISIATIF</div><div class="tally-val" id="t-init" style="color:var(--blue)">0</div><div class="tally-btn"><button class="btn-minus" onclick="tally('init',-1)">−</button><button class="btn-plus" onclick="tally('init',1)">+</button></div></div>
+<div class="tally-item"><div class="tally-label">SERANGAN<br/>BALASAN</div><div class="tally-val" id="t-counter" style="color:var(--red)">0</div><div class="tally-btn"><button class="btn-minus" onclick="tally('counter',-1)">−</button><button class="btn-plus" onclick="tally('counter',1)">+</button></div></div>
+<div class="tally-item"><div class="tally-label">SERANGAN<br/>BERHASIL</div><div class="tally-val" id="t-success" style="color:var(--green)">0</div><div class="tally-btn"><button class="btn-minus" onclick="tally('success',-1)">−</button><button class="btn-plus" onclick="tally('success',1)">+</button></div></div>
+<div class="tally-item"><div class="tally-label">SERANGAN<br/>GAGAL</div><div class="tally-val" id="t-miss" style="color:var(--muted)">0</div><div class="tally-btn"><button class="btn-minus" onclick="tally('miss',-1)">−</button><button class="btn-plus" onclick="tally('miss',1)">+</button></div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;">
+<div class="result-box"><div class="result-label">RASIO BALASAN</div><div class="result-val" id="r-counter" style="color:var(--red)">—</div></div>
+<div class="result-box"><div class="result-label">TINGKAT SUKSES</div><div class="result-val" id="r-success" style="color:var(--green)">—</div></div>
+</div>
+<div class="card">
+<div class="input-row">
+<div class="input-group"><label>TANGGAL SPARRING</label><input id="tally-date" type="date"/></div>
+<div class="input-group"><label>VS SIAPA / CATATAN</label><input id="tally-note" placeholder="mis. vs Ahmad" type="text"/></div>
+</div>
+<button class="btn-save" onclick="saveMatch()">SIMPAN HASIL INI</button>
+<button class="btn-outline" onclick="resetTally()">↺ RESET TALLY</button>
+</div>
+<div class="divider"></div>
+<p class="section-label">RIWAYAT LOG SPARRING</p>
+<div id="match-history"></div>
+</div>
+<!-- ============================================================ TRACKER -->
+<div class="section" id="tab-tracker">
+<p class="section-label">PERKEMBANGAN MUSA — CATAT TIAP TES</p>
+<div class="card">
+<div class="card-header"><div class="icon-circle ic-red">📝</div><div><div class="card-title">INPUT DATA BARU</div><div class="card-sub">SPRINT=SENIN · LOMPAT=RABU · BALASAN=TES 3 / DOJANG</div></div></div>
+<div class="input-row">
+<div class="input-group"><label>TANGGAL</label><input id="track-date" type="date"/></div>
+<div class="input-group"><label>SPRINT 30M (detik)</label><input id="track-sprint" placeholder="mis. 4.76" step="0.01" type="number"/></div>
+</div>
+<div class="input-row">
+<div class="input-group"><label>LOMPAT VERTIKAL (cm)</label><input id="track-jump" placeholder="mis. 37" type="number"/></div>
+<div class="input-group"><label>RASIO BALASAN (%)</label><input id="track-counter" placeholder="mis. 35" type="number"/></div>
+</div>
+<button class="btn-save" onclick="saveData()">SIMPAN DATA</button>
+</div>
+<div class="divider"></div>
+<p class="section-label">GRAFIK PERKEMBANGAN</p>
+<div class="card">
+<div class="chart-label">⚡ SPRINT 30M (detik — makin kecil makin bagus)</div>
+<canvas height="140" id="chart-sprint"></canvas>
+<div class="chart-label" style="margin-top:16px">💥 LOMPAT VERTIKAL (cm — makin besar makin bagus)</div>
+<canvas height="140" id="chart-jump"></canvas>
+<div class="chart-label" style="margin-top:16px">🥊 RASIO BALASAN (% — makin besar makin bagus)</div>
+<canvas height="140" id="chart-counter"></canvas>
+</div>
+<div class="divider"></div>
+<p class="section-label">TABEL RIWAYAT</p>
+<div id="history-table"></div>
+</div>
+<!-- ============================================================ MODAL SELESAI SESI -->
+<div class="modal-overlay" id="modal-overlay">
+<div class="modal">
+<div class="modal-title" id="modal-title">SESI SELESAI! 💪</div>
+<div class="modal-sub" id="modal-sub">Isi hasil latihan hari ini untuk disimpan ke Tracker.</div>
+<div class="modal-note">Kosongkan kolom yang tidak relevan hari ini — misalnya hari Jumat tidak perlu isi Lompatan.</div>
+<div class="input-row">
+<div class="input-group"><label>TANGGAL</label><input id="modal-date" type="date"/></div>
+<div class="input-group"><label>SPRINT 30M (detik)</label><input id="modal-sprint" placeholder="—" step="0.01" type="number"/></div>
+</div>
+<div class="input-row">
+<div class="input-group"><label>LOMPAT VERTIKAL (cm)</label><input id="modal-jump" placeholder="—" type="number"/></div>
+<div class="input-group"><label>RASIO BALASAN (%)</label><input id="modal-counter" placeholder="—" type="number"/></div>
+</div>
+<div class="modal-btns">
+<button class="btn-skip" onclick="closeModal()">LEWATI</button>
+<button class="btn-save" onclick="saveFromModal()" style="margin-top:0">💾 SIMPAN</button>
+</div>
+</div>
+</div>
+<script>
+// ─── STORAGE ───────────────────────────────────────────
+function gs(k){try{return JSON.parse(localStorage.getItem(k)||'[]');}catch{return[];}}
+function ss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+
+// ─── TABS ──────────────────────────────────────────────
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.tab===name);
+  });
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='jadwal') focusTodayCard(false);
+  if(name==='tracker'){renderHistory();drawCharts();}
+}
+
+// ─── DAY TOGGLE ────────────────────────────────────────
+function toggleDay(hdr){
+  const body=hdr.nextElementSibling;
+  const chev=hdr.querySelector('.chevron');
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+}
+
+// ─── BEEP SOUND ────────────────────────────────────────
+function beep(freq=880,dur=200,vol=0.4){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value=freq; gain.gain.value=vol;
+    osc.start(); osc.stop(ctx.currentTime+dur/1000);
+  }catch(e){}
+}
+function beepDone(){beep(660,120);setTimeout(()=>beep(880,300),140);}
+
+// ─── TIMER ENGINE ──────────────────────────────────────
+// Each timer widget is self-contained. We store interval IDs by data-id.
+const timerState={};
+
+function getWidget(btn){return btn.closest('.timer-widget');}
+function getTimeEl(w){return w.querySelector('.timer-time');}
+function getBarEl(w){return w.querySelector('.timer-bar');}
+function getDoneEl(w){return w.querySelector('.timer-done-msg');}
+function getBtnGo(w){return w.querySelector('.btn-go');}
+function getBtnPause(w){return w.querySelector('.btn-pause');}
+
+function fmtTime(s){
+  const m=Math.floor(s/60),sec=s%60;
+  return m+':'+(sec<10?'0':'')+sec;
+}
+
+function timerStart(btn){
+  const w=getWidget(btn);
+  const id=w.dataset.id;
+  const totalSec=parseInt(w.dataset.duration);
+
+  // If already running, ignore
+  if(timerState[id]&&timerState[id].running) return;
+
+  // Init state if fresh
+  if(!timerState[id]||timerState[id].remaining===undefined){
+    timerState[id]={remaining:totalSec,running:false};
+  }
+
+  timerState[id].running=true;
+  getTimeEl(w).className='timer-time running';
+  getBtnGo(w).style.display='none';
+  if(getBtnPause(w)) getBtnPause(w).style.display='flex';
+  getDoneEl(w).style.display='none';
+
+  const tick=()=>{
+    if(!timerState[id]||!timerState[id].running) return;
+    timerState[id].remaining--;
+    const rem=timerState[id].remaining;
+    const total=totalSec;
+    getTimeEl(w).textContent=fmtTime(rem);
+    getBarEl(w).style.width=(rem/total*100)+'%';
+    // colour bar as it depletes
+    if(rem/total<0.3) getBarEl(w).style.background='var(--red)';
+    else if(rem/total<0.6) getBarEl(w).style.background='var(--gold)';
+    else getBarEl(w).style.background='var(--green)';
+
+    if(rem<=0){
+      clearInterval(timerState[id].interval);
+      timerState[id].running=false;
+      getTimeEl(w).className='timer-time done';
+      getTimeEl(w).textContent='0:00';
+      getBarEl(w).style.width='0%';
+      getDoneEl(w).style.display='block';
+      getBtnGo(w).style.display='flex';
+      if(getBtnPause(w)) getBtnPause(w).style.display='none';
+      getBtnGo(w).textContent='▶ ULANG';
+      timerState[id].remaining=undefined;
+      beepDone();
+    }
+  };
+  timerState[id].interval=setInterval(tick,1000);
+}
+
+function timerPause(btn){
+  const w=getWidget(btn);
+  const id=w.dataset.id;
+  if(!timerState[id]) return;
+  if(timerState[id].running){
+    timerState[id].running=false;
+    clearInterval(timerState[id].interval);
+    getTimeEl(w).className='timer-time paused';
+    getBtnGo(w).style.display='flex';
+    getBtnGo(w).textContent='▶ LANJUT';
+    btn.style.display='none';
+  }
+}
+
+function timerReset(btn){
+  const w=getWidget(btn);
+  const id=w.dataset.id;
+  if(timerState[id]){
+    clearInterval(timerState[id].interval);
+    timerState[id]={running:false,remaining:undefined};
+  }
+  const total=parseInt(w.dataset.duration);
+  getTimeEl(w).textContent=fmtTime(total);
+  getTimeEl(w).className='timer-time idle';
+  getBarEl(w).style.width='100%';
+  getBarEl(w).style.background='var(--green)';
+  getDoneEl(w).style.display='none';
+  getBtnGo(w).style.display='flex';
+  getBtnGo(w).textContent=getBtnGo(w).dataset.origLabel||'▶ START';
+  if(getBtnPause(w)) getBtnPause(w).style.display='none';
+}
+
+// Store original labels
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.btn-go').forEach(b=>{b.dataset.origLabel=b.textContent;});
+});
+
+
+// ─── STOPWATCH ENGINE ──────────────────────────────────
+const stopwatchState={};
+
+function getSWWidget(btn){return btn.closest('.stopwatch-widget');}
+function getSWTimeEl(w){return w.querySelector('.stopwatch-time');}
+function getSWBtnGo(w){return w.querySelector('.btn-go');}
+function getSWBtnPause(w){return w.querySelector('.btn-pause');}
+function fmtStopwatch(s){
+  const m=Math.floor(s/60),sec=s%60;
+  return (m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;
+}
+function stopwatchStart(btn){
+  const w=getSWWidget(btn);
+  const id=w.dataset.id;
+  if(stopwatchState[id]&&stopwatchState[id].running) return;
+  if(!stopwatchState[id]||stopwatchState[id].elapsed===undefined){
+    stopwatchState[id]={elapsed:0,running:false};
+  }
+  stopwatchState[id].running=true;
+  getSWTimeEl(w).className='stopwatch-time running';
+  getSWBtnGo(w).style.display='none';
+  if(getSWBtnPause(w)) getSWBtnPause(w).style.display='flex';
+  stopwatchState[id].interval=setInterval(()=>{
+    if(!stopwatchState[id]||!stopwatchState[id].running) return;
+    stopwatchState[id].elapsed++;
+    getSWTimeEl(w).textContent=fmtStopwatch(stopwatchState[id].elapsed);
+  },1000);
+}
+function stopwatchPause(btn){
+  const w=getSWWidget(btn);
+  const id=w.dataset.id;
+  if(!stopwatchState[id]) return;
+  if(stopwatchState[id].running){
+    stopwatchState[id].running=false;
+    clearInterval(stopwatchState[id].interval);
+    getSWTimeEl(w).className='stopwatch-time paused';
+    getSWBtnGo(w).style.display='flex';
+    getSWBtnGo(w).textContent='▶ LANJUT';
+    btn.style.display='none';
+  }
+}
+function stopwatchReset(btn){
+  const w=getSWWidget(btn);
+  const id=w.dataset.id;
+  if(stopwatchState[id]){
+    clearInterval(stopwatchState[id].interval);
+    stopwatchState[id]={running:false,elapsed:0};
+  }
+  getSWTimeEl(w).textContent='00:00';
+  getSWTimeEl(w).className='stopwatch-time idle';
+  getSWBtnGo(w).style.display='flex';
+  getSWBtnGo(w).textContent=getSWBtnGo(w).dataset.origLabel||'▶ START';
+  if(getSWBtnPause(w)) getSWBtnPause(w).style.display='none';
+}
+
+// ─── SESSION FINISH MODAL ───────────────────────────────
+let currentSession='';
+function finishSession(day){
+  currentSession=day;
+  const titles={senin:'SENIN SELESAI! ⚡',rabu:'RABU SELESAI! 💥',jumat:'JUMAT SELESAI! 🫁'};
+  const subs={senin:'Catat hasil sprint terbaik hari ini.',rabu:'Catat hasil lompatan vertikal terbaik hari ini.',jumat:'Catat apapun yang diukur hari ini.'};
+  document.getElementById('modal-title').textContent=titles[day]||'SESI SELESAI! 💪';
+  document.getElementById('modal-sub').textContent=subs[day]||'Isi hasil latihan hari ini.';
+  document.getElementById('modal-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('modal-sprint').value='';
+  document.getElementById('modal-jump').value='';
+  document.getElementById('modal-counter').value='';
+  document.getElementById('modal-overlay').classList.add('show');
+  beep(440,150);
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('show');}
+function saveFromModal(){
+  const date=document.getElementById('modal-date').value;
+  if(!date){alert('Pilih tanggal dulu!');return;}
+  const sprint=parseFloat(document.getElementById('modal-sprint').value)||null;
+  const jump=parseFloat(document.getElementById('modal-jump').value)||null;
+  const counter=parseFloat(document.getElementById('modal-counter').value)||null;
+  if(!sprint&&!jump&&!counter){closeModal();return;}
+  const recs=gs('musa-tracker');
+  recs.push({date,sprint,jump,counter});
+  recs.sort((a,b)=>a.date.localeCompare(b.date));
+  ss('musa-tracker',recs);
+  closeModal();
+  beepDone();
+  alert('✅ Data tersimpan ke Tracker!');
+}
+document.getElementById('modal-overlay').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+function saveQuickMetric(source){
+  const map={
+    'senin-sprint':{date:'senin-sprint-date',value:'senin-sprint-value',field:'sprint',label:'Sprint Senin'},
+    'rabu-jump':{date:'rabu-jump-date',value:'rabu-jump-value',field:'jump',label:'Lompatan Rabu'},
+    'assess-sprint':{date:'assess-sprint-date',value:'assess-sprint-value',field:'sprint',label:'Tes awal sprint'},
+    'assess-jump':{date:'assess-jump-date',value:'assess-jump-value',field:'jump',label:'Tes awal lompatan'},
+    'assess-counter':{date:'assess-counter-date',value:'assess-counter-value',field:'counter',label:'Tes awal balasan'}
+  };
+  const cfg=map[source];
+  if(!cfg) return;
+  const date=document.getElementById(cfg.date).value;
+  const raw=document.getElementById(cfg.value).value;
+  const value=parseFloat(raw);
+  if(!date){alert('Pilih tanggal dulu!');return;}
+  if(Number.isNaN(value)){alert('Isi hasil yang mau disimpan dulu!');return;}
+  const recs=gs('musa-tracker');
+  recs.push({date,sprint:null,jump:null,counter:null,[cfg.field]:value});
+  recs.sort((a,b)=>a.date.localeCompare(b.date));
+  ss('musa-tracker',recs);
+  document.getElementById(cfg.value).value='';
+  renderHistory();
+  drawCharts();
+  alert('✅ '+cfg.label+' tersimpan ke Tracker!');
+}
+
+// set tanggal default untuk quick save boxes
+document.addEventListener('DOMContentLoaded',()=>{
+  const today=perthISO();
+  ['senin-sprint-date','rabu-jump-date','assess-sprint-date','assess-jump-date','assess-counter-date','track-date','match-date'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && !el.value) el.value=today;
+  });
+});
+
+// ─── TALLY ─────────────────────────────────────────────
+let tallyState={init:0,counter:0,success:0,miss:0};
+function tally(key,delta){
+  tallyState[key]=Math.max(0,tallyState[key]+delta);
+  document.getElementById('t-'+key).textContent=tallyState[key];
+  const tot=tallyState.init+tallyState.counter;
+  const att=tallyState.success+tallyState.miss;
+  document.getElementById('r-counter').textContent=tot>0?Math.round(tallyState.counter/tot*100)+'%':'—';
+  document.getElementById('r-success').textContent=att>0?Math.round(tallyState.success/att*100)+'%':'—';
+}
+function resetTally(){
+  tallyState={init:0,counter:0,success:0,miss:0};
+  ['init','counter','success','miss'].forEach(k=>document.getElementById('t-'+k).textContent='0');
+  document.getElementById('r-counter').textContent='—';
+  document.getElementById('r-success').textContent='—';
+}
+function saveMatch(){
+  const tot=tallyState.init+tallyState.counter;
+  const att=tallyState.success+tallyState.miss;
+  if(!tot&&!att){alert('Tally masih kosong!');return;}
+  const date=document.getElementById('tally-date').value||new Date().toISOString().slice(0,10);
+  const note=document.getElementById('tally-note').value;
+  const cp=tot>0?Math.round(tallyState.counter/tot*100):0;
+  const sp=att>0?Math.round(tallyState.success/att*100):0;
+  const recs=gs('musa-matches');
+  recs.push({date,note,...tallyState,counterPct:cp,successPct:sp});
+  ss('musa-matches',recs);
+  resetTally();
+  document.getElementById('tally-note').value='';
+  renderMatchHistory();
+  alert('✅ Tersimpan!');
+}
+function renderMatchHistory(){
+  const recs=gs('musa-matches');
+  const el=document.getElementById('match-history');
+  if(!recs.length){el.innerHTML='<div class="empty"><div class="e-icon">🥊</div>Belum ada data.<br>Rekam sparring di dojang,<br>tonton ulang, hitung tally di sini.</div>';return;}
+  let h='<table class="log-table"><thead><tr><th>TANGGAL</th><th>CATATAN</th><th>BALASAN</th><th>SUKSES</th></tr></thead><tbody>';
+  [...recs].reverse().forEach(r=>{
+    const cc=r.counterPct>=40?'val-good':r.counterPct>=25?'val-ok':'val-bad';
+    const sc=r.successPct>=50?'val-good':r.successPct>=35?'val-ok':'val-bad';
+    h+=`<tr><td>${r.date}</td><td style="color:var(--muted);font-size:10px">${r.note||'—'}</td><td class="${cc}">${r.counterPct}%</td><td class="${sc}">${r.successPct}%</td></tr>`;
+  });
+  h+='</tbody></table>';
+  el.innerHTML=h;
+}
+
+// ─── TRACKER ───────────────────────────────────────────
+function saveData(){
+  const date=document.getElementById('track-date').value;
+  if(!date){alert('Pilih tanggal dulu!');return;}
+  const sprint=parseFloat(document.getElementById('track-sprint').value)||null;
+  const jump=parseFloat(document.getElementById('track-jump').value)||null;
+  const counter=parseFloat(document.getElementById('track-counter').value)||null;
+  const recs=gs('musa-tracker');
+  recs.push({date,sprint,jump,counter});
+  recs.sort((a,b)=>a.date.localeCompare(b.date));
+  ss('musa-tracker',recs);
+  ['track-sprint','track-jump','track-counter'].forEach(id=>document.getElementById(id).value='');
+  renderHistory();drawCharts();
+  alert('✅ Data tersimpan!');
+}
+function renderHistory(){
+  const recs=gs('musa-tracker');
+  const el=document.getElementById('history-table');
+  if(!recs.length){el.innerHTML='<div class="empty"><div class="e-icon">📊</div>Belum ada data.<br>Lakukan tes awal di Minggu 1,<br>lalu catat hasilnya di sini.</div>';return;}
+  let h='<table class="log-table"><thead><tr><th>TANGGAL</th><th>SPRINT(s)</th><th>LOMPAT(cm)</th><th>BALASAN%</th></tr></thead><tbody>';
+  [...recs].reverse().forEach(r=>{
+    const sc=r.sprint?(r.sprint<=4.3?'val-good':r.sprint<=4.8?'val-ok':'val-bad'):'';
+    const jc=r.jump?(r.jump>=43?'val-good':r.jump>=35?'val-ok':'val-bad'):'';
+    const cc=(r.counter!==null&&r.counter!==undefined)?(r.counter>=40?'val-good':r.counter>=25?'val-ok':'val-bad'):'';
+    h+=`<tr><td>${r.date}</td><td class="${sc}">${r.sprint??'—'}</td><td class="${jc}">${r.jump??'—'}</td><td class="${cc}">${(r.counter!==null&&r.counter!==undefined)?r.counter+'%':'—'}</td></tr>`;
+  });
+  h+='</tbody></table>';
+  h+='<div style="margin-top:9px;font-size:10px;font-family:Space Mono,monospace;color:var(--muted);line-height:2">🟢 Sprint ≤4.3s 🟡 ≤4.8s 🔴 >4.8s<br>🟢 Lompat ≥43cm 🟡 ≥35cm 🔴 <35cm<br>🟢 Balasan ≥40% 🟡 ≥25% 🔴 <25%</div>';
+  el.innerHTML=h;
+}
+
+// ─── CHARTS (vanilla canvas) ───────────────────────────
+function drawCharts(){
+  const recs=gs('musa-tracker');
+  drawChart('chart-sprint', recs.filter(r=>r.sprint).map(r=>({x:r.date,y:r.sprint})), '#E8192C', true);
+  drawChart('chart-jump',   recs.filter(r=>r.jump).map(r=>({x:r.date,y:r.jump})),   '#F5A623', false);
+  drawChart('chart-counter',recs.filter(r=>r.counter!==null&&r.counter!==undefined).map(r=>({x:r.date,y:r.counter})),'#2ECC71', false);
+}
+
+function drawChart(canvasId, data, color, invertGood){
+  const canvas=document.getElementById(canvasId);
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.parentElement.clientWidth-32;
+  canvas.width=W; canvas.height=140;
+  ctx.clearRect(0,0,W,140);
+
+  if(!data.length){
+    ctx.fillStyle='#6B6B80';
+    ctx.font='12px Space Mono,monospace';
+    ctx.textAlign='center';
+    ctx.fillText('Belum ada data',W/2,75);
+    return;
+  }
+
+  const pad={t:16,r:10,b:28,l:36};
+  const cw=W-pad.l-pad.r, ch=140-pad.t-pad.b;
+  const vals=data.map(d=>d.y);
+  const minV=Math.min(...vals), maxV=Math.max(...vals);
+  const range=maxV-minV||1;
+
+  // Grid lines
+  ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+ch*(i/4);
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+cw,y); ctx.stroke();
+  }
+
+  // Line + fill
+  const pts=data.map((d,i)=>({
+    x:pad.l+(data.length===1?cw/2:i/(data.length-1)*cw),
+    y:pad.t+ch*(1-(d.y-minV)/range)
+  }));
+
+  // Fill area
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pad.t+ch);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x, pad.t+ch);
+  ctx.closePath();
+  ctx.fillStyle=color+'22';
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle=color; ctx.lineWidth=2.5;
+  ctx.lineJoin='round'; ctx.lineCap='round';
+  pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+  ctx.stroke();
+
+  // Dots + labels
+  pts.forEach((p,i)=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,4,0,Math.PI*2);
+    ctx.fillStyle=color; ctx.fill();
+    ctx.fillStyle='#E8E8F0';
+    ctx.font='bold 10px Space Mono,monospace';
+    ctx.textAlign='center';
+    ctx.fillText(data[i].y, p.x, p.y-8);
+  });
+
+  // X axis labels
+  ctx.fillStyle='#6B6B80'; ctx.font='9px Space Mono,monospace';
+  pts.forEach((p,i)=>{
+    const label=data[i].x.slice(5); // MM-DD
+    ctx.fillText(label,p.x,140-6);
+  });
+}
+
+
+// ─── PROGRAM META / TODAY LOGIC ──────────────────────
+const dayMeta={
+  0:{short:'MIN',label:'MINGGU',focus:'ISTIRAHAT TOTAL',time:'bebas',duration:'0 menit wajib',desc:'Hari recovery penuh. Tidak ada sesi wajib. Tubuh tumbuh saat istirahat.'},
+  1:{short:'SEN',label:'SENIN',focus:'KECEPATAN SPRINT',time:'4:30–5:00 pm',duration:'30 menit',desc:'Fokus hari ini: speed. Sesi singkat, cepat, lalu selesai.'},
+  2:{short:'SEL',label:'SELASA',focus:'ISTIRAHAT AKTIF',time:'fleksibel',duration:'10 menit opsional',desc:'Tidak ada latihan berat. Cukup recovery, stretching ringan, dan tidur bagus.'},
+  3:{short:'RAB',label:'RABU',focus:'KEKUATAN KAKI + UKUR LOMPATAN',time:'4:30–5:00 pm',duration:'30 menit',desc:'Fokus hari ini: power. Ledakan kaki dan stabilitas untuk tendangan.'},
+  4:{short:'KAM',label:'KAMIS',focus:'DOJANG — TEKNIK & SPARRING',time:'ikut jadwal klub',duration:'sesuai jadwal klub',desc:'Fokus hari ini: sparring dan teknik. Kalau bisa, rekam 1–2 ronde untuk dianalisis.'},
+  5:{short:'JUM',label:'JUMAT',focus:'STAMINA & DAYA TAHAN',time:'4:30–5:00 pm',duration:'30 menit',desc:'Fokus hari ini: stamina pertandingan. Tidak lama, tapi harus serius.'},
+  6:{short:'SAB',label:'SABTU',focus:'DOJANG + ANALISIS VIDEO MALAM',time:'pagi + 7:30 pm',duration:'dojang + 15–20 menit review',desc:'Pagi ikut dojang, malam review video singkat. Ini yang bikin Musa makin pintar baca lawan.'}
+};
+
+function perthDate(){
+  return new Date(new Date().toLocaleString('en-US',{timeZone:'Australia/Perth'}));
+}
+function perthISO(){
+  const d=perthDate();
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const day=String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function formatDisplayDate(iso){
+  if(!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+  const [y,m,d]=iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function parseDisplayDateToISO(value){
+  if(!value) return '';
+  const clean=value.trim();
+  let match=clean.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(match){
+    const [,d,m,y]=match;
+    const dt=new Date(`${y}-${m}-${d}T00:00:00`);
+    if(Number.isNaN(dt.getTime())) return '';
+    if(dt.getFullYear()!=Number(y) || dt.getMonth()+1!=Number(m) || dt.getDate()!=Number(d)) return '';
+    return `${y}-${m}-${d}`;
+  }
+  if(/^\d{4}-\d{2}-\d{2}$/.test(clean)) return clean;
+  return '';
+}
+function ensureProgramStart(){
+  let start=localStorage.getItem('musa-program-start');
+  if(!start){
+    start=perthISO();
+    localStorage.setItem('musa-program-start',start);
+  }
+  return start;
+}
+function getProgramWeek(){
+  const start=new Date(ensureProgramStart()+'T00:00:00');
+  const now=new Date(perthISO()+'T00:00:00');
+  const diff=Math.max(0, Math.floor((now-start)/86400000));
+  return (Math.floor(diff/7)%4)+1;
+}
+function updateProgramHeader(){
+  const now=perthDate();
+  const meta=dayMeta[now.getDay()];
+  const week=getProgramWeek();
+  const weekEl=document.getElementById('program-week-chip');
+  const todayEl=document.getElementById('program-today-chip');
+  const todaySub=document.getElementById('program-today-sub');
+  if(weekEl) weekEl.textContent=`WEEK ${week} / 4`;
+  if(todayEl) todayEl.textContent=meta.label;
+  if(todaySub) todaySub.textContent=`${meta.focus} · ${meta.duration} · jam saran ${meta.time}`;
+  const chip=document.getElementById('today-chip-inline');
+  const title=document.getElementById('today-title-inline');
+  const desc=document.getElementById('today-desc-inline');
+  const startInput=document.getElementById('program-start-date');
+  const weekReadonly=document.getElementById('program-week-readonly');
+  if(chip) chip.textContent=`HARI INI · ${meta.label}`;
+  if(title) title.textContent=`${meta.focus} · ${meta.duration}`;
+  if(desc) desc.textContent=`Jam saran ${meta.time}. ${meta.desc}`;
+  if(startInput) startInput.value=formatDisplayDate(ensureProgramStart());
+  if(weekReadonly) weekReadonly.value=`Week ${week} / 4`;
+}
+function focusTodayCard(openCard=true){
+  const today=perthDate().getDay();
+  document.querySelectorAll('.sched-day').forEach(el=>el.classList.toggle('today-day', Number(el.dataset.day)===today));
+  document.querySelectorAll('.day-card').forEach(card=>card.classList.toggle('today-card-outline', Number(card.dataset.day)===today));
+  if(!openCard) return;
+  const card=document.querySelector(`.day-card[data-day="${today}"]`);
+  if(!card) return;
+  const body=card.querySelector('.day-body');
+  const chev=card.querySelector('.chevron');
+  const anyOpen=[...document.querySelectorAll('.day-body')].some(b=>b.classList.contains('open'));
+  if(!anyOpen && body){body.classList.add('open'); if(chev) chev.classList.add('open');}
+}
+
+function goToAssessSparringLog(){
+  switchTab('assess');
+  setTimeout(()=>{const el=document.getElementById('sparring-log'); if(el) el.scrollIntoView({behavior:'smooth', block:'start'});}, 60);
+}
+function setManualProgramStart(){
+  const input=document.getElementById('program-start-date');
+  if(!input || !input.value) return;
+  const iso=parseDisplayDateToISO(input.value);
+  if(!iso){
+    alert('Gunakan format tanggal dd/mm/yyyy');
+    return;
+  }
+  localStorage.setItem('musa-program-start', iso);
+  input.value=formatDisplayDate(iso);
+  updateProgramHeader();
+}
+function resetProgramWeek(){
+  const today=perthISO();
+  localStorage.setItem('musa-program-start', today);
+  const input=document.getElementById('program-start-date');
+  if(input) input.value=formatDisplayDate(today);
+  updateProgramHeader();
+}
+
+// ─── INIT ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  const today=perthISO();
+  document.getElementById('track-date').value=today;
+  document.getElementById('tally-date').value=today;
+  ensureProgramStart();
+  updateProgramHeader();
+  const startInput=document.getElementById('program-start-date');
+  if(startInput){
+    startInput.addEventListener('blur',()=>{
+      const iso=parseDisplayDateToISO(startInput.value);
+      if(iso) startInput.value=formatDisplayDate(iso);
+    });
+  }
+  focusTodayCard(true);
+  renderHistory();
+  renderMatchHistory();
+});
+</script>
+</body>
+</html>
