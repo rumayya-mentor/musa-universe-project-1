@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Musa's English Level Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Epilogue:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f4;
+  --bg2: #f2ede4;
+  --ink: #1a1612;
+  --ink2: #4a4540;
+  --ink3: #8a8278;
+  --border: #ddd8ce;
+  --border2: #ccc6ba;
+  --gold: #c8a84b;
+  --gold-bg: #fdf6e3;
+  --teal: #2d7d6f;
+  --teal-bg: #e8f4f1;
+  --red: #c0392b;
+  --red-bg: #fdecea;
+  --blue: #2660a4;
+  --blue-bg: #e8f0fb;
+  --correct: #27ae60;
+  --wrong: #e74c3c;
+  --y5: #e67e22;
+  --y6: #f1c40f;
+  --y7: #2ecc71;
+  --y8: #3498db;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Epilogue', sans-serif;
+  min-height: 100vh;
+}
+
+/* Paper texture */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+}
+
+.app { position:relative; z-index:1; max-width:560px; margin:0 auto; padding:0 0 100px; }
+
+/* HEADER */
+.site-header {
+  padding: 20px 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 16px;
+  margin-bottom: 0;
+}
+
+.header-badge {
+  background: var(--ink);
+  color: var(--bg);
+  font-family: 'Fraunces', serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+.header-title {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.header-sub {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+/* SCREENS */
+.screen { display:none; padding:20px; animation: fadeIn 0.3s ease; }
+.screen.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+/* WELCOME */
+.welcome-stamp {
+  text-align:center;
+  padding: 32px 0 24px;
+}
+
+.stamp-circle {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 36px;
+  background: var(--bg);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.welcome-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.welcome-title em {
+  font-style: italic;
+  color: var(--teal);
+}
+
+.welcome-sub {
+  font-size: 13px;
+  color: var(--ink2);
+  margin-top: 10px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* SECTION CARDS */
+.section-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.section-card {
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: white;
+}
+
+.sc-num {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--border2);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 28px;
+}
+
+.sc-info h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sc-info p {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.sc-meta {
+  margin-left: auto;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.sc-time {
+  font-size: 11px;
+  color: var(--ink3);
+  font-weight: 500;
+}
+
+.sc-method {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-top: 4px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.auto { background: var(--teal-bg); color: var(--teal); }
+.manual { background: var(--gold-bg); color: #8a6a00; }
+
+.notice-box {
+  background: var(--gold-bg);
+  border: 1.5px solid var(--gold);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.notice-box strong { color: var(--ink); }
+
+/* BUTTONS */
+.btn-primary {
+  width:100%;
+  padding: 16px;
+  background: var(--ink);
+  color: var(--bg);
+  border: none;
+  border-radius: 10px;
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  box-shadow: 3px 3px 0 var(--ink3);
+  transition: all 0.15s;
+}
+
+.btn-primary:active { transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink3); }
+
+.btn-secondary {
+  width:100%;
+  padding: 13px;
+  background: white;
+  color: var(--ink);
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  font-family: 'Epilogue', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.15s;
+}
+
+.btn-teal {
+  width:100%;
+  padding: 15px;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #1a4f45;
+  transition: all 0.15s;
+  margin-top: 10px;
+}
+
+.btn-teal:active { transform:translate(2px,2px); box-shadow:1px 1px 0 #1a4f45; }
+
+/* SECTION HEADER */
+.section-header {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+}
+
+.sec-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 4px;
+}
+
+.sec-title {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.sec-desc {
+  font-size: 12px;
+  color: var(--ink2);
+  margin-top: 5px;
+  line-height: 1.6;
+}
+
+/* PROGRESS BAR */
+.progress-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.progress-bar-bg {
+  flex:1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height:100%;
+  background: var(--ink);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 11px;
+  color: var(--ink3);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* QUIZ QUESTION */
+.q-card {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.q-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.q-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.q-level {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.lv5 { background:#fef3e2; color:#c0620a; }
+.lv6 { background:#fefce2; color:#a08000; }
+.lv7 { background:#e8f8f0; color:#1a7a44; }
+.lv8 { background:#e8f0fb; color:#1a4a8a; }
+
+.q-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+
+.q-text strong { font-weight: 600; }
+.q-text em { font-style: italic; color: var(--ink2); }
+
+.q-context {
+  background: var(--bg2);
+  border-left: 3px solid var(--border2);
+  padding: 10px 12px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink2);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.option-btn {
+  width:100%;
+  padding: 11px 14px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--ink);
+  font-family: 'Epilogue', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.option-btn:hover:not(:disabled) {
+  border-color: var(--ink);
+  background: white;
+}
+
+.opt-letter {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  display: flex; align-items:center; justify-content:center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.option-btn.selected { border-color: var(--ink); background: var(--ink); color: white; }
+.option-btn.selected .opt-letter { border-color: white; color: white; }
+.option-btn.correct { border-color: var(--correct); background: #edfaf3; color: var(--correct); }
+.option-btn.correct .opt-letter { border-color: var(--correct); color: var(--correct); background: white; }
+.option-btn.wrong { border-color: var(--wrong); background: #fdecea; color: var(--wrong); }
+.option-btn.wrong .opt-letter { border-color: var(--wrong); color: var(--wrong); background: white; }
+.option-btn.reveal-correct { border-color: var(--correct); background: #edfaf3; color: var(--correct); }
+.option-btn:disabled { cursor: default; }
+
+.q-feedback {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  display: none;
+}
+
+.q-feedback.show { display: block; }
+.q-feedback.correct-fb { background: #edfaf3; color: #1a6b3c; border: 1px solid #a8e6c1; }
+.q-feedback.wrong-fb { background: #fdecea; color: #922b21; border: 1px solid #f5b7b1; }
+
+/* READING TEXT */
+.reading-passage {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+.passage-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+
+.passage-title {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.passage-type {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.fiction { background: #f0e6ff; color: #6b2fa0; }
+.nonfiction { background: var(--teal-bg); color: var(--teal); }
+.persuasive { background: #fff0e6; color: #a04010; }
+
+.passage-text {
+  font-size: 13px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.passage-text p { margin-bottom: 10px; }
+.passage-text p:last-child { margin-bottom: 0; }
+
+/* WRITING */
+.writing-prompt {
+  background: var(--gold-bg);
+  border: 1.5px solid var(--gold);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.writing-prompt h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.writing-prompt p {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+}
+
+.writing-tips {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.writing-tips strong { color: var(--ink2); }
+
+.writing-area {
+  width: 100%;
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 14px;
+  color: var(--ink);
+  font-family: 'Epilogue', sans-serif;
+  font-size: 13px;
+  line-height: 1.7;
+  resize: none;
+  min-height: 160px;
+  margin-bottom: 6px;
+}
+
+.writing-area:focus { outline: none; border-color: var(--ink); }
+.writing-area::placeholder { color: var(--border2); }
+
+.word-count {
+  font-size: 11px;
+  color: var(--ink3);
+  text-align: right;
+  margin-bottom: 12px;
+}
+
+/* SPEAKING */
+.rec-card {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.rec-prompt {
+  background: var(--bg2);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.rec-prompt.read-aloud {
+  font-style: italic;
+  border-left: 3px solid var(--teal);
+  border-radius: 0 8px 8px 0;
+}
+
+.rec-area {
+  border: 2px dashed var(--border2);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s;
+  margin-bottom: 10px;
+}
+
+.rec-area.recording {
+  border-color: var(--red);
+  background: var(--red-bg);
+}
+
+.rec-area.done {
+  border-color: var(--teal);
+  border-style: solid;
+  background: var(--teal-bg);
+}
+
+.rec-icon-circle {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  background: var(--bg);
+  display: flex; align-items:center; justify-content:center;
+  margin: 0 auto 10px;
+  font-size: 20px;
+  transition: all 0.3s;
+}
+
+.rec-area.recording .rec-icon-circle {
+  border-color: var(--red);
+  background: var(--red-bg);
+  animation: recPulse 1s infinite;
+}
+
+.rec-area.done .rec-icon-circle {
+  border-color: var(--teal);
+  background: var(--teal-bg);
+}
+
+@keyframes recPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.3); }
+  50% { box-shadow: 0 0 0 10px rgba(192,57,43,0); }
+}
+
+.rec-timer {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -1px;
+}
+
+.rec-timer.running { color: var(--red); }
+.rec-timer.warning { color: var(--y5); }
+
+.rec-status-text {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 4px;
+}
+
+.rec-bar { height:3px; background:var(--border); border-radius:2px; margin:10px 0 0; overflow:hidden; }
+.rec-bar-fill { height:100%; background:var(--red); border-radius:2px; transition:width 1s linear; width:0%; }
+
+.audio-wrap { margin-top: 10px; display:none; }
+.audio-wrap.show { display:block; }
+audio { width:100%; border-radius:6px; }
+
+.dl-link {
+  display: block;
+  margin-top: 8px;
+  padding: 9px 12px;
+  background: var(--teal-bg);
+  border: 1px solid var(--teal);
+  border-radius: 8px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.rec-btn {
+  width:100%;
+  padding: 13px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 2px 2px 0 var(--ink3);
+}
+
+.rec-btn:active { transform:translate(1px,1px); box-shadow:1px 1px 0 var(--ink3); }
+.rec-btn.recording-btn { background: var(--red); box-shadow:2px 2px 0 #8b0000; }
+
+/* RESULTS */
+.results-header {
+  text-align: center;
+  padding: 28px 0 20px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 20px;
+}
+
+.results-header h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.results-header p {
+  font-size: 13px;
+  color: var(--ink2);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+
+.score-section {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.score-section h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.score-row:last-child { margin-bottom: 0; }
+
+.score-lbl {
+  font-size: 12px;
+  color: var(--ink2);
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.score-bar-bg {
+  flex:1;
+  height: 8px;
+  background: var(--bg2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height:100%;
+  border-radius: 4px;
+  transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.score-val-box {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  width: 34px;
+  text-align: right;
+}
+
+.level-estimate {
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.level-estimate h3 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 12px;
+}
+
+.level-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.level-item {
+  background: rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.level-item-label {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.level-item-val {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.pending-note {
+  font-size: 11px;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.export-section {
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.export-header {
+  background: var(--bg2);
+  padding: 12px 16px;
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.export-content {
+  padding: 14px 16px;
+  font-size: 11px;
+  color: var(--ink2);
+  line-height: 1.9;
+  font-family: monospace;
+  white-space: pre-wrap;
+  background: white;
+  max-height: 260px;
+  overflow-y: auto;
+  word-break: break-word;
+}
+
+.btn-copy {
+  padding: 6px 12px;
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Epilogue', sans-serif;
+}
+
+.gap-card {
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.gap-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── SECTION TIMER ── */
+.section-timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border: 1.5px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  position: sticky;
+  top: 8px;
+  z-index: 10;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.section-timer.warning {
+  border-color: var(--y5);
+  background: #fff8f0;
+}
+
+.section-timer.critical {
+  border-color: var(--red);
+  background: var(--red-bg);
+  animation: timerShake 0.4s ease;
+}
+
+@keyframes timerShake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.timer-icon { font-size: 16px; flex-shrink: 0; }
+
+.timer-countdown {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+  min-width: 52px;
+  transition: color 0.3s;
+}
+
+.section-timer.warning .timer-countdown { color: var(--y5); }
+.section-timer.critical .timer-countdown { color: var(--red); }
+
+.timer-right { flex: 1; }
+
+.timer-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.timer-sublabel {
+  font-size: 10px;
+  color: var(--ink3);
+  margin-top: 1px;
+}
+
+.timer-bar-outer {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 60px;
+}
+
+.timer-bar-inner {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--teal);
+  transition: width 1s linear, background 0.3s;
+}
+
+.section-timer.warning .timer-bar-inner { background: var(--y5); }
+.section-timer.critical .timer-bar-inner { background: var(--red); }
+
+.timer-elapsed {
+  font-size: 10px;
+  color: var(--ink3);
+  min-width: 38px;
+  text-align: right;
+  font-weight: 500;
+}
+
+/* Writing per-task timer */
+.writing-timer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: var(--teal-bg);
+  border: 1px solid rgba(45,125,111,0.2);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--teal);
+  font-weight: 500;
+}
+
+.writing-timer-row.warning { background: #fff8f0; border-color: var(--y5); color: #a06020; }
+.writing-timer-row.critical { background: var(--red-bg); border-color: var(--red); color: var(--red); }
+
+.wt-time {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  min-width: 42px;
+}
+
+.wt-bar-bg { flex:1; height:4px; background:rgba(0,0,0,0.1); border-radius:2px; overflow:hidden; }
+.wt-bar-fill { height:100%; background: var(--teal); border-radius:2px; transition: width 1s linear, background 0.3s; }
+.writing-timer-row.warning .wt-bar-fill { background: var(--y5); }
+.writing-timer-row.critical .wt-bar-fill { background: var(--red); }
+
+.gap-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.gap-row:last-child { border-bottom: none; }
+
+.gap-aspect { flex:1; color: var(--ink2); }
+.gap-current { font-weight: 600; color: var(--ink); width: 60px; text-align:center; }
+.gap-target { font-weight: 600; color: var(--teal); width: 60px; text-align:center; }
+.gap-diff { font-size: 11px; width: 70px; text-align:right; }
+.gap-diff.positive { color: var(--correct); }
+.gap-diff.negative { color: var(--wrong); }
+.gap-diff.neutral { color: var(--ink3); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="site-header">
+    <div>
+      <div class="header-badge">English Test</div>
+    </div>
+    <div>
+      <div class="header-title">Musa's Level Assessment</div>
+      <div class="header-sub">Year 5–8 Diagnostic · ACARA v9.0</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN: WELCOME
+  ═══════════════════════════════════════════ -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome-stamp">
+      <div class="stamp-circle">📝</div>
+      <div class="welcome-title">Find Your<br><em>English Level</em></div>
+      <div class="welcome-sub">This test covers 4 areas of English and estimates which Year level Musa is at — so we can build the right program.</div>
+    </div>
+
+    <div class="section-cards">
+      <div class="section-card">
+        <div class="sc-num">1</div>
+        <div class="sc-info">
+          <h4>Vocabulary & Grammar</h4>
+          <p>30 multiple-choice questions · Year 5→8 difficulty</p>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-time">~20 min</div>
+          <div class="sc-method auto">Auto-marked</div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-num">2</div>
+        <div class="sc-info">
+          <h4>Reading Comprehension</h4>
+          <p>3 passages (fiction, non-fiction, persuasive) · 15 questions</p>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-time">~25 min</div>
+          <div class="sc-method auto">Auto-marked</div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-num">3</div>
+        <div class="sc-info">
+          <h4>Writing</h4>
+          <p>2 short writing tasks · informative + persuasive</p>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-time">~20 min</div>
+          <div class="sc-method manual">Drop to Claude</div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-num">4</div>
+        <div class="sc-info">
+          <h4>Speaking</h4>
+          <p>2 recorded tasks · read aloud + impromptu response</p>
+        </div>
+        <div class="sc-meta">
+          <div class="sc-time">~15 min</div>
+          <div class="sc-method manual">Drop to Claude</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice-box">
+      💡 <strong>How it works:</strong> Parts 1 & 2 are marked automatically. Parts 3 & 4 (writing & speaking) will be copied/exported at the end for Claude to analyse and give a full level estimate.
+    </div>
+
+    <button class="btn-primary" onclick="goTo('screen-vocab')">Begin Test →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN: PART 1 — VOCAB & GRAMMAR
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-vocab">
+    <div class="section-header">
+      <div class="sec-eyebrow">Part 1 of 4</div>
+      <div class="sec-title">Vocabulary & Grammar</div>
+      <div class="sec-desc">Choose the best answer for each question. Questions get harder as you go.</div>
+    </div>
+
+    <!-- Section Timer -->
+    <div class="section-timer" id="vg-timer-bar">
+      <div class="timer-icon">⏱</div>
+      <div class="timer-countdown" id="vg-timer-display">20:00</div>
+      <div class="timer-right">
+        <div class="timer-label">Part 1 Time</div>
+        <div class="timer-sublabel" id="vg-timer-sub">20 minutes · 30 questions</div>
+      </div>
+      <div class="timer-bar-outer">
+        <div class="timer-bar-inner" id="vg-timer-fill" style="width:100%"></div>
+      </div>
+      <div class="timer-elapsed" id="vg-timer-elapsed">+0:00</div>
+    </div>
+
+    <div class="progress-strip">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="vg-progress" style="width:0%"></div></div>
+      <div class="progress-label" id="vg-progress-label">0 / 30</div>
+    </div>
+
+    <div id="vocab-questions"></div>
+
+    <button class="btn-teal" id="vg-next-btn" onclick="finishVocab()" style="display:none">
+      Continue to Reading →
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN: PART 2 — READING
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-reading">
+    <div class="section-header">
+      <div class="sec-eyebrow">Part 2 of 4</div>
+      <div class="sec-title">Reading Comprehension</div>
+      <div class="sec-desc">Read each passage carefully, then answer the questions.</div>
+    </div>
+
+    <!-- Section Timer -->
+    <div class="section-timer" id="rd-timer-bar">
+      <div class="timer-icon">⏱</div>
+      <div class="timer-countdown" id="rd-timer-display">25:00</div>
+      <div class="timer-right">
+        <div class="timer-label">Part 2 Time</div>
+        <div class="timer-sublabel" id="rd-timer-sub">25 minutes · 3 passages</div>
+      </div>
+      <div class="timer-bar-outer">
+        <div class="timer-bar-inner" id="rd-timer-fill" style="width:100%"></div>
+      </div>
+      <div class="timer-elapsed" id="rd-timer-elapsed">+0:00</div>
+    </div>
+
+    <div id="reading-content"></div>
+
+    <button class="btn-teal" id="rd-next-btn" onclick="finishReading()" style="display:none">
+      Continue to Writing →
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN: PART 3 — WRITING
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-writing">
+    <div class="section-header">
+      <div class="sec-eyebrow">Part 3 of 4</div>
+      <div class="sec-title">Writing Tasks</div>
+      <div class="sec-desc">Complete both writing tasks. Write as much as you can — quality and structure matter more than length.</div>
+    </div>
+
+    <!-- Total Writing Timer -->
+    <div class="section-timer" id="wr-timer-bar">
+      <div class="timer-icon">⏱</div>
+      <div class="timer-countdown" id="wr-timer-display">20:00</div>
+      <div class="timer-right">
+        <div class="timer-label">Total Writing Time</div>
+        <div class="timer-sublabel">~10 min per task</div>
+      </div>
+      <div class="timer-bar-outer">
+        <div class="timer-bar-inner" id="wr-timer-fill" style="width:100%"></div>
+      </div>
+      <div class="timer-elapsed" id="wr-timer-elapsed">+0:00</div>
+    </div>
+
+    <div class="writing-prompt">
+      <h4>✍️ Task 3A — Informative Writing</h4>
+      <p>Write 2–3 paragraphs explaining <strong>how climate change affects oceans</strong>. Include at least one cause, one effect, and one possible solution. Use your own words.</p>
+      <div class="writing-tips"><strong>Aim for:</strong> 120–180 words · Clear topic sentences · Specific details · Logical order</div>
+    </div>
+    <!-- Task 3A per-task timer -->
+    <div class="writing-timer-row" id="wt1-row">
+      <span>3A</span>
+      <span class="wt-time" id="wt1-display">10:00</span>
+      <div class="wt-bar-bg"><div class="wt-bar-fill" id="wt1-fill" style="width:100%"></div></div>
+      <span id="wt1-label" style="font-size:10px;min-width:60px;text-align:right">Suggested: 10 min</span>
+    </div>
+    <textarea class="writing-area" id="writing-1" placeholder="Start writing here..." oninput="updateWordCount(1)"></textarea>
+    <div class="word-count" id="wc-1">0 words</div>
+
+    <div class="writing-prompt" style="margin-top:8px">
+      <h4>💬 Task 3B — Persuasive Writing</h4>
+      <p>Write 2–3 paragraphs arguing <strong>whether students should be allowed to use phones in class</strong>. Pick a side and give reasons with examples.</p>
+      <div class="writing-tips"><strong>Aim for:</strong> 120–180 words · Clear position · At least 2 reasons · Concluding sentence</div>
+    </div>
+    <!-- Task 3B per-task timer -->
+    <div class="writing-timer-row" id="wt2-row">
+      <span>3B</span>
+      <span class="wt-time" id="wt2-display">10:00</span>
+      <div class="wt-bar-bg"><div class="wt-bar-fill" id="wt2-fill" style="width:100%"></div></div>
+      <span id="wt2-label" style="font-size:10px;min-width:60px;text-align:right">Suggested: 10 min</span>
+    </div>
+    <textarea class="writing-area" id="writing-2" placeholder="Start writing here..." oninput="updateWordCount(2)"></textarea>
+    <div class="word-count" id="wc-2">0 words</div>
+
+    <button class="btn-teal" onclick="finishWriting()" style="margin-top:8px">Continue to Speaking →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN: PART 4 — SPEAKING
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-speaking">
+    <div class="section-header">
+      <div class="sec-eyebrow">Part 4 of 4</div>
+      <div class="sec-title">Speaking Tasks</div>
+      <div class="sec-desc">Two short recordings. Download both files — you'll upload them to Claude at the end.</div>
+    </div>
+
+    <!-- Task 4A: Read Aloud -->
+    <div class="rec-card">
+      <div class="q-meta">
+        <div class="q-num">Task 4A — Read Aloud</div>
+        <div class="q-level lv7">~90 sec</div>
+      </div>
+      <p style="font-size:12px;color:var(--ink3);margin-bottom:10px;">Read this passage aloud clearly and naturally. Focus on pronunciation, pace, and expression.</p>
+      <div class="rec-prompt read-aloud">
+        "Every year, millions of tourists visit the Great Barrier Reef, drawn by its extraordinary biodiversity. The reef is home to more than 1,500 species of fish, 4,000 types of molluscs, and countless other marine organisms. However, scientists are increasingly concerned about the reef's future. Rising ocean temperatures, caused by climate change, have triggered repeated coral bleaching events — a phenomenon where corals expel the algae living in their tissues and turn completely white. Without these algae, corals cannot survive for long. Conservationists argue that without urgent global action to reduce carbon emissions, large sections of the reef could be permanently lost within decades."
+      </div>
+      <div class="rec-area" id="spk1-area">
+        <div class="rec-icon-circle" id="spk1-icon">🎤</div>
+        <div class="rec-timer" id="spk1-timer">1:30</div>
+        <div class="rec-bar"><div class="rec-bar-fill" id="spk1-fill"></div></div>
+        <div class="rec-status-text" id="spk1-status">Press record when ready</div>
+      </div>
+      <div class="audio-wrap" id="spk1-audio-wrap">
+        <audio id="spk1-audio" controls></audio>
+        <a class="dl-link" id="spk1-dl">⬇️ Download Recording 4A</a>
+      </div>
+      <button class="rec-btn" id="spk1-btn" onclick="toggleSpkRec(1)" style="margin-top:10px">⏺ Start Recording</button>
+    </div>
+
+    <!-- Task 4B: Impromptu -->
+    <div class="rec-card">
+      <div class="q-meta">
+        <div class="q-num">Task 4B — Impromptu Response</div>
+        <div class="q-level lv7">~60 sec</div>
+      </div>
+      <p style="font-size:12px;color:var(--ink3);margin-bottom:10px;">Answer this question immediately when you press record — no preparation time!</p>
+      <div class="rec-prompt" style="background:#fff8e6;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;">
+        <strong style="font-size:13px;">"Describe a person you admire. Explain who they are, what they do, and why you admire them. Give specific reasons."</strong>
+      </div>
+      <div class="rec-area" id="spk2-area">
+        <div class="rec-icon-circle" id="spk2-icon">🎤</div>
+        <div class="rec-timer" id="spk2-timer">1:00</div>
+        <div class="rec-bar"><div class="rec-bar-fill" id="spk2-fill"></div></div>
+        <div class="rec-status-text" id="spk2-status">Press record — answer immediately!</div>
+      </div>
+      <div class="audio-wrap" id="spk2-audio-wrap">
+        <audio id="spk2-audio" controls></audio>
+        <a class="dl-link" id="spk2-dl">⬇️ Download Recording 4B</a>
+      </div>
+      <button class="rec-btn" id="spk2-btn" onclick="toggleSpkRec(2)" style="margin-top:10px">⏺ Start Recording</button>
+    </div>
+
+    <button class="btn-teal" onclick="finishSpeaking()">See Results & Export →</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SCREEN: RESULTS
+  ═══════════════════════════════════════════ -->
+  <div class="screen" id="screen-results">
+    <div class="results-header">
+      <h2>Test Complete 🎉</h2>
+      <p>Parts 1 & 2 scored automatically.<br>Copy the export below and send to Claude for full analysis.</p>
+    </div>
+
+    <!-- Auto scores -->
+    <div class="score-section">
+      <h3>📊 Auto-Scored Results</h3>
+      <div id="auto-score-rows"></div>
+    </div>
+
+    <!-- Level estimate (partial — auto only) -->
+    <div class="level-estimate">
+      <h3>Estimated Level (Auto-Scored Parts)</h3>
+      <div class="level-grid" id="level-grid"></div>
+    </div>
+
+    <!-- Gap analysis -->
+    <div class="gap-card" id="gap-card">
+      <h3>🎯 Gap vs Year 7 Target</h3>
+      <div style="display:flex;gap:8px;margin-bottom:10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);">
+        <div style="flex:1">Aspect</div>
+        <div style="width:60px;text-align:center">Current</div>
+        <div style="width:60px;text-align:center">Target</div>
+        <div style="width:70px;text-align:right">Gap</div>
+      </div>
+      <div id="gap-rows"></div>
+    </div>
+
+    <!-- Export box -->
+    <div class="export-section">
+      <div class="export-header">
+        📋 Full Export — Send to Claude
+        <button class="btn-copy" onclick="copyExport()">Copy</button>
+      </div>
+      <div class="export-content" id="export-content"></div>
+    </div>
+
+    <div class="notice-box" style="margin-top:8px;">
+      🎤 <strong>Speaking recordings:</strong> Download both audio files (4A & 4B) from Part 4 and upload them to Claude along with this export text for a complete level estimate including speaking.
+    </div>
+
+    <button class="btn-secondary" onclick="resetTest()">🔄 Start Over</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA — VOCAB & GRAMMAR QUESTIONS (30 questions, Y5→Y8)
+// ══════════════════════════════════════════════════════════
+const vgQuestions = [
+  // YEAR 5 (Q1–7)
+  { id:'vg1', level:5, text:'Choose the correct word: "She _____ to the market every Saturday."', opts:['go','goes','going','gone'], answer:1, explain:'Third person singular present tense uses "goes".' },
+  { id:'vg2', level:5, text:'Which sentence uses an apostrophe correctly?', opts:["The dog's bone is buried.","The dogs bone is buried.","The dog is bone's buried.","The dogs' is bone buried."], answer:0, explain:'"Dog\'s" shows possession — the bone belonging to the dog.' },
+  { id:'vg3', level:5, text:'What does the word <strong>ancient</strong> mean?', opts:['Very new','Very old','Very fast','Very small'], answer:1, explain:'"Ancient" means very old, often thousands of years old.' },
+  { id:'vg4', level:5, text:'Choose the correct sentence:', opts:['Me and him went to the shops.','Him and me went to the shops.','He and I went to the shops.','I and he went to the shops.'], answer:2, explain:'Subject pronouns: "He and I" — not "me and him" as subjects.' },
+  { id:'vg5', level:5, text:'Which word is an adjective in this sentence: <em>"The tall boy ran quickly across the muddy field."</em>', opts:['ran','quickly','tall','across'], answer:2, explain:'"Tall" describes the noun "boy", so it\'s an adjective.' },
+  { id:'vg6', level:5, text:'What is the plural of <strong>leaf</strong>?', opts:['Leafs','Leaves','Leafes','Leafs'], answer:1, explain:'Words ending in -f often change to -ves in plural form.' },
+  { id:'vg7', level:5, text:'Which word means the opposite of <strong>expand</strong>?', opts:['Grow','Enlarge','Contract','Extend'], answer:2, explain:'"Contract" means to shrink or get smaller — opposite of expand.' },
+
+  // YEAR 6 (Q8–16)
+  { id:'vg8', level:6, text:'Choose the word that best completes the sentence: "The scientist made a remarkable _____ that changed our understanding of DNA."', opts:['discovery','discover','discovered','discovering'], answer:0, explain:'A noun is needed here: "discovery".' },
+  { id:'vg9', level:6, text:'Which sentence is written in the <strong>passive voice</strong>?', opts:['The chef cooked the meal.','The meal was cooked by the chef.','The chef is cooking the meal.','The chef had cooked the meal.'], answer:1, explain:'Passive voice: the subject receives the action — "the meal was cooked".' },
+  { id:'vg10', level:6, text:'What does the prefix <strong>mis-</strong> mean in the word <em>misunderstand</em>?', opts:['Again','Before','Wrongly','Under'], answer:2, explain:'"Mis-" means wrongly or incorrectly — to misunderstand = to understand wrongly.' },
+  { id:'vg11', level:6, text:'Choose the correct form: "If I _____ you, I would study harder."', opts:['am','was','were','be'], answer:2, explain:'Subjunctive mood uses "were" for hypothetical/unreal conditions.' },
+  { id:'vg12', level:6, context:'"The documentary provided compelling evidence about deforestation."', text:'What does <strong>compelling</strong> mean in context?', opts:['Weak and uncertain','Strongly convincing','Difficult to understand','Controversial'], answer:1, explain:'"Compelling evidence" = very convincing, hard to ignore.' },
+  { id:'vg13', level:6, text:'Which word correctly fills the blank: "The team worked _____ to finish the project on time."', opts:['efficient','efficiency','efficiently','efficiencies'], answer:2, explain:'An adverb ("efficiently") is needed to modify the verb "worked".' },
+  { id:'vg14', level:6, text:'Identify the subordinate clause: <em>"Although it was raining, we continued the match."</em>', opts:['"we continued the match"','"Although it was raining"','"it was raining"','"we continued"'], answer:1, explain:'The subordinate clause "Although it was raining" cannot stand alone — it depends on the main clause.' },
+  { id:'vg15', level:6, text:'What literary device is used: <em>"The wind whispered secrets through the trees."</em>?', opts:['Simile','Metaphor','Personification','Alliteration'], answer:2, explain:'The wind is given a human quality (whispering) — that\'s personification.' },
+  { id:'vg16', level:6, text:'Choose the sentence with correct punctuation:', opts:["Its a beautiful day, isn't it?","It's a beautiful day, isn't it?","Its a beautiful day isnt it?","It's a beautiful day isn't it?"], answer:1, explain:'"It\'s" = it is (contraction). "Isn\'t" = is not. Both need apostrophes.' },
+
+  // YEAR 7 (Q17–24)
+  { id:'vg17', level:7, text:'Which word is closest in meaning to <strong>ambiguous</strong>?', opts:['Clear and definite','Open to more than one interpretation','Completely wrong','Overly complicated'], answer:1, explain:'"Ambiguous" means having more than one possible meaning — unclear or uncertain.' },
+  { id:'vg18', level:7, context:'"The politician\'s rhetoric was designed to manipulate public opinion rather than inform it."', text:'What does <strong>rhetoric</strong> mean in this context?', opts:['Scientific research','Persuasive or impressive language','Financial policy','Media coverage'], answer:1, explain:'"Rhetoric" refers to language used to persuade or impress, sometimes without much substance.' },
+  { id:'vg19', level:7, text:'Identify the type of sentence: <em>"The experiment failed because the temperature, which had not been monitored carefully, rose too high."</em>', opts:['Simple sentence','Compound sentence','Complex sentence','Compound-complex sentence'], answer:3, explain:'This sentence has two clauses joined by "because" plus an embedded relative clause — making it compound-complex.' },
+  { id:'vg20', level:7, text:'Which is the correct use of a <strong>colon</strong>?', opts:['I bought: eggs, milk, and bread.','She had one goal: to win the championship.','He ran: to the bus stop quickly.','The colon: is a punctuation mark.'], answer:1, explain:'A colon introduces what follows — a list, explanation, or elaboration.' },
+  { id:'vg21', level:7, text:'What is the effect of using <strong>short, fragmented sentences</strong> in creative writing?', opts:['To slow the pace and add description','To create tension, urgency, or impact','To add formal academic tone','To introduce new characters'], answer:1, explain:'Short sentences speed up the pace and can create a sense of urgency, drama, or shock.' },
+  { id:'vg22', level:7, context:'"Despite the preliminary findings being inconclusive, the researchers remained optimistic about the project\'s potential."', text:'What does <strong>inconclusive</strong> mean in context?', opts:['Completely negative','Extremely successful','Not leading to a definite answer','Highly controversial'], answer:2, explain:'"Inconclusive" = not leading to a clear conclusion or result.' },
+  { id:'vg23', level:7, text:'Which sentence uses a <strong>relative clause</strong> correctly?', opts:['The book, which I borrowed yesterday, is fascinating.','The book that I borrowed yesterday, is fascinating.','The book, which I borrowed, yesterday is fascinating.','The book which, I borrowed yesterday is fascinating.'], answer:0, explain:'Non-restrictive relative clauses (adding extra info) are enclosed by commas.' },
+  { id:'vg24', level:7, text:'What is the term for when a writer hints at future events without directly stating them?', opts:['Flashback','Foreshadowing','Irony','Juxtaposition'], answer:1, explain:'"Foreshadowing" is a literary device where hints or clues suggest what will happen later.' },
+
+  // YEAR 8 (Q25–30)
+  { id:'vg25', level:8, text:'Which best defines <strong>juxtaposition</strong> as a literary technique?', opts:['Repeating a word for emphasis','Placing contrasting ideas side by side to highlight differences','Using symbols to represent abstract ideas','Referring to a well-known event or text'], answer:1, explain:'"Juxtaposition" = placing two contrasting things next to each other to emphasise the difference.' },
+  { id:'vg26', level:8, context:'"The protagonist\'s internal monologue reveals the profound ambivalence she feels toward her mentor."', text:'What does <strong>ambivalence</strong> mean in context?', opts:['Strong admiration','Deep hatred','Conflicting feelings or attitudes','Complete indifference'], answer:2, explain:'"Ambivalence" = having mixed or contradictory feelings about something.' },
+  { id:'vg27', level:8, text:'Identify the error in this sentence: <em>"The committee have reached their decision, which were announced yesterday."</em>', opts:['Subject-verb agreement error ("have" should be "has")','Pronoun-antecedent disagreement ("their" should be "its")','Relative pronoun error ("which were" should be "which was")','Both B and C'], answer:3, explain:'"Their" should be "its" (committee = singular entity), and "which were" should be "which was" (refers to the singular decision).' },
+  { id:'vg28', level:8, text:'What rhetorical device is used: <em>"Ask not what your country can do for you — ask what you can do for your country."</em>?', opts:['Anaphora','Antithesis','Alliteration','Hyperbole'], answer:1, explain:'"Antithesis" = placing contrasting ideas in parallel structure for rhetorical effect.' },
+  { id:'vg29', level:8, context:'"Her writing exhibited a sophisticated synthesis of contemporary theory and classical literary tradition."', text:'What does <strong>synthesis</strong> mean in context?', opts:['Criticism of both traditions','A combination of different elements into a whole','A strict separation of ideas','An analysis of a single tradition'], answer:1, explain:'"Synthesis" = combining different elements or ideas to form a new, unified whole.' },
+  { id:'vg30', level:8, text:'Which sentence demonstrates the most sophisticated use of <strong>modality</strong>?', opts:['You must do this now.','It could be argued that this policy may inadvertently disadvantage marginalised communities.','I think this is probably wrong.','This might be maybe possibly true.'], answer:1, explain:'Sophisticated modality uses hedging language ("could be argued", "may") to express nuanced certainty — common in academic writing.' },
+];
+
+// ══════════════════════════════════════════════════════════
+// DATA — READING PASSAGES
+// ══════════════════════════════════════════════════════════
+const passages = [
+  {
+    id: 'p1',
+    type: 'fiction',
+    typeLabel: 'Fiction',
+    title: 'The Last Signal',
+    level: '6–7',
+    text: `<p>Mira pressed her ear to the cold metal door. Nothing. She counted the seconds — one, two, three — before pressing the button again. The corridor had been silent for six hours now, and the backup generator hummed its low, indifferent note somewhere deep in the walls.</p>
+<p>"They have to come back," she told herself, though she no longer believed it. Outside, the storm had swallowed the communications tower. Her radio was dead, and so, she suspected, was the satellite link. All she had was the journal on the table and a pen with perhaps twenty pages left in it.</p>
+<p>She moved to the window and looked out. The white stretched in every direction — flat, featureless, absolute. Antarctica had a way of making a person feel very small and very alone at the same time. But Mira had been trained for this. She had volunteered for exactly this kind of isolation, though she had not imagined it would feel quite like this.</p>
+<p>She picked up the pen and wrote the date at the top of a blank page. <em>Day 47.</em> Then she paused, listening again. And this time — faintly, barely there — she heard it: a signal.</p>`,
+    questions: [
+      { text:'Where is Mira?', opts:['In a city during a power outage','At a remote station in Antarctica','On a space station','In an underground bunker'], answer:2, level:6, explain:'The passage mentions "Antarctica" and the "white" landscape outside.' },
+      { text:'What does the phrase <em>"the white stretched in every direction — flat, featureless, absolute"</em> suggest about Mira\'s situation?', opts:['The weather is improving','She is completely isolated with no landmarks or signs of help','The snow is melting around the station','The landscape is beautiful and calming'], answer:1, level:6, explain:'The description emphasises total emptiness — reinforcing her isolation.' },
+      { text:'Why does Mira tell herself "They have to come back" but "no longer believed it"? What does this reveal?', opts:['She is confused about what happened','She is trying to maintain hope while privately losing it — showing inner conflict','She knows help is definitely not coming','She does not care about being rescued'], answer:1, level:7, explain:'This is an example of self-deception or internal conflict — she says what she wants to believe, not what she truly thinks.' },
+      { text:'What is the mood of this passage?', opts:['Exciting and adventurous','Cheerful and optimistic','Tense and isolating','Angry and frustrated'], answer:2, level:7, explain:'The silence, cold, dead radio, and vast emptiness all create a tense, lonely mood.' },
+      { text:'What does the word <strong>indifferent</strong> mean as used in "the backup generator hummed its low, indifferent note"?', opts:['Loud and alarming','Caring and supportive','Showing no feeling or concern','Broken and unreliable'], answer:2, level:7, explain:'"Indifferent" = having no particular feeling — the generator hums on, unaware of her distress.' },
+    ]
+  },
+  {
+    id: 'p2',
+    type: 'nonfiction',
+    typeLabel: 'Non-Fiction',
+    title: 'The Ocean\'s Plastic Problem',
+    level: '7–8',
+    text: `<p>Each year, approximately 8 million metric tonnes of plastic enter the world's oceans. To put that in perspective, it is the equivalent of dumping a garbage truck's worth of plastic into the ocean every minute of every day. This plastic does not simply disappear — it breaks down into smaller and smaller fragments called microplastics, which have now been detected in the deepest ocean trenches, in Arctic sea ice, and even in human blood.</p>
+<p>The consequences for marine ecosystems are severe. Sea turtles frequently mistake floating plastic bags for jellyfish. Seabirds feed plastic fragments to their chicks, filling their stomachs with material that provides no nutrition. Whales have been found washed ashore with hundreds of kilograms of plastic in their digestive systems. The problem, however, is not limited to visible plastic items.</p>
+<p>Microplastics absorb toxic chemicals from the surrounding water and are ingested by small fish and filter feeders such as mussels. These toxins then move up the food chain through a process known as biomagnification, ultimately reaching the fish consumed by humans. Scientists are still investigating the full health implications, but early studies suggest potential links to hormonal disruption, inflammation, and cellular damage.</p>
+<p>Solutions exist, but require both individual and systemic action. Reducing single-use plastics, improving waste management infrastructure in developing nations, and investing in biodegradable alternatives are all part of the response. Critics argue, however, that consumer behaviour alone is insufficient — without binding international agreements and corporate accountability, the scale of the problem will continue to grow.</p>`,
+    questions: [
+      { text:'According to the passage, approximately how much plastic enters the ocean each year?', opts:['8 million kilograms','8 million metric tonnes','8 billion metric tonnes','80 million metric tonnes'], answer:1, level:6, explain:'The passage states "approximately 8 million metric tonnes" per year.' },
+      { text:'What is <strong>biomagnification</strong> as described in the passage?', opts:['The process of plastic breaking into smaller pieces','The process by which toxins increase in concentration as they move up the food chain','The process of chemicals dissolving in water','The process of microplastics entering the atmosphere'], answer:1, level:7, explain:'The passage describes biomagnification as toxins moving "up the food chain" from small organisms to larger ones.' },
+      { text:'Why does the author include the comparison to "a garbage truck every minute"?', opts:['To make the text longer','To make the statistic more relatable and impactful for readers','To provide technical scientific data','To explain the solution to plastic pollution'], answer:1, level:7, explain:'Comparisons like this help readers visualise abstract numbers — a persuasive technique called analogy.' },
+      { text:'What viewpoint do critics express in the final paragraph?', opts:['Individuals should stop buying plastic entirely','Consumer behaviour is enough to solve the problem','Individual action alone is not sufficient without international and corporate change','The problem is too big to solve'], answer:2, level:8, explain:'Critics argue that "consumer behaviour alone is insufficient" — structural and international solutions are also needed.' },
+      { text:'Which word best describes the tone of this article?', opts:['Casual and humorous','Urgent and informative','Sentimental and emotional','Neutral and unbiased'], answer:1, level:7, explain:'The article uses facts, statistics, and warnings to create an urgent, informative tone.' },
+    ]
+  },
+  {
+    id: 'p3',
+    type: 'persuasive',
+    typeLabel: 'Persuasive',
+    title: 'Social Media: Connecting the World or Damaging Our Youth?',
+    level: '7–8',
+    text: `<p>Proponents of social media argue that these platforms have transformed the way young people communicate, collaborate, and access information. A teenager in Perth can connect with peers in Tokyo, debate ideas with students in London, and access educational content that would have been unimaginable a generation ago. To restrict young people's access to these tools, advocates argue, would be to cut them off from the global conversation.</p>
+<p>However, the evidence linking social media use to declining mental health among adolescents is becoming increasingly difficult to ignore. A landmark study published in <em>JAMA Pediatrics</em> found that adolescents who spent more than three hours per day on social media platforms were significantly more likely to experience symptoms of anxiety and depression. The comparison culture fostered by curated online personas contributes to unrealistic self-image and chronic dissatisfaction.</p>
+<p>Supporters of regulation counter that the solution is not elimination but education. Teaching young people to engage critically with social media — to recognise manipulative algorithms, identify misinformation, and maintain healthy boundaries — may be more effective than outright restrictions. In this view, digital literacy is as essential as traditional literacy in the 21st century.</p>
+<p>Ultimately, the debate reflects a deeper tension in modern society: the desire to harness the benefits of technology while protecting individuals, particularly young people, from its harms. There are no easy answers, but inaction is not an option. Policymakers, educators, and parents all bear responsibility for shaping an environment in which young people can thrive both online and off.</p>`,
+    questions: [
+      { text:'What is the main argument made by <em>proponents</em> of social media in paragraph 1?', opts:['Social media causes mental health problems','Social media helps young people connect globally and access education','Social media should be restricted for teenagers','Social media is mostly used for entertainment'], answer:1, level:6, explain:'Paragraph 1 argues social media allows global connection and access to information.' },
+      { text:'What does the word <strong>curated</strong> mean in the phrase "curated online personas"?', opts:['Shared publicly','Carefully selected and presented to appear ideal','Created anonymously','Deleted after posting'], answer:1, level:7, explain:'"Curated" means carefully chosen and arranged — online personas are deliberately constructed to look perfect.' },
+      { text:'How does the author use the JAMA Pediatrics study?', opts:['As a personal opinion','As emotional appeal','As evidence to support the claim that social media harms mental health','As a counterargument against regulation'], answer:2, level:7, explain:'The study is cited as empirical evidence — a logical/factual appeal (logos) to support the argument about mental health risks.' },
+      { text:'What position does the article seem to favour overall?', opts:['Ban social media for teenagers immediately','Continue social media use without any changes','Teach digital literacy rather than imposing outright restrictions','Leave decisions entirely to individual families'], answer:2, level:8, explain:'The article gives most space and the most constructive framing to the digital literacy solution, suggesting this is the preferred position.' },
+      { text:'What does the author mean by "inaction is not an option"?', opts:['No one is currently discussing the problem','It is impossible to take action','Something must be done — continuing as we are is unacceptable','Policymakers should do nothing'], answer:2, level:8, explain:'"Inaction is not an option" is a rhetorical phrase emphasising urgency — the current situation is too serious to ignore.' },
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+const st = {
+  vgAnswers: {},
+  rdAnswers: {},
+  writing1: '',
+  writing2: '',
+  spkState: { 1:'idle', 2:'idle' },
+  vgAnswered: 0
+};
+
+const spkConfig = { 1:{ dur:90, name:'read-aloud' }, 2:{ dur:60, name:'impromptu' } };
+const spkTimers = {};
+const spkRecorders = {};
+const spkPCM = {};
+const spkStreams = {};
+
+// ══════════════════════════════════════════════════════════
+// NAVIGATION + SECTION TIMERS (merged)
+// ══════════════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════════════
+// SECTION TIMERS
+// ══════════════════════════════════════════════════════════
+const sectionTimers = {};
+// elapsed counters (count up separately)
+const sectionElapsed = {};
+
+function fmtTime(sec) {
+  const m = Math.floor(Math.abs(sec) / 60);
+  const s = Math.abs(sec) % 60;
+  return `${sec < 0 ? '+' : ''}${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function startSectionTimer(key, totalSecs, displayId, fillId, barId, elapsedId, subId, warnSecs, critSecs) {
+  // Clear existing
+  if (sectionTimers[key]) clearInterval(sectionTimers[key]);
+  let remaining = totalSecs;
+  sectionElapsed[key] = 0;
+
+  function tick() {
+    remaining--;
+    sectionElapsed[key]++;
+
+    // countdown display
+    const display = document.getElementById(displayId);
+    const fill = document.getElementById(fillId);
+    const bar = document.getElementById(barId);
+    const elapsed = document.getElementById(elapsedId);
+
+    if (display) {
+      if (remaining >= 0) {
+        display.textContent = fmtTime(remaining);
+      } else {
+        // Over time — show red overtime
+        display.textContent = '+' + fmtTime(Math.abs(remaining)).replace('+','');
+      }
+    }
+
+    // bar fill: shrinks from 100% → 0% over totalSecs, then stays at 0
+    const pct = Math.max(0, (remaining / totalSecs) * 100);
+    if (fill) fill.style.width = pct + '%';
+
+    // elapsed countup
+    if (elapsed) elapsed.textContent = '+' + fmtTime(sectionElapsed[key]);
+
+    // warning/critical states
+    if (bar) {
+      if (remaining <= 0) {
+        bar.className = 'section-timer critical';
+        // shake every 30s overtime
+        if (Math.abs(remaining) % 30 === 0) {
+          bar.classList.remove('critical');
+          setTimeout(() => bar.classList.add('critical'), 10);
+        }
+      } else if (remaining <= critSecs) {
+        bar.className = 'section-timer critical';
+      } else if (remaining <= warnSecs) {
+        bar.className = 'section-timer warning';
+      }
+    }
+  }
+
+  sectionTimers[key] = setInterval(tick, 1000);
+}
+
+// Per-task writing timers (separate countdown per task, advisory only)
+const writingTimers = {};
+
+function startWritingTaskTimer(taskNum, totalSecs) {
+  if (writingTimers[taskNum]) clearInterval(writingTimers[taskNum]);
+  let remaining = totalSecs;
+
+  function tick() {
+    remaining--;
+    const display = document.getElementById(`wt${taskNum}-display`);
+    const fill = document.getElementById(`wt${taskNum}-fill`);
+    const row = document.getElementById(`wt${taskNum}-row`);
+    const label = document.getElementById(`wt${taskNum}-label`);
+
+    if (display) {
+      if (remaining >= 0) {
+        display.textContent = fmtTime(remaining);
+      } else {
+        display.textContent = '+' + fmtTime(Math.abs(remaining)).replace('+','');
+      }
+    }
+
+    const pct = Math.max(0, (remaining / totalSecs) * 100);
+    if (fill) fill.style.width = pct + '%';
+
+    if (row) {
+      if (remaining <= 0) {
+        row.className = 'writing-timer-row critical';
+        if (label) label.textContent = 'Over time!';
+      } else if (remaining <= 120) {
+        row.className = 'writing-timer-row critical';
+        if (label) label.textContent = `${remaining}s left`;
+      } else if (remaining <= 180) {
+        row.className = 'writing-timer-row warning';
+        if (label) label.textContent = `${Math.ceil(remaining/60)} min left`;
+      } else {
+        row.className = 'writing-timer-row';
+        if (label) label.textContent = `Suggested: 10 min`;
+      }
+    }
+  }
+
+  writingTimers[taskNum] = setInterval(tick, 1000);
+}
+
+// Trigger timers when navigating to each section
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+
+  if (id === 'screen-vocab') {
+    startSectionTimer('vg', 1200, 'vg-timer-display', 'vg-timer-fill', 'vg-timer-bar', 'vg-timer-elapsed', 'vg-timer-sub', 300, 120);
+  } else if (id === 'screen-reading') {
+    startSectionTimer('rd', 1500, 'rd-timer-display', 'rd-timer-fill', 'rd-timer-bar', 'rd-timer-elapsed', 'rd-timer-sub', 300, 120);
+  } else if (id === 'screen-writing') {
+    startSectionTimer('wr', 1200, 'wr-timer-display', 'wr-timer-fill', 'wr-timer-bar', 'wr-timer-elapsed', null, 300, 120);
+    startWritingTaskTimer(1, 600);
+    const w2 = document.getElementById('writing-2');
+    if (w2) {
+      const startW2 = () => { startWritingTaskTimer(2, 600); w2.removeEventListener('input', startW2); };
+      w2.addEventListener('input', startW2);
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// PART 1: VOCAB & GRAMMAR
+// ══════════════════════════════════════════════════════════
+
+// Shuffle helper
+function shuffleOpts(opts, correctIdx) {
+  const indexed = opts.map((o, i) => ({ text: o, isCorrect: i === correctIdx }));
+  for (let i = indexed.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indexed[i], indexed[j]] = [indexed[j], indexed[i]];
+  }
+  const newCorrect = indexed.findIndex(o => o.isCorrect);
+  return { opts: indexed.map(o => o.text), newCorrect };
+}
+
+// Store shuffled data per question
+const vgShuffled = {};
+const rdShuffled = {};
+
+function buildVocabQuestions() {
+  const container = document.getElementById('vocab-questions');
+  container.innerHTML = '';
+  vgQuestions.forEach((q, idx) => {
+    const contextHtml = q.context ? `<div class="q-context">"${q.context}"</div>` : '';
+    const { opts, newCorrect } = shuffleOpts(q.opts, q.answer);
+    vgShuffled[q.id] = { opts, newCorrect };
+
+    const optsHtml = opts.map((o, i) => {
+      const letters = ['A','B','C','D'];
+      return `<button class="option-btn" id="vgopt-${q.id}-${i}" onclick="selectVGOption('${q.id}',${i})">
+        <span class="opt-letter">${letters[i]}</span>${o}
+      </button>`;
+    }).join('');
+
+    container.innerHTML += `
+      <div class="q-card" id="vg-card-${q.id}">
+        <div class="q-meta">
+          <div class="q-num">Question ${idx+1} of 30</div>
+        </div>
+        ${contextHtml}
+        <div class="q-text">${q.text}</div>
+        <div class="options-grid">${optsHtml}</div>
+      </div>`;
+  });
+}
+
+function selectVGOption(qid, chosen) {
+  if (st.vgAnswers[qid] !== undefined) return;
+  st.vgAnswers[qid] = chosen;
+  st.vgAnswered++;
+
+  // Highlight selected only — no reveal of correct/wrong yet
+  const card = document.getElementById(`vg-card-${qid}`);
+  card.querySelectorAll('.option-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === chosen) b.classList.add('selected');
+  });
+
+  // Update progress
+  const pct = (st.vgAnswered / vgQuestions.length) * 100;
+  document.getElementById('vg-progress').style.width = pct + '%';
+  document.getElementById('vg-progress-label').textContent = `${st.vgAnswered} / 30`;
+
+  if (st.vgAnswered === vgQuestions.length) {
+    document.getElementById('vg-next-btn').style.display = 'block';
+    document.getElementById('vg-next-btn').scrollIntoView({behavior:'smooth', block:'end'});
+  }
+}
+
+function finishVocab() {
+  buildReadingSection();
+  goTo('screen-reading');
+}
+
+// ══════════════════════════════════════════════════════════
+// PART 2: READING
+// ══════════════════════════════════════════════════════════
+function buildReadingSection() {
+  const container = document.getElementById('reading-content');
+  container.innerHTML = '';
+  let qGlobal = 0;
+  passages.forEach((p, pi) => {
+    const passageHtml = `
+      <div class="reading-passage">
+        <div class="passage-label">Passage ${pi+1} of 3</div>
+        <div class="passage-title">${p.title}</div>
+        <div class="passage-type ${p.type}">${p.typeLabel}</div>
+        <div class="passage-text">${p.text}</div>
+      </div>`;
+
+    const qHtml = p.questions.map((q, qi) => {
+      qGlobal++;
+      const qid = `rd-${p.id}-${qi}`;
+      const { opts, newCorrect } = shuffleOpts(q.opts, q.answer);
+      rdShuffled[qid] = { opts, newCorrect };
+
+      const optsHtml = opts.map((o, i) => {
+        const letters = ['A','B','C','D'];
+        return `<button class="option-btn" id="${qid}-opt${i}" onclick="selectRDOption('${qid}',${i})">
+          <span class="opt-letter">${letters[i]}</span>${o}
+        </button>`;
+      }).join('');
+      return `
+        <div class="q-card" id="rd-card-${qid}">
+          <div class="q-meta">
+            <div class="q-num">Question ${qGlobal} of 15</div>
+          </div>
+          <div class="q-text">${q.text}</div>
+          <div class="options-grid">${optsHtml}</div>
+        </div>`;
+    }).join('');
+
+    container.innerHTML += passageHtml + qHtml;
+  });
+
+  checkReadingComplete();
+}
+
+let rdAnswered = 0;
+const rdTotal = 15;
+
+function selectRDOption(qid, chosen) {
+  if (st.rdAnswers[qid] !== undefined) return;
+  st.rdAnswers[qid] = chosen;
+  rdAnswered++;
+
+  const card = document.getElementById(`rd-card-${qid}`);
+  card.querySelectorAll('.option-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === chosen) b.classList.add('selected');
+  });
+
+  if (rdAnswered === rdTotal) {
+    document.getElementById('rd-next-btn').style.display = 'block';
+    document.getElementById('rd-next-btn').scrollIntoView({behavior:'smooth', block:'end'});
+  }
+}
+
+function checkReadingComplete() {
+  if (rdAnswered === rdTotal) document.getElementById('rd-next-btn').style.display = 'block';
+}
+
+function finishReading() { goTo('screen-writing'); }
+
+// ══════════════════════════════════════════════════════════
+// PART 3: WRITING
+// ══════════════════════════════════════════════════════════
+function updateWordCount(n) {
+  const text = document.getElementById(`writing-${n}`).value.trim();
+  const count = text ? text.split(/\s+/).length : 0;
+  document.getElementById(`wc-${n}`).textContent = `${count} word${count!==1?'s':''}`;
+}
+
+function finishWriting() {
+  st.writing1 = document.getElementById('writing-1').value;
+  st.writing2 = document.getElementById('writing-2').value;
+  goTo('screen-speaking');
+}
+
+// ══════════════════════════════════════════════════════════
+// PART 4: SPEAKING — WAV Recorder
+// ══════════════════════════════════════════════════════════
+function encodeWAV(samples, sampleRate) {
+  const buf = new ArrayBuffer(44 + samples.length * 2);
+  const v = new DataView(buf);
+  const ws = (off, str) => { for (let i=0;i<str.length;i++) v.setUint8(off+i, str.charCodeAt(i)); };
+  ws(0,'RIFF'); v.setUint32(4,36+samples.length*2,true);
+  ws(8,'WAVE'); ws(12,'fmt ');
+  v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,sampleRate,true); v.setUint32(28,sampleRate*2,true);
+  v.setUint16(32,2,true); v.setUint16(34,16,true);
+  ws(36,'data'); v.setUint32(40,samples.length*2,true);
+  for(let i=0;i<samples.length;i++){
+    const s=Math.max(-1,Math.min(1,samples[i]));
+    v.setInt16(44+i*2,s<0?s*0x8000:s*0x7FFF,true);
+  }
+  return new Blob([buf],{type:'audio/wav'});
+}
+
+async function toggleSpkRec(n) {
+  const s = st.spkState[n];
+  if (s==='idle') await startSpkRec(n);
+  else if (s==='recording') stopSpkRec(n);
+  else if (s==='done') {
+    st.spkState[n]='idle';
+    resetSpkUI(n);
+    await startSpkRec(n);
+  }
+}
+
+function resetSpkUI(n) {
+  const cfg = spkConfig[n];
+  const m = Math.floor(cfg.dur/60), s = cfg.dur%60;
+  document.getElementById(`spk${n}-area`).className='rec-area';
+  document.getElementById(`spk${n}-icon`).textContent='🎤';
+  document.getElementById(`spk${n}-timer`).textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  document.getElementById(`spk${n}-timer`).className='rec-timer';
+  document.getElementById(`spk${n}-fill`).style.width='0%';
+  document.getElementById(`spk${n}-status`).textContent='Press record when ready';
+  document.getElementById(`spk${n}-btn`).textContent='⏺ Start Recording';
+  document.getElementById(`spk${n}-btn`).className='rec-btn';
+  document.getElementById(`spk${n}-audio-wrap`).classList.remove('show');
+}
+
+async function startSpkRec(n) {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    spkStreams[n] = stream;
+    spkPCM[n] = [];
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const sr = ctx.sampleRate;
+    const src = ctx.createMediaStreamSource(stream);
+    const proc = ctx.createScriptProcessor(4096,1,1);
+    proc.onaudioprocess = e => spkPCM[n].push(new Float32Array(e.inputBuffer.getChannelData(0)));
+    src.connect(proc); proc.connect(ctx.destination);
+
+    spkRecorders[n] = {
+      stop: () => {
+        proc.disconnect(); src.disconnect(); ctx.close();
+        stream.getTracks().forEach(t=>t.stop());
+        const total = spkPCM[n].reduce((a,b)=>a+b.length,0);
+        const merged = new Float32Array(total);
+        let off=0; spkPCM[n].forEach(c=>{merged.set(c,off);off+=c.length;});
+        const wav = encodeWAV(merged, sr);
+        const url = URL.createObjectURL(wav);
+        const audio = document.getElementById(`spk${n}-audio`);
+        audio.src=url; audio.load();
+        const dl = document.getElementById(`spk${n}-dl`);
+        dl.href=url; dl.download=`musa-speaking-4${n==='1'?'A':'B'}-${spkConfig[n].name}.wav`;
+        document.getElementById(`spk${n}-audio-wrap`).classList.add('show');
+        finishSpkRec(n);
+      }
+    };
+
+    st.spkState[n]='recording';
+    document.getElementById(`spk${n}-area`).classList.add('recording');
+    document.getElementById(`spk${n}-icon`).textContent='⏹';
+    document.getElementById(`spk${n}-btn`).textContent='⏹ Stop';
+    document.getElementById(`spk${n}-btn`).classList.add('recording-btn');
+
+    const cfg = spkConfig[n];
+    let rem = cfg.dur;
+    updateSpkTimer(n, rem, cfg.dur);
+    spkTimers[n] = setInterval(()=>{
+      rem--;
+      updateSpkTimer(n, rem, cfg.dur);
+      if(rem<=0){ clearInterval(spkTimers[n]); stopSpkRec(n); }
+    },1000);
+  } catch(e) {
+    alert('Please allow microphone access and try again.');
+  }
+}
+
+function updateSpkTimer(n, rem, total) {
+  const m=Math.floor(rem/60), s=rem%60;
+  const el=document.getElementById(`spk${n}-timer`);
+  el.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  el.className='rec-timer'+(rem<=10?' warning':rem<total?' running':'');
+  document.getElementById(`spk${n}-fill`).style.width=`${((total-rem)/total)*100}%`;
+  document.getElementById(`spk${n}-status`).textContent=rem>0?`Recording... ${rem}s left`:"Time's up!";
+}
+
+function stopSpkRec(n) {
+  clearInterval(spkTimers[n]);
+  if(spkRecorders[n]) spkRecorders[n].stop();
+}
+
+function finishSpkRec(n) {
+  st.spkState[n]='done';
+  document.getElementById(`spk${n}-area`).className='rec-area done';
+  document.getElementById(`spk${n}-icon`).textContent='✅';
+  document.getElementById(`spk${n}-timer`).style.color='var(--teal)';
+  document.getElementById(`spk${n}-status`).textContent='Saved! Listen back or record again.';
+  document.getElementById(`spk${n}-btn`).textContent='🔄 Record Again';
+  document.getElementById(`spk${n}-btn`).className='rec-btn';
+  document.getElementById(`spk${n}-btn`).style.background='var(--bg2)';
+  document.getElementById(`spk${n}-btn`).style.color='var(--ink)';
+  document.getElementById(`spk${n}-btn`).style.boxShadow='none';
+}
+
+function finishSpeaking() { buildResults(); goTo('screen-results'); }
+
+// ══════════════════════════════════════════════════════════
+// RESULTS & SCORING
+// ══════════════════════════════════════════════════════════
+function scoreVG() {
+  const byLevel = {5:[], 6:[], 7:[], 8:[]};
+  vgQuestions.forEach(q => {
+    const chosen = st.vgAnswers[q.id];
+    const shuffled = vgShuffled[q.id];
+    // chosen index maps to shuffled options; check if chosen option is the correct one
+    const correct = (chosen !== undefined && shuffled && chosen === shuffled.newCorrect) ? 1 : 0;
+    byLevel[q.level].push(correct);
+  });
+  return byLevel;
+}
+
+function scoreRD() {
+  const byPassage = {};
+  passages.forEach(p => {
+    let correct = 0;
+    p.questions.forEach((q, qi) => {
+      const key = `rd-${p.id}-${qi}`;
+      const chosen = st.rdAnswers[key];
+      const shuffled = rdShuffled[key];
+      if (chosen !== undefined && shuffled && chosen === shuffled.newCorrect) correct++;
+    });
+    byPassage[p.id] = { correct, total: p.questions.length, type: p.typeLabel, title: p.title };
+  });
+  return byPassage;
+}
+
+function estimateLevel(pct) {
+  if (pct >= 85) return 'Year 8+';
+  if (pct >= 70) return 'Year 7–8';
+  if (pct >= 55) return 'Year 7';
+  if (pct >= 40) return 'Year 6–7';
+  if (pct >= 25) return 'Year 6';
+  return 'Year 5–6';
+}
+
+function levelToNum(lvStr) {
+  const map = {'Year 5–6':5.5,'Year 6':6,'Year 6–7':6.5,'Year 7':7,'Year 7–8':7.5,'Year 8+':8};
+  return map[lvStr] || 6;
+}
+
+function buildResults() {
+  const vgLevels = scoreVG();
+  const rdPassages = scoreRD();
+
+  // VG scores per level
+  const vgTotals = {};
+  [5,6,7,8].forEach(l => {
+    const arr = vgLevels[l];
+    const pct = Math.round((arr.reduce((a,b)=>a+b,0)/arr.length)*100);
+    vgTotals[l] = pct;
+  });
+  const vgOverall = Math.round(Object.values(vgTotals).reduce((a,b)=>a+b,0)/4);
+
+  // RD score
+  let rdCorrect=0, rdTotal2=0;
+  Object.values(rdPassages).forEach(p=>{rdCorrect+=p.correct; rdTotal2+=p.total;});
+  const rdPct = Math.round((rdCorrect/rdTotal2)*100);
+
+  // Build score rows
+  const scoreRows = document.getElementById('auto-score-rows');
+  const colors = ['#e67e22','#f1c40f','#2ecc71','#3498db'];
+  const scoreData = [
+    { label:'Vocab & Grammar (Yr5)', pct: vgTotals[5], color:colors[0] },
+    { label:'Vocab & Grammar (Yr6)', pct: vgTotals[6], color:colors[1] },
+    { label:'Vocab & Grammar (Yr7)', pct: vgTotals[7], color:colors[2] },
+    { label:'Vocab & Grammar (Yr8)', pct: vgTotals[8], color:colors[3] },
+    { label:'Reading: Fiction', pct: Math.round((rdPassages.p1.correct/5)*100), color:'#9b59b6' },
+    { label:'Reading: Non-Fiction', pct: Math.round((rdPassages.p2.correct/5)*100), color:'#1abc9c' },
+    { label:'Reading: Persuasive', pct: Math.round((rdPassages.p3.correct/5)*100), color:'#e67e22' },
+  ];
+
+  scoreRows.innerHTML = scoreData.map(s=>`
+    <div class="score-row">
+      <div class="score-lbl">${s.label}</div>
+      <div class="score-bar-bg"><div class="score-bar-fill" style="width:0%;background:${s.color}" data-target="${s.pct}%"></div></div>
+      <div class="score-val-box">${s.pct}%</div>
+    </div>`).join('');
+
+  // Level estimates
+  const vgLevel = estimateLevel(vgOverall);
+  const rdLevel = estimateLevel(rdPct);
+
+  document.getElementById('level-grid').innerHTML = `
+    <div class="level-item">
+      <div class="level-item-label">Vocab & Grammar</div>
+      <div class="level-item-val">${vgLevel}</div>
+    </div>
+    <div class="level-item">
+      <div class="level-item-label">Reading</div>
+      <div class="level-item-val">${rdLevel}</div>
+    </div>
+    <div class="level-item">
+      <div class="level-item-label">Writing</div>
+      <div class="level-item-val pending-note">Pending Claude</div>
+    </div>
+    <div class="level-item">
+      <div class="level-item-label">Speaking</div>
+      <div class="level-item-val pending-note">Pending Claude</div>
+    </div>`;
+
+  // Gap analysis
+  const y7 = 7;
+  const gapData = [
+    { aspect:'Vocab & Grammar', current: levelToNum(vgLevel), target: y7 },
+    { aspect:'Reading', current: levelToNum(rdLevel), target: y7 },
+    { aspect:'Writing', current: null, target: y7 },
+    { aspect:'Speaking', current: null, target: y7 },
+  ];
+
+  document.getElementById('gap-rows').innerHTML = gapData.map(g => {
+    if (g.current === null) return `
+      <div class="gap-row">
+        <div class="gap-aspect">${g.aspect}</div>
+        <div class="gap-current" style="color:var(--ink3);font-style:italic">TBD</div>
+        <div class="gap-target">Yr ${g.target}</div>
+        <div class="gap-diff neutral">Needs Claude</div>
+      </div>`;
+    const diff = g.current - g.target;
+    const diffLabel = diff > 0 ? `+${diff.toFixed(1)} yr ahead` : diff < 0 ? `${diff.toFixed(1)} yr gap` : 'At level';
+    const diffClass = diff >= 0 ? 'positive' : diff >= -0.5 ? 'neutral' : 'negative';
+    const currentLabel = g.current % 1 === 0 ? `Yr ${g.current}` : `Yr ${g.current}`;
+    return `
+      <div class="gap-row">
+        <div class="gap-aspect">${g.aspect}</div>
+        <div class="gap-current">${currentLabel}</div>
+        <div class="gap-target">Yr ${g.target}</div>
+        <div class="gap-diff ${diffClass}">${diffLabel}</div>
+      </div>`;
+  }).join('');
+
+  // Build export text
+  buildExport(vgTotals, vgOverall, vgLevel, rdPassages, rdPct, rdLevel);
+
+  // Animate bars after render
+  setTimeout(()=>{
+    document.querySelectorAll('.score-bar-fill[data-target]').forEach(el=>{
+      el.style.width=el.dataset.target;
+    });
+  },200);
+}
+
+function buildExport(vgTotals, vgOverall, vgLevel, rdPassages, rdPct, rdLevel) {
+  const vgDetail = vgQuestions.map((q, idx) => {
+    const ans = st.vgAnswers[q.id];
+    const shuffled = vgShuffled[q.id];
+    const isCorrect = ans !== undefined && shuffled && ans === shuffled.newCorrect;
+    const chosenText = (ans !== undefined && shuffled) ? shuffled.opts[ans] : 'unanswered';
+    const correctText = shuffled ? shuffled.opts[shuffled.newCorrect] : q.opts[q.answer];
+    return `  Q${idx+1} [Yr${q.level}] ${isCorrect?'✓':'✗'} — ${isCorrect?'Correct':`Wrong (chose: "${chosenText}", correct: "${correctText}")`}`;
+  }).join('\n');
+
+  const rdDetail = passages.map((p, pi) => {
+    return `  Passage ${pi+1}: ${p.title} (${p.typeLabel})\n` +
+      p.questions.map((q, qi) => {
+        const key = `rd-${p.id}-${qi}`;
+        const ans = st.rdAnswers[key];
+        const shuffled = rdShuffled[key];
+        const isCorrect = ans !== undefined && shuffled && ans === shuffled.newCorrect;
+        const chosenText = (ans !== undefined && shuffled) ? shuffled.opts[ans] : 'unanswered';
+        const correctText = shuffled ? shuffled.opts[shuffled.newCorrect] : q.opts[q.answer];
+        return `    Q${qi+1} ${isCorrect?'✓':'✗'} — ${isCorrect?'Correct':`Wrong (chose: "${chosenText}", correct: "${correctText}")`}`;
+      }).join('\n');
+  }).join('\n');
+
+  const lines = [
+    `═══════════════════════════════════════════════`,
+    `MUSA'S ENGLISH LEVEL DIAGNOSTIC TEST`,
+    `Date: ${new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})}`,
+    `Student: Musa, 13 years old, Perth WA`,
+    `Target: Year 7 (Shenton College 2027)`,
+    `═══════════════════════════════════════════════`,
+    ``,
+    `── PART 1: VOCABULARY & GRAMMAR ──`,
+    `Year 5 questions (7 items): ${vgTotals[5]}%`,
+    `Year 6 questions (9 items): ${vgTotals[6]}%`,
+    `Year 7 questions (8 items): ${vgTotals[7]}%`,
+    `Year 8 questions (6 items): ${vgTotals[8]}%`,
+    `Overall Vocab/Grammar: ${vgOverall}%`,
+    `Estimated level: ${vgLevel}`,
+    ``,
+    `── PART 1 DETAIL ──`,
+    vgDetail,
+    ``,
+    `── PART 2: READING COMPREHENSION ──`,
+    `Fiction (${rdPassages.p1.correct}/5): ${Math.round((rdPassages.p1.correct/5)*100)}%`,
+    `Non-Fiction (${rdPassages.p2.correct}/5): ${Math.round((rdPassages.p2.correct/5)*100)}%`,
+    `Persuasive (${rdPassages.p3.correct}/5): ${Math.round((rdPassages.p3.correct/5)*100)}%`,
+    `Total Reading: ${rdPct}% (${Object.values(rdPassages).reduce((a,p)=>a+p.correct,0)}/15 correct)`,
+    `Estimated level: ${rdLevel}`,
+    ``,
+    `── PART 2 DETAIL ──`,
+    rdDetail,
+    ``,
+    `── PART 3: WRITING ──`,
+    `Task 3A — Informative (Climate Change & Oceans):`,
+    st.writing1 ? st.writing1 : '(not completed)',
+    ``,
+    `Task 3B — Persuasive (Phones in Class):`,
+    st.writing2 ? st.writing2 : '(not completed)',
+    ``,
+    `── PART 4: SPEAKING ──`,
+    `Task 4A (Read Aloud): See attached audio file musa-speaking-4A-read-aloud.wav`,
+    `Task 4B (Impromptu): See attached audio file musa-speaking-4B-impromptu.wav`,
+    ``,
+    `═══════════════════════════════════════════════`,
+    `INSTRUCTIONS FOR CLAUDE:`,
+    `Please analyse all 4 parts and provide:`,
+    `1. Estimated Year level for Writing (3A & 3B) — assess vocabulary, structure, grammar, ideas`,
+    `2. Estimated Year level for Speaking (4A & 4B) — assess pronunciation, fluency, pace, structure`,
+    `3. Overall Year level estimate (average across all 4 parts)`,
+    `4. Gap analysis vs Year 7 expectations (ACARA v9.0)`,
+    `5. Top 3 priority areas to focus on first`,
+    `6. Recommended 12-week learning program structure based on these results`,
+    `═══════════════════════════════════════════════`,
+  ];
+
+  document.getElementById('export-content').textContent = lines.join('\n');
+}
+
+function copyExport() {
+  const text = document.getElementById('export-content').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ Copied!';
+    setTimeout(()=>btn.textContent='Copy',2000);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const btn=document.querySelector('.btn-copy');
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>btn.textContent='Copy',2000);
+  });
+}
+
+function resetTest() {
+  if (!confirm('Reset the test? All answers will be cleared.')) return;
+  Object.assign(st, { vgAnswers:{}, rdAnswers:{}, writing1:'', writing2:'', spkState:{1:'idle',2:'idle'}, vgAnswered:0 });
+  rdAnswered = 0;
+  goTo('screen-welcome');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+buildVocabQuestions();
+</script>
+</body>
+</html>
