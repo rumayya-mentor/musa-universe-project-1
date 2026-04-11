@@ -1352,7 +1352,7 @@ const DEFAULT_SPACED = [
 ];
 
 // ── Init data if not exists ──
-const DATA_VERSION = 'v4';
+const DATA_VERSION = 'v5';
 function initData() {
   // Reset errors on version bump to pick up isBaseline flag
   const storedErrors = load(KEYS.errors);
@@ -1362,8 +1362,15 @@ function initData() {
     save(KEYS.roadmap, DEFAULT_ROADMAP);
     localStorage.setItem('ielts_data_version', DATA_VERSION);
   }
-  if (!load(KEYS.colloc)) save(KEYS.colloc, DEFAULT_COLLOC);
-  if (!load(KEYS.vocab)) save(KEYS.vocab, DEFAULT_VOCAB);
+  // Force reset colloc/vocab on version bump (picks up new format)
+  const storedColloc = load(KEYS.colloc);
+  if (!storedColloc || localStorage.getItem('ielts_data_version') !== DATA_VERSION) {
+    save(KEYS.colloc, DEFAULT_COLLOC);
+  }
+  const storedVocab = load(KEYS.vocab);
+  if (!storedVocab || localStorage.getItem('ielts_data_version') !== DATA_VERSION) {
+    save(KEYS.vocab, DEFAULT_VOCAB);
+  }
   if (!load(KEYS.spaced)) save(KEYS.spaced, DEFAULT_SPACED);
   if (!load(KEYS.sessions)) save(KEYS.sessions, []);
 }
