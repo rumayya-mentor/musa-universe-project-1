@@ -130,48 +130,7 @@
     border-top: 0.5px solid var(--border);
   }
 
-  .exam-date-card {
-    background: rgba(201,168,76,0.07);
-    border: 0.5px solid var(--border-gold);
-    border-radius: var(--radius-lg);
-    padding: 12px;
-  }
 
-  .exam-date-card .label {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-mute);
-    margin-bottom: 4px;
-  }
-
-  .exam-date-card .days {
-    font-family: var(--font-display);
-    font-size: 36px;
-    letter-spacing: 2px;
-    color: var(--gold);
-    line-height: 1;
-  }
-
-  .exam-date-card .days-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--text-mute);
-    margin-top: 2px;
-  }
-
-  .exam-date-card input[type=date] {
-    background: transparent;
-    border: none;
-    color: var(--text-mute);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 0;
-    width: 100%;
-    margin-top: 8px;
-    cursor: pointer;
-  }
 
   /* ── MAIN ── */
   .main {
@@ -358,6 +317,7 @@
     text-transform: uppercase;
   }
   .badge-done { background: var(--green-dim); color: var(--green); border: 0.5px solid rgba(92,224,160,0.25); }
+  .badge-belum { background: transparent; color: var(--text-mute); border: 0.5px solid var(--border); }
   .badge-active { background: var(--amber-dim); color: var(--amber); border: 0.5px solid rgba(224,168,92,0.25); }
   .badge-next { background: var(--blue-dim); color: var(--blue); border: 0.5px solid rgba(92,168,224,0.25); }
   .badge-locked { background: rgba(255,255,255,0.03); color: var(--text-mute); border: 0.5px solid var(--border); }
@@ -405,6 +365,11 @@
   .roadmap-num.active { background: var(--amber-dim); color: var(--amber); border: 1.5px solid var(--amber); }
   .roadmap-num.next { background: var(--blue-dim); color: var(--blue); border: 0.5px dashed rgba(92,168,224,0.4); }
   .roadmap-num.locked { background: var(--surface2); color: var(--text-mute); border: 0.5px solid var(--border); }
+  .roadmap-num.belum { background: var(--surface2); color: var(--text-mute); border: 0.5px solid var(--border); opacity: 0.6; }
+  .roadmap-item.open .roadmap-num.belum { opacity: 1; }
+  .roadmap-item.belum-item { opacity: 0.55; transition: opacity 0.2s; }
+  .roadmap-item.belum-item.open { opacity: 1; }
+  .roadmap-item.done-item { opacity: 1; }
 
   .roadmap-content { flex: 1; }
   .roadmap-phase { font-family: var(--font-mono); font-size: 9px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
@@ -427,6 +392,8 @@
   .tl-dot.active { background: var(--amber-dim); color: var(--amber); border: 2px solid var(--amber); }
   .tl-dot.next { background: var(--blue-dim); color: var(--blue); border: 1px dashed rgba(92,168,224,0.4); }
   .tl-dot.locked { background: var(--surface2); color: var(--text-mute); border: 0.5px solid var(--border); }
+  .tl-dot.belum { background: var(--surface2); color: var(--text-mute); border: 0.5px solid var(--border); opacity: 0.5; }
+  .tl-label.belum { color: var(--text-mute); opacity: 0.5; }
   .tl-label { font-family: var(--font-mono); font-size: 9px; color: var(--text-mute); margin-top: 5px; text-align: center; }
   .tl-label.done { color: var(--green); }
   .tl-label.active { color: var(--amber); }
@@ -552,22 +519,7 @@
   .bnav-item.active .bnav-icon { color: var(--gold); }
   .bnav-icon { font-size: 18px; line-height: 1; }
 
-  /* Mobile exam card in header */
-  .mobile-exam-bar {
-    display: none;
-    background: rgba(201,168,76,0.07);
-    border: 0.5px solid var(--border-gold);
-    border-radius: var(--radius);
-    padding: 10px 14px;
-    margin-bottom: 1.25rem;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .mobile-exam-bar .meb-left { display:flex; align-items:baseline; gap:6px; }
-  .meb-days { font-family: var(--font-display); font-size: 32px; color: var(--gold); letter-spacing: 2px; line-height:1; }
-  .meb-label { font-family: var(--font-mono); font-size: 9px; color: var(--text-mute); text-transform:uppercase; letter-spacing:0.08em; }
-  .meb-input { background:transparent; border:none; color:var(--text-mute); font-family:var(--font-mono); font-size:10px; text-align:right; }
+
 
   /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
@@ -693,6 +645,7 @@
   .pt-dot.active { background: var(--amber-dim); color: var(--amber); border: 2px solid var(--amber); box-shadow: 0 0 10px rgba(224,168,92,0.3); }
   .pt-dot.next   { background: var(--blue-dim); color: var(--blue); border: 1px dashed rgba(92,168,224,0.35); }
   .pt-dot.locked { background: var(--surface2); color: var(--text-mute); border: 0.5px solid var(--border); }
+  .pt-dot.belum { background: var(--surface2); color: var(--text-mute); border: 0.5px solid var(--border); opacity: 0.45; }
 
   .pt-card {
     background: var(--surface);
@@ -703,7 +656,8 @@
   }
   .pt-card:hover { border-color: rgba(201,168,76,0.2); }
   .pt-card.active-card { border-color: rgba(224,168,92,0.35); background: rgba(224,168,92,0.04); }
-  .pt-card.done-card   { opacity: 0.8; }
+  .pt-card.done-card   { opacity: 1; }
+  .pt-card.belum-card  { opacity: 0.55; }
 
   .pt-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
   .pt-title  { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; color: var(--text); }
@@ -813,16 +767,7 @@
       </div>
     </nav>
 
-    <div class="sidebar-bottom">
-      <div class="exam-date-card">
-        <div class="label">Ujian berikutnya</div>
-        <div class="days" id="days-counter">—</div>
-        <div class="days-label">hari lagi</div>
-        <div style="margin-top:8px; display:flex; gap:6px; align-items:center;">
-          <input type="date" id="exam-date-input" style="background:transparent;border:none;color:rgba(255,255,255,0.5);font-family:var(--font-mono);font-size:11px;padding:0;width:100%;">
-        </div>
-      </div>
-    </div>
+    <div class="sidebar-bottom" style="padding:0;"></div>
   </aside>
 
   <!-- BOTTOM NAV (mobile) -->
@@ -867,18 +812,6 @@
       <div class="page-header">
         <div class="page-title">Dashboard</div>
         <div class="page-subtitle">Writing 6.5 → 8.5 · Progress terkini</div>
-      </div>
-
-      <!-- Mobile exam bar -->
-      <div class="mobile-exam-bar">
-        <div class="meb-left">
-          <span class="meb-days" id="meb-days">—</span>
-          <span class="meb-label">hari lagi</span>
-        </div>
-        <div>
-          <div class="meb-label" style="margin-bottom:3px;">Ujian berikutnya</div>
-          <input type="date" class="meb-input" id="meb-date-input">
-        </div>
       </div>
 
       <!-- Metric Cards -->
@@ -1066,6 +999,7 @@
       </div>
       <div class="card">
         <div id="spaced-list"></div>
+        <div id="spaced-archived"></div>
       </div>
     </div>
 
@@ -1416,7 +1350,7 @@ const DEFAULT_SPACED = [
 ];
 
 // ── Init data if not exists ──
-const DATA_VERSION = 'v2';
+const DATA_VERSION = 'v3';
 function initData() {
   if (!load(KEYS.errors)) save(KEYS.errors, DEFAULT_ERRORS);
   const storedRoadmap = load(KEYS.roadmap);
@@ -1456,21 +1390,9 @@ function renderPage(page) {
 // ══════════════════════════════════════
 // EXAM DATE COUNTER
 // ══════════════════════════════════════
-const examInput = document.getElementById('exam-date-input');
-examInput.value = load(KEYS.examDate) || '';
-updateDayCounter();
 
-examInput.addEventListener('change', () => {
-  save(KEYS.examDate, examInput.value);
-  updateDayCounter();
-});
+;
 
-function updateDayCounter() {
-  const el = document.getElementById('days-counter');
-  if (!examInput.value) { el.textContent = '?'; return; }
-  const diff = Math.ceil((new Date(examInput.value) - new Date()) / 86400000);
-  el.textContent = diff > 0 ? diff : '0';
-}
 
 // ══════════════════════════════════════
 // DASHBOARD
@@ -1854,11 +1776,11 @@ function renderRoadmap() {
   if (strip) {
     strip.innerHTML = roadmap.map((r, i) => {
       const prevDone = i > 0 && roadmap[i-1].status === 'done';
-      const connCls = i === 0 ? '' : (prevDone && r.status === 'done' ? 'done' : prevDone ? 'active' : 'pending');
+      const connCls = i === 0 ? '' : (prevDone && r.status === 'done' ? 'done' : 'pending');
       const conn = i > 0 ? `<div class="tl-connector ${connCls}"></div>` : '';
       return `${conn}<div class="tl-node">
-        <div class="tl-dot ${r.status}">${r.status==='done'?'✓':r.phase}</div>
-        <div class="tl-label ${r.status}">P${r.phase}</div>
+        <div class="tl-dot ${r.status==='done'?'done':'belum'}">${r.status==='done'?'✓':r.phase}</div>
+        <div class="tl-label ${r.status==='done'?'done':'belum'}">P${r.phase}</div>
         ${r.completedDate?`<div class="tl-date">${r.completedDate}</div>`:''}
       </div>`;
     }).join('');
@@ -1895,8 +1817,8 @@ function renderRoadmap() {
 
   // Expandable list
   document.getElementById('roadmap-list').innerHTML = roadmap.map((r, i) => {
-    const badgeCls = r.status==='done'?'badge-done':r.status==='active'?'badge-active':r.status==='next'?'badge-next':'badge-locked';
-    const badgeTxt = r.status==='done'?'Selesai':r.status==='active'?'Aktif':r.status==='next'?'Berikutnya':'Terkunci';
+    const badgeCls = r.status==='done'?'badge-done':'badge-belum';
+    const badgeTxt = r.status==='done'?'Selesai':'Belum';
     const bf = r.scoreBefore||{}, af = r.scoreAfter||{};
     const hasScores = !!r.scoreBefore;
 
@@ -1905,16 +1827,16 @@ function renderRoadmap() {
         <table class="ba-table">
           <thead><tr><th></th><th>TA</th><th>CC</th><th>LR</th><th>GRA</th></tr></thead>
           <tbody>
-            <tr><td style="color:var(--ink-mute);font-size:11px">Sebelum</td>${['ta','cc','lr','gra'].map(k=>`<td class="mono">${parseFloat(bf[k]||0).toFixed(1)}</td>`).join('')}</tr>
-            <tr><td style="color:var(--green);font-size:11px">Sesudah</td>${['ta','cc','lr','gra'].map(k=>`<td class="mono">${af[k]?parseFloat(af[k]).toFixed(1):'—'}</td>`).join('')}</tr>
+            <tr><td style="color:var(--text-mute);font-family:var(--font-mono);font-size:10px">Sebelum</td>${['ta','cc','lr','gra'].map(k=>`<td class="mono">${parseFloat(bf[k]||0).toFixed(1)}</td>`).join('')}</tr>
+            <tr><td style="color:var(--green);font-family:var(--font-mono);font-size:10px">Sesudah</td>${['ta','cc','lr','gra'].map(k=>`<td class="mono">${af[k]?parseFloat(af[k]).toFixed(1):'—'}</td>`).join('')}</tr>
           </tbody>
         </table>
       </div>` : '';
 
     const canInput = true;
     const inputForm = canInput ? `
-      <div style="background:var(--paper);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:14px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-mute);margin-bottom:10px;">Input Skor Before / After</div>
+      <div style="background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius-lg);padding:14px;">
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-mute);margin-bottom:10px;">Input Skor Before / After</div>
         <div class="score-input-grid">
           <div class="score-input-box">
             <label>Skor SEBELUM Phase</label>
@@ -1940,11 +1862,11 @@ function renderRoadmap() {
           ${r.status!=='done'?`<button class="btn btn-sm" onclick="markDone(${i},event)" style="border-color:var(--green);color:var(--green)">Tandai Selesai ✓</button>`:''}
         </div>
       </div>` :
-      `<div style="font-size:12px;color:var(--text-mute);padding:6px 0;font-style:italic;font-family:var(--font-body)">Set target date & skor di sini saat phase terbuka nanti.</div>`;
+      `<div style="font-size:12px;color:var(--text-mute);padding:6px 0;font-style:italic;font-family:var(--font-body)">Set target date & skor di sini saat phase aktif nanti.</div>`;
 
-    return `<div class="roadmap-item" id="rm-item-${i}" onclick="togglePhase(${i})">
+    return `<div class="roadmap-item ${r.status==='done'?'done-item':'belum-item'}" id="rm-item-${i}" onclick="togglePhase(${i})">
       <div class="roadmap-header">
-        <div class="roadmap-num ${r.status}">${r.status==='done'?'✓':r.phase}</div>
+        <div class="roadmap-num ${r.status==='done'?'done':'belum'}">${r.status==='done'?'✓':r.phase}</div>
         <div class="roadmap-content">
           <div class="roadmap-phase">Phase ${r.phase}${r.completedDate?' <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute)">· '+r.completedDate+'</span>':''}</div>
           <div class="roadmap-title">${r.title}</div>
@@ -2065,37 +1987,64 @@ function deletePhaseItem(i, j) {
 function renderSpaced() {
   const spaced = load(KEYS.spaced) || [];
   const today = new Date(); today.setHours(0,0,0,0);
-  const sorted = [...spaced].map((s,origIdx) => ({...s, origIdx}))
+
+  // Separate active vs archived
+  const active = spaced.map((s,i) => ({...s, origIdx:i})).filter(s => !s.archived)
     .sort((a,b)=> new Date(a.nextReview)-new Date(b.nextReview));
-  if (!sorted.length) {
-    document.getElementById('spaced-list').innerHTML = '<div class="empty"><div class="empty-icon">⊙</div><div>Belum ada materi. Tambahkan setelah selesai tiap phase!</div></div>';
+  const archived = spaced.map((s,i) => ({...s, origIdx:i})).filter(s => s.archived);
+
+  const activeEl = document.getElementById('spaced-list');
+  const archiveEl = document.getElementById('spaced-archived');
+
+  // ── Active list ──
+  if (!active.length) {
+    activeEl.innerHTML = '<div class="empty"><div class="empty-icon">⊙</div><div>Belum ada materi aktif.</div></div>';
+  } else {
+    activeEl.innerHTML = active.map(s => {
+      const rev = new Date(s.nextReview); rev.setHours(0,0,0,0);
+      const diffDays = Math.ceil((rev - today) / 86400000);
+      let cls, label;
+      if (diffDays <= 0) { cls='due-today'; label='Review hari ini'; }
+      else if (diffDays <= 2) { cls='due-soon'; label=`${diffDays}h lagi`; }
+      else { cls='due-later'; label=`${diffDays}h lagi`; }
+      const checked = s.reviewed ? 'checked' : '';
+      const strikeStyle = s.reviewed ? 'text-decoration:line-through;opacity:0.45;' : '';
+      return `<div class="review-item">
+        <div style="display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;">
+          <input type="checkbox" ${checked} onchange="toggleSpacedReview(${s.origIdx})"
+            style="accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;margin-top:3px;">
+          <div style="min-width:0;">
+            <div class="review-topic" style="${strikeStyle}">${s.topic}</div>
+            <div class="review-when">Interval: ${s.interval}d · Next: ${s.nextReview}</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:10px;">
+          <span class="review-due ${cls}">${label}</span>
+          ${diffDays<=0&&!s.reviewed?`<button class="btn btn-sm" onclick="markReviewed(${s.origIdx})" style="white-space:nowrap;">Naik interval ↑</button>`:''}
+          <button class="btn btn-sm" onclick="archiveSpaced(${s.origIdx})" style="color:var(--text-mute);white-space:nowrap;" title="Sembunyikan — bisa dibuka lagi di bawah">arsip</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Archived section ──
+  if (!archiveEl) return;
+  if (!archived.length) {
+    archiveEl.innerHTML = '';
     return;
   }
-  document.getElementById('spaced-list').innerHTML = sorted.map(s => {
-    const rev = new Date(s.nextReview); rev.setHours(0,0,0,0);
-    const diffDays = Math.ceil((rev - today) / 86400000);
-    let cls, label;
-    if (diffDays <= 0) { cls='due-today'; label='Review hari ini'; }
-    else if (diffDays <= 2) { cls='due-soon'; label=`${diffDays}h lagi`; }
-    else { cls='due-later'; label=`${diffDays}h lagi`; }
-    const checked = s.reviewed ? 'checked' : '';
-    const strikeStyle = s.reviewed ? 'text-decoration:line-through;opacity:0.5;' : '';
-    return `<div class="review-item">
-      <div style="display:flex;align-items:flex-start;gap:10px;flex:1;">
-        <input type="checkbox" ${checked} onchange="toggleSpacedReview(${s.origIdx})"
-          style="accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;margin-top:3px;">
-        <div>
-          <div class="review-topic" style="${strikeStyle}">${s.topic}</div>
-          <div class="review-when">Interval: ${s.interval}d · Next: ${s.nextReview}</div>
-        </div>
+  archiveEl.innerHTML = `
+    <div style="margin-top:1.5rem;">
+      <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;padding-top:1rem;border-top:0.5px solid var(--border);">
+        Diarsipkan (${archived.length}) — klik untuk restore
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
-        <span class="review-due ${cls}">${label}</span>
-        ${diffDays<=0&&!s.reviewed?`<button class="btn btn-sm" onclick="markReviewed(${s.origIdx})">Naik interval ↑</button>`:''}
-        <button class="btn btn-sm btn-danger" onclick="deleteSpaced(${s.origIdx})">hapus</button>
-      </div>
+      ${archived.map(s => `
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border);opacity:0.5;">
+          <div style="flex:1;font-size:13px;font-family:var(--font-body);color:var(--text-mute);text-decoration:line-through;">${s.topic}</div>
+          <button class="btn btn-sm" onclick="restoreSpaced(${s.origIdx})" style="color:var(--green);border-color:rgba(92,224,160,0.3);white-space:nowrap;">↩ restore</button>
+          <button class="btn btn-sm btn-danger" onclick="hardDeleteSpaced(${s.origIdx})" title="Hapus permanen">×</button>
+        </div>`).join('')}
     </div>`;
-  }).join('');
 }
 
 function openSpacedModal() {
@@ -2133,11 +2082,31 @@ function markReviewed(idx) {
   showToast(`Review dicatat! Interval naik ke ${nextInterval} hari ✓`);
 }
 
-function deleteSpaced(idx) {
+function archiveSpaced(idx) {
+  const spaced = load(KEYS.spaced) || [];
+  spaced[idx].archived = true;
+  save(KEYS.spaced, spaced);
+  renderSpaced();
+}
+
+function restoreSpaced(idx) {
+  const spaced = load(KEYS.spaced) || [];
+  spaced[idx].archived = false;
+  save(KEYS.spaced, spaced);
+  renderSpaced();
+  showToast('Materi di-restore!');
+}
+
+function hardDeleteSpaced(idx) {
+  if (!confirm('Hapus permanen?')) return;
   const spaced = load(KEYS.spaced) || [];
   spaced.splice(idx, 1);
   save(KEYS.spaced, spaced);
   renderSpaced();
+}
+
+function deleteSpaced(idx) {
+  archiveSpaced(idx);
 }
 
 function toggleSpacedReview(idx) {
@@ -2367,7 +2336,7 @@ function renderTimeline() {
       } else {
         chip = `<span class="schedule-chip chip-done">✓ Selesai</span>`;
       }
-    } else if (r.status === 'active') {
+    } else if (r.status === 'active' || r.status === 'next') {
       if (r.targetDate) {
         const tgt = new Date(r.targetDate); tgt.setHours(0,0,0,0);
         const diff = Math.round((tgt - today) / 86400000);
@@ -2396,7 +2365,7 @@ function renderTimeline() {
         }).join('')}
       </div>` : '';
 
-    const cardCls = r.status === 'active' ? 'active-card' : r.status === 'done' ? 'done-card' : '';
+    const cardCls = r.status === 'done' ? 'done-card' : 'belum-card';
 
     return `<div class="pt-item">
       <div class="pt-dot ${r.status}">${r.status === 'done' ? '✓' : r.phase}</div>
@@ -2508,28 +2477,9 @@ document.getElementById('nav').addEventListener('click', e => {
   });
 });
 
-// Mobile exam bar sync
-const mebInput = document.getElementById('meb-date-input');
-if (mebInput) {
-  mebInput.value = load(KEYS.examDate) || '';
-  mebInput.addEventListener('change', () => {
-    save(KEYS.examDate, mebInput.value);
-    examInput.value = mebInput.value;
-    updateDayCounter();
-  });
-}
 
-function updateMebCounter() {
-  const el = document.getElementById('meb-days');
-  if (!el) return;
-  const val = load(KEYS.examDate);
-  if (!val) { el.textContent = '?'; return; }
-  const diff = Math.ceil((new Date(val) - new Date()) / 86400000);
-  el.textContent = diff > 0 ? diff : '0';
-}
 
-// Override updateDayCounter to also update mobile bar
-const _origUpdate = updateDayCounter;
+
 // Patch exam input to also sync meb
 examInput.addEventListener('change', () => {
   if (mebInput) mebInput.value = examInput.value;
@@ -2541,7 +2491,6 @@ examInput.addEventListener('change', () => {
 // ══════════════════════════════════════
 initData();
 renderDashboard();
-updateMebCounter();
 </script>
 </body>
 </html>
