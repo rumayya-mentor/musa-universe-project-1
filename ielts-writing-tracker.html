@@ -1289,10 +1289,21 @@ const KEYS = {
 };
 
 function load(key) {
-  try { return JSON.parse(localStorage.getItem(key)) || null; } catch { return null; }
+  try {
+    const val = localStorage.getItem(key);
+    if (val === null || val === undefined || val === '') return null;
+    return JSON.parse(val);
+  } catch(e) {
+    console.warn('load error for key', key, e);
+    return null;
+  }
 }
 function save(key, val) {
-  localStorage.setItem(key, JSON.stringify(val));
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch(e) {
+    console.warn('save error for key', key, e);
+  }
 }
 
 // ── Default Data ──
@@ -1307,16 +1318,84 @@ const DEFAULT_ERRORS = [
 ];
 
 const DEFAULT_ROADMAP = [
-  { phase: 1, title: 'Article + Uncountable Nouns', desc: 'a/an/the rules, uncountable nouns wajib hafal, quantifiers', status: 'done' },
-  { phase: 2, title: 'Subject-Verb Agreement (SVA)', desc: 'Gerund, A number of, The number of, Each of, Neither...nor, stative verbs', status: 'done' },
-  { phase: 3, title: 'Task Response + PEEL', desc: '5 jenis soal Task 2, master template Discussion, PEEL structure, phrase bank opini', status: 'done' },
-  { phase: 4, title: 'Coherence & Cohesion — Topic Sentence', desc: 'Formula topic sentence Band 8.5, academic verbs, vocabulary upgrade Band 7→8.5', status: 'done' },
-  { phase: 5, title: 'Complex Sentences — GRA Variety', desc: 'Subordinate clauses, relative clauses, conditionals, passive voice', status: 'active' },
-  { phase: 6, title: 'Lexical Resource — Collocation + Paraphrase', desc: 'Academic collocations, paraphrase techniques, topic-specific vocab (W2)', status: 'next' },
-  { phase: 7, title: 'Task 1 — Letter Writing Mastery', desc: 'Formal/semi-formal/informal letter, tone, opening & closing formulas (W2)', status: 'locked' },
-  { phase: 8, title: 'Full Essay Timed Practice', desc: '40 menit Task 2, 20 menit Task 1, under exam conditions (W3)', status: 'locked' },
-  { phase: 9, title: 'Error Elimination — Zero Error Goal', desc: 'Targeted drill SVA, article, verb form berdasarkan error log (W3)', status: 'locked' },
-  { phase: 10, title: 'Post-test + Fine Tuning', desc: 'Mock test full, evaluasi, penyesuaian akhir sebelum ujian (W4)', status: 'locked' }
+  { phase: 1, title: 'Article + Uncountable Nouns',
+    desc: 'a/an/the rules · uncountable nouns (research, evidence, knowledge, information, health, nutrition, equipment, advice, poverty, inequality, unemployment, progress, money, time, traffic, education, data) · quantifiers: many/much/a lot of/a wealth of',
+    status: 'done', completedDate: '2025-06-01',
+    scoreBefore: { ta:'6.0', cc:'6.5', lr:'7.0', gra:'6.5' },
+    scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
+    items: [
+      { text: 'a = singular konsonan, pertama disebut', done: true },
+      { text: 'an = singular vokal, pertama disebut', done: true },
+      { text: 'the = spesifik/unik/sudah disebut', done: true },
+      { text: '∅ = uncountable + plural umum', done: true },
+      { text: 'a wealth of = sophisticated "a lot of"', done: true }
+    ]
+  },
+  { phase: 2, title: 'Subject-Verb Agreement (SVA)',
+    desc: 'Gerund subject → singular · The quality/type/level OF → singular · A number of → plural · The number of → singular · Each of → singular · Neither...nor → singular · The majority of + plural → plural · A and B → plural · Stative verbs: no am/is/are',
+    status: 'done', completedDate: '2025-06-02',
+    scoreBefore: { ta:'7.0', cc:'6.5', lr:'7.0', gra:'6.5' },
+    scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
+    items: [
+      { text: 'Swimming helps (gerund = singular)', done: true },
+      { text: 'A number of studies show (plural)', done: true },
+      { text: 'The number has increased (singular)', done: true },
+      { text: 'Each of them has (singular)', done: true },
+      { text: 'Neither diet nor exercise determines (singular)', done: true },
+      { text: 'I agree — NOT "I am agree" (stative verb)', done: true }
+    ]
+  },
+  { phase: 3, title: 'Task Response + PEEL',
+    desc: '5 jenis soal: Discussion · Opinion/Argumentative · Problem & Solution · Advantages & Disadvantages · Double Question · Master template Discussion · PEEL: Point-Explain-Evidence-Link · Phrase bank opini eksplisit',
+    status: 'done', completedDate: '2025-06-03',
+    scoreBefore: { ta:'6.5', cc:'6.5', lr:'7.0', gra:'6.5' },
+    scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
+    items: [
+      { text: 'Discussion: INTRO + BP1 (view A) + BP2 (view B, lebih kuat) + CONCLUSION', done: true },
+      { text: 'Opini kuat: I firmly believe / I strongly argue / I am convinced that', done: true },
+      { text: 'Opini sedang: I believe / In my opinion / I would argue that', done: true },
+      { text: 'Conclusion: In conclusion, I maintain that...', done: true }
+    ]
+  },
+  { phase: 4, title: 'Coherence & Cohesion — Topic Sentence',
+    desc: 'Formula: [Sophisticated subject] + [Academic verb] + [Precise claim] · Academic verbs: argue/contend/assert/maintain/propose/suggest/demonstrate/indicate/reveal/precipitate/trigger/induce · Vocab upgrade Band 7→8.5',
+    status: 'done', completedDate: '2025-06-04',
+    scoreBefore: { ta:'7.0', cc:'6.5', lr:'7.0', gra:'6.5' },
+    scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
+    items: [
+      { text: 'think → argue / contend / assert', done: true },
+      { text: 'show → demonstrate / reveal / indicate', done: true },
+      { text: 'cause → precipitate / trigger / induce', done: true },
+      { text: 'important → indispensable / paramount / crucial', done: true },
+      { text: 'serious → severe / profound / marked', done: true },
+      { text: 'support → underpin / bolster / reinforce', done: true }
+    ]
+  },
+  { phase: 5, title: 'Complex Sentences — GRA Variety',
+    desc: 'Subordinate clauses · relative clauses · conditionals · passive voice · mixed sentence structures untuk GRA Band 8.5',
+    status: 'active',
+    items: []
+  },
+  { phase: 6, title: 'Lexical Resource — Collocation + Paraphrase',
+    desc: 'Academic collocations · paraphrase techniques · topic-specific vocab (W2)',
+    status: 'next', items: []
+  },
+  { phase: 7, title: 'Task 1 — Letter Writing Mastery',
+    desc: 'Formal/semi-formal/informal letter · tone · opening & closing formulas (W2)',
+    status: 'locked', items: []
+  },
+  { phase: 8, title: 'Full Essay Timed Practice',
+    desc: '40 menit Task 2 + 20 menit Task 1 · under exam conditions (W3)',
+    status: 'locked', items: []
+  },
+  { phase: 9, title: 'Error Elimination — Zero Error Goal',
+    desc: 'Targeted drill SVA, article, verb form berdasarkan error log (W3)',
+    status: 'locked', items: []
+  },
+  { phase: 10, title: 'Post-test + Fine Tuning',
+    desc: 'Mock test full · evaluasi · penyesuaian akhir sebelum ujian (W4)',
+    status: 'locked', items: []
+  }
 ];
 
 const DEFAULT_COLLOC = [
@@ -1333,26 +1412,33 @@ const DEFAULT_COLLOC = [
 ];
 
 const DEFAULT_VOCAB = [
-  { b7: 'important', b85: 'indispensable / paramount', context: 'formal academic' },
+  { b7: 'important', b85: 'indispensable / paramount / crucial', context: 'formal academic' },
   { b7: 'serious', b85: 'severe / profound / marked', context: 'describing problems' },
   { b7: 'get worse', b85: 'deteriorate / regress / decline', context: 'negative trends' },
   { b7: 'support', b85: 'underpin / bolster / reinforce', context: 'arguments' },
   { b7: 'show', b85: 'demonstrate / reveal / indicate', context: 'data/evidence' },
   { b7: 'think', b85: 'argue / contend / assert', context: 'opinion phrases' },
+  { b7: 'say', b85: 'maintain / propose / suggest', context: 'academic writing' },
+  { b7: 'believe', b85: 'advocate / posit / claim', context: 'opinion phrases' },
   { b7: 'cause', b85: 'precipitate / trigger / induce', context: 'causation' },
   { b7: 'many', b85: 'a wealth of / a multitude of', context: 'quantifiers' }
 ];
 
 const DEFAULT_SPACED = [
-  { topic: 'Article Rules (a/an/the)', learnedDate: '2025-06-01', nextReview: '2025-06-08', interval: 7 },
-  { topic: 'SVA — A number of vs The number of', learnedDate: '2025-06-01', nextReview: '2025-06-04', interval: 3 },
-  { topic: 'PEEL Structure + Phrase Bank Opini', learnedDate: '2025-06-02', nextReview: '2025-06-09', interval: 7 },
-  { topic: 'Topic Sentence Formula Band 8.5', learnedDate: '2025-06-02', nextReview: '2025-06-05', interval: 3 },
-  { topic: '10 Collocations Akademik', learnedDate: '2025-06-01', nextReview: '2025-06-15', interval: 14 }
+  { topic: 'P1 — Article Rules: a/an/the/∅ + Uncountable nouns', learnedDate: '2025-06-01', nextReview: '2025-07-01', interval: 30 },
+  { topic: 'P1 — Quantifiers: many/much/a lot of/a wealth of', learnedDate: '2025-06-01', nextReview: '2025-07-01', interval: 30 },
+  { topic: 'P2 — SVA: A number of vs The number of', learnedDate: '2025-06-02', nextReview: '2025-07-02', interval: 30 },
+  { topic: 'P2 — SVA: Gerund subject, Each of, Neither...nor, Stative verbs', learnedDate: '2025-06-02', nextReview: '2025-07-02', interval: 30 },
+  { topic: 'P3 — PEEL Structure + 5 jenis soal Task 2', learnedDate: '2025-06-03', nextReview: '2025-07-03', interval: 30 },
+  { topic: 'P3 — Phrase bank opini eksplisit (kuat/sedang/nuanced)', learnedDate: '2025-06-03', nextReview: '2025-07-03', interval: 30 },
+  { topic: 'P4 — Topic sentence formula Band 8.5', learnedDate: '2025-06-04', nextReview: '2025-07-04', interval: 30 },
+  { topic: 'P4 — Academic verbs: argue/contend/demonstrate/precipitate', learnedDate: '2025-06-04', nextReview: '2025-07-04', interval: 30 },
+  { topic: 'P4 — Vocab upgrade Band 7→8.5 (10 pasangan)', learnedDate: '2025-06-04', nextReview: '2025-07-04', interval: 30 },
+  { topic: '10 Collocations Akademik', learnedDate: '2025-06-01', nextReview: '2025-07-01', interval: 30 }
 ];
 
 // ── Init data if not exists ──
-const DATA_VERSION = 'v5';
+const DATA_VERSION = 'v6';
 function initData() {
   const prevVersion = localStorage.getItem('ielts_data_version');
   const isVersionBump = prevVersion !== DATA_VERSION;
@@ -1380,27 +1466,19 @@ function initData() {
   localStorage.setItem('ielts_data_version', DATA_VERSION);
 }
 
-// ══════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════
-document.getElementById('nav').addEventListener('click', e => {
-  const item = e.target.closest('.nav-item');
-  if (!item) return;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  item.classList.add('active');
-  document.getElementById('page-' + item.dataset.page).classList.add('active');
-  renderPage(item.dataset.page);
-});
 
 function renderPage(page) {
-  if (page === 'dashboard') renderDashboard();
-  if (page === 'sessions') renderSessions();
-  if (page === 'errors') renderErrors();
-  if (page === 'roadmap') renderRoadmap();
-  if (page === 'spaced') renderSpaced();
-  if (page === 'vocab') renderVocab();
-  if (page === 'timeline') renderTimeline();
+  try {
+    if (page === 'dashboard') renderDashboard();
+    if (page === 'sessions')  renderSessions();
+    if (page === 'errors')    renderErrors();
+    if (page === 'roadmap')   renderRoadmap();
+    if (page === 'spaced')    renderSpaced();
+    if (page === 'vocab')     renderVocab();
+    if (page === 'timeline')  renderTimeline();
+  } catch(e) {
+    console.error('renderPage error [' + page + ']:', e);
+  }
 }
 
 // ══════════════════════════════════════
@@ -1417,79 +1495,125 @@ let trendChartInst = null;
 let errorChartInst = null;
 
 function renderDashboard() {
-  const sessions = load(KEYS.sessions) || [];
-  const errors = load(KEYS.errors) || [];
+  const sessions  = load(KEYS.sessions)  || [];
+  const errors    = load(KEYS.errors)    || [];
+  const roadmap   = load(KEYS.roadmap)   || [];
+  const colloc    = load(KEYS.colloc)    || [];
+  const vocab     = load(KEYS.vocab)     || [];
+  const spaced    = load(KEYS.spaced)    || [];
 
-  // Metric: session count
-  document.getElementById('m-sessions').textContent = sessions.length;
+  // ── Baseline from test result (27 May 2025) ──
+  const BASELINE = { TA: 6.0, CC: 6.5, LR: 7.0, GRA: 6.5 };
+  const TARGET   = { TA: 8.5, CC: 8.5, LR: 8.5, GRA: 8.5 };
 
-  // Current estimated score (avg of last 3 sessions or baseline)
-  let currentOverall = 7.3;
-  if (sessions.length > 0) {
-    const last = sessions.slice(-3);
-    const avgs = last.map(s => (parseFloat(s.ta)+parseFloat(s.cc)+parseFloat(s.lr)+parseFloat(s.gra))/4);
-    currentOverall = avgs.reduce((a,b)=>a+b,0)/avgs.length;
-    currentOverall = Math.round(currentOverall*2)/2;
-  }
-  document.getElementById('m-current').textContent = currentOverall.toFixed(1);
-  const delta = currentOverall - 6.5;
-  const deltaEl = document.getElementById('m-delta');
-  deltaEl.textContent = (delta >= 0 ? '▲ +' : '▼ ') + delta.toFixed(1) + ' dari baseline';
-  deltaEl.className = 'metric-delta ' + (delta > 0 ? 'up' : delta < 0 ? 'down' : 'neutral');
-
-  // Criteria bars
-  const BASELINE = { TA: 6.5, CC: 6.5, LR: 7.0, GRA: 6.5 };
-  const CURRENT = { TA: 7.5, CC: 7.0, LR: 7.5, GRA: 7.0 };
+  // ── Current scores: prefer last 3 sessions, else derive from roadmap phase scores ──
+  const CURRENT = { TA: 7.5, CC: 7.0, LR: 7.5, GRA: 7.0 }; // pretest baseline
   if (sessions.length > 0) {
     const last3 = sessions.slice(-3);
-    ['ta','cc','lr','gra'].forEach((k,i) => {
-      const key = ['TA','CC','LR','GRA'][i];
-      CURRENT[key] = Math.round((last3.reduce((a,s)=>a+parseFloat(s[k]),0)/last3.length)*2)/2;
+    ['ta','cc','lr','gra'].forEach((k, idx) => {
+      const key = ['TA','CC','LR','GRA'][idx];
+      CURRENT[key] = Math.round((last3.reduce((a,s)=>a+parseFloat(s[k]||0),0)/last3.length)*2)/2;
     });
+  } else {
+    // Derive from latest phase scoreAfter
+    const latestWithScore = [...roadmap].reverse().find(r => r.scoreAfter?.ta);
+    if (latestWithScore) {
+      const af = latestWithScore.scoreAfter;
+      CURRENT.TA  = parseFloat(af.ta);
+      CURRENT.CC  = parseFloat(af.cc);
+      CURRENT.LR  = parseFloat(af.lr);
+      CURRENT.GRA = parseFloat(af.gra);
+    }
   }
-  const colors = { TA: '#c0392b', CC: '#1a4a7a', LR: '#b8860b', GRA: '#2d6a4f' };
+
+  const currentOverall = Math.round(((CURRENT.TA+CURRENT.CC+CURRENT.LR+CURRENT.GRA)/4)*2)/2;
+  const baselineOverall = (BASELINE.TA+BASELINE.CC+BASELINE.LR+BASELINE.GRA)/4;
+
+  // ── Metrics ──
+  document.getElementById('m-sessions').textContent = sessions.length;
+  document.getElementById('m-current').textContent = currentOverall.toFixed(1);
+  const delta = currentOverall - baselineOverall;
+  const deltaEl = document.getElementById('m-delta');
+  deltaEl.textContent = (delta >= 0 ? '▲ +' : '▼ ') + Math.abs(delta).toFixed(2) + ' dari baseline';
+  deltaEl.className = 'metric-delta ' + (delta > 0 ? 'up' : delta < 0 ? 'down' : 'neutral');
+
+  // ── Phase progress metric ──
+  const donePhases = roadmap.filter(r => r.status === 'done').length;
+  const phasesEl = document.getElementById('m-phases');
+  if (phasesEl) phasesEl.textContent = donePhases + '/10';
+
+  // ── Colloc mastered metric ──
+  const collocEl = document.getElementById('m-colloc');
+  if (collocEl) {
+    const mastered = colloc.filter(c => c.mastered).length;
+    collocEl.textContent = mastered + '/' + colloc.length;
+  }
+
+  // ── Active errors metric ──
+  const errorsEl = document.getElementById('m-errors');
+  if (errorsEl) {
+    // Latest status per type from non-baseline entries
+    const sessionErrors = errors.filter(e => !e.isBaseline);
+    const latestByType = {};
+    sessionErrors.forEach(e => { latestByType[e.type] = e.status; });
+    const activeCount = Object.values(latestByType).filter(s => s === 'Memburuk' || s === 'Statis').length
+      + errors.filter(e => e.isBaseline && !latestByType[e.type]).length; // no session entry yet = still at baseline
+    errorsEl.textContent = activeCount;
+  }
+
+  // ── Criteria progress bars ──
+  const colors = { TA: '#c9a84c', CC: '#5ca8e0', LR: '#e0a85c', GRA: '#5ce0a0' };
   const fullNames = { TA: 'Task Achievement', CC: 'Coherence & Cohesion', LR: 'Lexical Resource', GRA: 'Grammatical Range & Accuracy' };
   const barsHTML = Object.keys(BASELINE).map(k => {
-    const base = BASELINE[k], cur = CURRENT[k], target = 8.5;
-    const pct = ((cur - 4) / (9 - 4)) * 100;
-    const tpct = ((target - 4) / (9 - 4)) * 100;
+    const base = BASELINE[k], cur = CURRENT[k], target = TARGET[k];
+    const pct  = Math.min(((cur  - 4) / (9 - 4)) * 100, 100);
+    const tpct = Math.min(((target - 4) / (9 - 4)) * 100, 100);
+    const bpct = Math.min(((base - 4) / (9 - 4)) * 100, 100);
     return `<div class="criteria-row">
       <div class="criteria-header">
         <span class="criteria-name">${k} — ${fullNames[k]}</span>
         <span class="criteria-scores">
-          <span class="score-baseline">${base.toFixed(1)}</span>
+          <span class="score-baseline" title="Baseline">${base.toFixed(1)}</span>
           <span style="color:var(--text-mute)">→</span>
-          <span class="score-current">${cur.toFixed(1)}</span>
+          <span class="score-current" title="Terkini">${cur.toFixed(1)}</span>
           <span style="color:var(--text-mute)">→</span>
-          <span class="score-target">${target.toFixed(1)}</span>
+          <span class="score-target" title="Target">${target.toFixed(1)}</span>
         </span>
       </div>
       <div class="progress-track">
         <div class="progress-fill" style="width:${pct.toFixed(1)}%;background:${colors[k]};"></div>
         <div class="progress-target-marker" style="left:${tpct.toFixed(1)}%;"></div>
+        <div style="position:absolute;top:-4px;left:${bpct.toFixed(1)}%;width:1.5px;height:14px;background:var(--accent);border-radius:2px;opacity:0.4;" title="Baseline"></div>
       </div>
     </div>`;
   }).join('');
   document.getElementById('criteria-bars').innerHTML = barsHTML;
 
-  // Trend chart
+  // ── Trend chart — baseline as first point ──
   if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
   const canvas = document.getElementById('trend-chart');
-  if (sessions.length > 0) {
-    const labels = sessions.map(s => s.date);
-    const overalls = sessions.map(s => ((parseFloat(s.ta)+parseFloat(s.cc)+parseFloat(s.lr)+parseFloat(s.gra))/4).toFixed(2));
+  if (canvas) {
+    const baselineDate = '27 Mei 2025';
+    const baselineVal  = baselineOverall.toFixed(2);
+    const sessLabels   = sessions.map(s => s.date);
+    const sessVals     = sessions.map(s => ((parseFloat(s.ta)+parseFloat(s.cc)+parseFloat(s.lr)+parseFloat(s.gra))/4).toFixed(2));
+    const labels = [baselineDate, ...sessLabels];
+    const data   = [baselineVal, ...sessVals];
+    const ptColors = ['#c9a84c', ...sessLabels.map(()=>'#5ce0a0')];
+    const ptRadius = [6, ...sessLabels.map(()=>4)];
+
     trendChartInst = new Chart(canvas, {
       type: 'line',
       data: {
         labels,
         datasets: [{
           label: 'Overall Writing',
-          data: overalls,
-          borderColor: '#c0392b',
-          backgroundColor: 'rgba(192,57,43,0.08)',
+          data,
+          borderColor: '#5ce0a0',
+          backgroundColor: 'rgba(92,224,160,0.07)',
           tension: 0.35,
-          pointRadius: 4,
-          pointBackgroundColor: '#c0392b',
+          pointRadius: ptRadius,
+          pointBackgroundColor: ptColors,
           fill: true
         }]
       },
@@ -1497,45 +1621,60 @@ function renderDashboard() {
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          y: { min: 5, max: 9, ticks: { stepSize: 0.5, font: { family: 'IBM Plex Mono', size: 11 } } },
-          x: { ticks: { font: { family: 'Lato', size: 11 } } }
+          y: { min: 5, max: 9, ticks: { stepSize: 0.5, font: { family: 'JetBrains Mono', size: 10 } } },
+          x: { ticks: { font: { family: 'JetBrains Mono', size: 10 }, maxRotation: 30 } }
         }
       }
     });
-  } else {
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    canvas.parentElement.innerHTML = '<div class="empty"><div class="empty-icon">◈</div><div>Belum ada sesi latihan</div></div>';
   }
 
-  // Error bar chart
+  // ── Error summary chart (baseline counts) ──
   if (errorChartInst) { errorChartInst.destroy(); errorChartInst = null; }
   const ecCanvas = document.getElementById('error-chart');
   if (ecCanvas && errors.length > 0) {
-    const sorted = [...errors].sort((a,b)=>b.count-a.count).slice(0,6);
+    // Show baseline vs latest session per type
+    const types = [...new Set(errors.map(e => e.type))];
+    const baseMap = {}, latestMap = {};
+    errors.filter(e => e.isBaseline).forEach(e => { baseMap[e.type] = e.count; });
+    errors.filter(e => !e.isBaseline).sort((a,b)=>(a.date||'').localeCompare(b.date||'')).forEach(e => { latestMap[e.type] = e.count; });
+
     errorChartInst = new Chart(ecCanvas, {
       type: 'bar',
       data: {
-        labels: sorted.map(e=>e.type),
-        datasets: [{
-          data: sorted.map(e=>e.count),
-          backgroundColor: sorted.map(e => e.status==='Aktif'?'rgba(192,57,43,0.8)':e.status==='Membaik'?'rgba(184,134,11,0.7)':'rgba(45,106,79,0.7)'),
-          borderRadius: 3
-        }]
+        labels: types,
+        datasets: [
+          { label: 'Baseline', data: types.map(t => baseMap[t]||0), backgroundColor: 'rgba(201,168,76,0.4)', borderRadius: 2 },
+          { label: 'Terkini',  data: types.map(t => latestMap[t]!==undefined ? latestMap[t] : null),
+            backgroundColor: types.map(t => {
+              if (latestMap[t] === undefined) return 'transparent';
+              return latestMap[t] < (baseMap[t]||0) ? 'rgba(92,224,160,0.7)' : latestMap[t] > (baseMap[t]||0) ? 'rgba(224,92,92,0.7)' : 'rgba(224,168,92,0.7)';
+            }),
+            borderRadius: 2
+          }
+        ]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'IBM Plex Mono', size: 11 } } },
-          x: { ticks: { font: { family: 'Lato', size: 11 } } }
+          y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'JetBrains Mono', size: 10 } } },
+          x: { ticks: { font: { family: 'JetBrains Mono', size: 10 } } }
         }
       }
     });
   }
 
-  // Today's reviews
+  // ── Today's reviews ──
   renderTodayReviews();
+
+  // ── Overdue spaced reviews ──
+  const overdueEl = document.getElementById('m-overdue');
+  if (overdueEl) {
+    const today2 = new Date(); today2.setHours(0,0,0,0);
+    const overdue = spaced.filter(s => !s.archived && !s.reviewed && new Date(s.nextReview) <= today2).length;
+    overdueEl.textContent = overdue;
+    overdueEl.style.color = overdue > 0 ? 'var(--accent)' : 'var(--text-mute)';
+  }
 }
 
 function renderTodayReviews() {
@@ -2269,11 +2408,6 @@ function openVocabModal() {
   document.getElementById('v-vtype').dispatchEvent(new Event('change'));
 }
 
-document.getElementById('v-vtype').addEventListener('change', function() {
-  document.getElementById('v-colloc-fields').style.display = this.value==='colloc'?'':'none';
-  document.getElementById('v-upgrade-fields').style.display = this.value==='upgrade'?'':'none';
-});
-
 function saveVocab() {
   const type = document.getElementById('v-vtype').value;
   if (type === 'colloc') {
@@ -2329,12 +2463,6 @@ function showToast(msg) {
 }
 
 // Close modal on overlay click
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) overlay.classList.remove('open');
-  });
-});
-
 
 // ══════════════════════════════════════
 // TIMELINE
@@ -2559,31 +2687,69 @@ function mobileNav(el) {
 }
 
 // Sync desktop nav clicks to also update bottom nav
-document.getElementById('nav').addEventListener('click', e => {
-  const item = e.target.closest('.nav-item');
-  if (!item) return;
-  const page = item.dataset.page;
-  document.querySelectorAll('.bnav-item').forEach(b => {
-    b.classList.toggle('active', b.dataset.page === page);
-  });
-});
 
 
-
-
-// Patch exam input to also sync meb
-examInput.addEventListener('change', () => {
-  if (mebInput) mebInput.value = examInput.value;
-  updateMebCounter();
-});
 
 // ══════════════════════════════════════
 // INIT
 // ══════════════════════════════════════
-initData();
-renderDashboard();
-// Pre-render roadmap data into DOM so it's ready when user navigates
-try { renderRoadmap(); } catch(e) { console.error('roadmap prerender:', e); }
+// ── Robust init: ensure DOM ready before rendering ──
+function startApp() {
+  initData();
+
+  // Wire up DOM event listeners (safe here — DOM is ready)
+  const vtypeEl = document.getElementById('v-vtype');
+  if (vtypeEl) {
+    vtypeEl.addEventListener('change', function() {
+      const isColloc = this.value === 'colloc';
+      const cf = document.getElementById('v-colloc-fields');
+      const uf = document.getElementById('v-upgrade-fields');
+      if (cf) cf.style.display = isColloc ? '' : 'none';
+      if (uf) uf.style.display = isColloc ? '' : 'none';
+    });
+  }
+
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.remove('open');
+    });
+  });
+
+  // Sync desktop nav clicks to also update bottom nav
+  const navEl = document.getElementById('nav');
+  if (navEl) {
+    navEl.addEventListener('click', e => {
+      const item = e.target.closest('.nav-item');
+      if (!item) return;
+      // Update active state
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      item.classList.add('active');
+      const page = item.dataset.page;
+      const pageEl = document.getElementById('page-' + page);
+      if (pageEl) pageEl.classList.add('active');
+      // Sync bottom nav
+      document.querySelectorAll('.bnav-item').forEach(b => {
+        b.classList.toggle('active', b.dataset.page === page);
+      });
+      renderPage(page);
+    });
+  }
+
+  // Render all pages into DOM upfront
+  try { renderDashboard(); } catch(e) { console.error('dashboard:', e); }
+  try { renderRoadmap(); }   catch(e) { console.error('roadmap:', e); }
+  try { renderErrors(); }    catch(e) { console.error('errors:', e); }
+  try { renderSpaced(); }    catch(e) { console.error('spaced:', e); }
+  try { renderVocab(); }     catch(e) { console.error('vocab:', e); }
+  try { renderSessions(); }  catch(e) { console.error('sessions:', e); }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
 </script>
 </body>
 </html>
