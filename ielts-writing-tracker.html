@@ -1173,12 +1173,14 @@
       <input type="number" class="form-input" id="e-count" min="1" max="20" value="1">
     </div>
     <div class="form-group">
-      <label class="form-label">Status</label>
-      <select class="form-select" id="e-status">
-        <option value="Aktif">Aktif — masih sering terjadi</option>
-        <option value="Membaik">Membaik — mulai berkurang</option>
-        <option value="Selesai">Selesai — sudah dikuasai</option>
-      </select>
+      <label class="form-label">Status (otomatis dari data)</label>
+      <div id="e-status-preview" style="background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div>
+          <div id="e-status-label" style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--text-mute);">—</div>
+          <div id="e-status-reason" style="font-size:12px;color:var(--text-mute);margin-top:3px;font-family:var(--font-body);font-style:italic;">Pilih tipe & jumlah untuk preview</div>
+        </div>
+        <div id="e-status-icon" style="font-size:24px;color:var(--text-mute);">·</div>
+      </div>
     </div>
     <div class="form-group">
       <label class="form-label">Contoh kalimat salah (opsional)</label>
@@ -1295,13 +1297,13 @@ function save(key, val) {
 
 // ── Default Data ──
 const DEFAULT_ERRORS = [
-  { type: 'SVA', count: 7, status: 'Aktif', example: 'e.g. The informations are... → The information is...', date: '2025-06-01', phase: 'P2' },
-  { type: 'Article', count: 6, status: 'Membaik', example: '' },
-  { type: 'Verb Form', count: 5, status: 'Membaik', example: '' },
-  { type: 'Spelling', count: 3, status: 'Aktif', example: '' },
-  { type: 'Possessive', count: 2, status: 'Aktif', example: '' },
-  { type: 'Word Form', count: 2, status: 'Aktif', example: '' },
-  { type: 'Register', count: 1, status: 'Membaik', example: '' }
+  { type: 'SVA',       count: 7, status: 'Baseline', example: 'e.g. The informations are... → The information is...', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
+  { type: 'Article',   count: 6, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
+  { type: 'Verb Form', count: 5, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
+  { type: 'Spelling',  count: 3, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
+  { type: 'Possessive',count: 2, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
+  { type: 'Word Form', count: 2, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
+  { type: 'Register',  count: 1, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true }
 ];
 
 const DEFAULT_ROADMAP = [
@@ -1350,9 +1352,11 @@ const DEFAULT_SPACED = [
 ];
 
 // ── Init data if not exists ──
-const DATA_VERSION = 'v3';
+const DATA_VERSION = 'v4';
 function initData() {
-  if (!load(KEYS.errors)) save(KEYS.errors, DEFAULT_ERRORS);
+  // Reset errors on version bump to pick up isBaseline flag
+  const storedErrors = load(KEYS.errors);
+  if (!storedErrors || !storedErrors[0]?.isBaseline) save(KEYS.errors, DEFAULT_ERRORS);
   const storedRoadmap = load(KEYS.roadmap);
   if (!storedRoadmap || storedRoadmap.length !== 10 || localStorage.getItem('ielts_data_version') !== DATA_VERSION) {
     save(KEYS.roadmap, DEFAULT_ROADMAP);
@@ -1669,40 +1673,65 @@ function renderErrors() {
     });
   }
 
-  // ── Trend chart by date ──
+  // ── Trend chart — baseline as first anchor point ──
   if (errorTrendInst) { errorTrendInst.destroy(); errorTrendInst = null; }
   const trendCanvas = document.getElementById('error-trend');
-  const filtered = filterType === 'all' ? errors : errors.filter(e=>e.type===filterType);
-  if (filtered.length && trendCanvas) {
-    // Group by date
+  const filtSession = filterType === 'all'
+    ? sessionErrors
+    : sessionErrors.filter(e => e.type === filterType);
+  const filtBase = filterType === 'all'
+    ? [] // aggregate baseline doesn't make sense across types
+    : baselineErrors.filter(e => e.type === filterType);
+
+  if (trendCanvas) {
+    // Group session entries by date
     const byDate = {};
-    filtered.forEach(e => { if(e.date){ byDate[e.date]=(byDate[e.date]||0)+e.count; } });
-    const dates = Object.keys(byDate).sort();
-    const counts = dates.map(d=>byDate[d]);
-    errorTrendInst = new Chart(trendCanvas, {
-      type: 'line',
-      data: {
-        labels: dates,
-        datasets: [{
-          label: filterType==='all'?'Total Error':filterType,
-          data: counts,
-          borderColor: '#e05c5c',
-          backgroundColor: 'rgba(224,92,92,0.08)',
-          tension: 0.35, pointRadius: 4, pointBackgroundColor: '#e05c5c', fill: true
-        }]
-      },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins:{ legend:{ display:false } },
-        scales:{
-          y:{ beginAtZero:true, ticks:{ stepSize:1, font:{family:'JetBrains Mono',size:10} } },
-          x:{ ticks:{ font:{family:'JetBrains Mono',size:10} } }
+    filtSession.forEach(e => { if(e.date){ byDate[e.date]=(byDate[e.date]||0)+e.count; } });
+    const sessionDates = Object.keys(byDate).sort();
+    const sessionCounts = sessionDates.map(d=>byDate[d]);
+
+    // Prepend baseline point if filtering by type
+    const labels = filtBase.length ? ['Baseline (27 Mei 2025)', ...sessionDates] : sessionDates;
+    const dataPoints = filtBase.length ? [filtBase[0].count, ...sessionCounts] : sessionCounts;
+    const pointColors = filtBase.length
+      ? ['#c9a84c', ...sessionDates.map(()=>'#e05c5c')]
+      : sessionDates.map(()=>'#e05c5c');
+    const pointRadius = filtBase.length
+      ? [6, ...sessionDates.map(()=>4)]
+      : sessionDates.map(()=>4);
+
+    if (!labels.length) {
+      const ctx = trendCanvas.getContext('2d');
+      ctx.clearRect(0,0,trendCanvas.width,trendCanvas.height);
+    } else {
+      errorTrendInst = new Chart(trendCanvas, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: filterType==='all'?'Total Error (sesi)':filterType,
+            data: dataPoints,
+            borderColor: '#e05c5c',
+            backgroundColor: 'rgba(224,92,92,0.07)',
+            tension: 0.3,
+            pointRadius,
+            pointBackgroundColor: pointColors,
+            borderDash: filtBase.length ? [0] : [],
+            fill: true
+          }]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{ display:false },
+            tooltip:{ callbacks:{ label: ctx => ` ${ctx.parsed.y}× error` } }
+          },
+          scales:{
+            y:{ beginAtZero:true, ticks:{ stepSize:1, font:{family:'JetBrains Mono',size:10} } },
+            x:{ ticks:{ font:{family:'JetBrains Mono',size:10}, maxRotation:30 } }
+          }
         }
-      }
-    });
-  } else if (trendCanvas && !filtered.length) {
-    const ctx = trendCanvas.getContext('2d');
-    ctx.clearRect(0,0,trendCanvas.width,trendCanvas.height);
+      });
+    }
   }
 
   // ── Log table ──
@@ -1714,47 +1743,91 @@ function renderErrors() {
     if(logEmpty) logEmpty.style.display = 'block';
   } else {
     if(logEmpty) logEmpty.style.display = 'none';
-    if(tbody) tbody.innerHTML = sortedLog.map((e,i) => `<tr>
+    if(tbody) tbody.innerHTML = sortedLog.map((e,i) => `<tr style="${e.isBaseline?'opacity:0.65;':''}">
       <td class="mono" style="font-size:11px;">${e.date||'—'}</td>
-      <td><span class="badge badge-next" style="font-size:9px;">${e.phase||'—'}</span></td>
+      <td>${e.isBaseline
+        ? '<span class="badge badge-locked" style="font-size:9px;">Baseline</span>'
+        : `<span class="badge badge-next" style="font-size:9px;">${e.phase||'—'}</span>`}</td>
       <td style="font-family:var(--font-mono);font-size:11px;font-weight:500;">${e.type}</td>
-      <td class="mono" style="color:var(--accent)">${e.count}×</td>
-      <td><span class="badge ${statusBadge(e.status)}" style="font-size:9px;">${e.status}</span></td>
+      <td class="mono" style="color:${e.isBaseline?'var(--text-mute)':'var(--accent)'}">${e.count}×</td>
+      <td><span class="badge ${e.isBaseline?'badge-locked':statusBadge(e.status)}" style="font-size:9px;">${e.status}</span></td>
       <td style="font-size:12px;color:var(--text-mute);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.example||'—'}</td>
-      <td><button class="btn btn-sm btn-danger" onclick="deleteError(${i})">×</button></td>
+      <td>${e.isBaseline?'<span style="font-size:10px;color:var(--text-mute);font-family:var(--font-mono);">baseline</span>':`<button class="btn btn-sm btn-danger" onclick="deleteError(${i})">×</button>`}</td>
     </tr>`).join('');
   }
+}
+
+// ── Auto-status computation based on history ──
+function computeErrorStatus(errors, type, newCount) {
+  const baseline = errors.find(e => e.type === type && e.isBaseline);
+  const prev = errors
+    .filter(e => e.type === type && !e.isBaseline)
+    .sort((a,b) => (a.date||'').localeCompare(b.date||''));
+
+  if (!prev.length) {
+    if (baseline) {
+      const diff = newCount - baseline.count;
+      if (diff < -1) return { status:'Membaik',  reason:`↓ dari baseline ${baseline.count}×`, icon:'↓', color:'var(--green)' };
+      if (diff >  1) return { status:'Memburuk', reason:`↑ dari baseline ${baseline.count}×`, icon:'↑', color:'var(--accent)' };
+      return               { status:'Statis',    reason:`Sama dengan baseline ${baseline.count}×`, icon:'→', color:'var(--amber)' };
+    }
+    return { status:'Baru', reason:'Pertama kali tipe ini dicatat', icon:'★', color:'var(--blue)' };
+  }
+  const lastCount = prev[prev.length-1].count;
+  const avgPrev = prev.reduce((s,e)=>s+e.count,0)/prev.length;
+  if (newCount < lastCount - 1) return { status:'Membaik',  reason:`↓ dari ${lastCount}× terakhir (avg ${avgPrev.toFixed(1)}×)`, icon:'↓', color:'var(--green)' };
+  if (newCount > lastCount + 1) return { status:'Memburuk', reason:`↑ dari ${lastCount}× terakhir (avg ${avgPrev.toFixed(1)}×)`, icon:'↑', color:'var(--accent)' };
+  return                               { status:'Statis',   reason:`Sama seperti ${lastCount}× terakhir (avg ${avgPrev.toFixed(1)}×)`, icon:'→', color:'var(--amber)' };
+}
+
+function updateErrorStatusPreview() {
+  const errors = load(KEYS.errors) || [];
+  const typeEl = document.getElementById('e-type');
+  const countEl = document.getElementById('e-count');
+  if (!typeEl || !countEl) return;
+  const type = typeEl.value;
+  const count = parseInt(countEl.value) || 1;
+  const result = computeErrorStatus(errors, type, count);
+  const lbl = document.getElementById('e-status-label');
+  const rsn = document.getElementById('e-status-reason');
+  const ico = document.getElementById('e-status-icon');
+  if (lbl) { lbl.textContent = result.status; lbl.style.color = result.color; }
+  if (rsn) { rsn.textContent = result.reason; }
+  if (ico) { ico.textContent = result.icon; ico.style.color = result.color; }
 }
 
 function openErrorModal() {
   document.getElementById('e-date').value = new Date().toISOString().split('T')[0];
   document.getElementById('e-count').value = 1;
   document.getElementById('e-example').value = '';
-  // Auto-detect current active phase
   const roadmap = load(KEYS.roadmap) || [];
   const active = roadmap.find(r => r.status === 'active');
-  if (active) {
-    const sel = document.getElementById('e-phase');
-    if (sel) sel.value = 'P' + active.phase;
-  }
+  if (active) { const s = document.getElementById('e-phase'); if(s) s.value='P'+active.phase; }
   document.getElementById('error-modal').classList.add('open');
+  updateErrorStatusPreview();
+  ['e-type','e-count'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.removeEventListener('change', updateErrorStatusPreview);
+    el.removeEventListener('input', updateErrorStatusPreview);
+    el.addEventListener('change', updateErrorStatusPreview);
+    el.addEventListener('input', updateErrorStatusPreview);
+  });
 }
 
 function saveError() {
   const errors = load(KEYS.errors) || [];
   const type = document.getElementById('e-type').value;
   const count = parseInt(document.getElementById('e-count').value) || 1;
-  const status = document.getElementById('e-status').value;
   const example = document.getElementById('e-example').value.trim();
   const date = document.getElementById('e-date').value || new Date().toISOString().split('T')[0];
   const phase = document.getElementById('e-phase').value;
-
-  // Add as log entry
+  const { status } = computeErrorStatus(errors, type, count);
   errors.push({ type, count, status, example, date, phase });
   save(KEYS.errors, errors);
   closeModal('error-modal');
   renderErrors();
-  showToast('Error dicatat!');
+  showToast(`Error dicatat — ${status}`);
 }
 
 function deleteError(idx) {
