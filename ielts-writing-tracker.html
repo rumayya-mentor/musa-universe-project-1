@@ -921,7 +921,8 @@
         </div>
         <div class="card">
           <div class="card-title">Distribusi</div>
-          <div class="chart-wrap" style="height:200px;">
+          <div id="error-pie-legend" style="margin-bottom:10px;"></div>
+          <div class="chart-wrap" style="height:180px;">
             <canvas id="error-pie" role="img" aria-label="Pie chart distribusi jenis error">Belum ada data.</canvas>
           </div>
         </div>
@@ -1810,17 +1811,42 @@ function renderErrors() {
   if (errorPieInst) { errorPieInst.destroy(); errorPieInst = null; }
   const pieCanvas = document.getElementById('error-pie');
   if (sortedTypes.length && pieCanvas) {
-    const pieColors = sortedTypes.map(([t]) => {
-      const last = totals[t].statuses[totals[t].statuses.length-1];
-      return last==='Aktif'?'rgba(224,92,92,0.75)':last==='Membaik'?'rgba(224,168,92,0.75)':'rgba(92,224,160,0.75)';
-    });
+    // Fixed distinct palette per slice — not status-based (avoids all-same-color)
+    const PALETTE = [
+      'rgba(224,92,92,0.82)',   // red
+      'rgba(201,168,76,0.82)',  // gold
+      'rgba(92,168,224,0.82)',  // blue
+      'rgba(224,168,92,0.82)',  // amber
+      'rgba(160,92,224,0.82)',  // purple
+      'rgba(92,224,160,0.82)',  // green
+      'rgba(224,130,92,0.82)',  // orange
+    ];
+    const pieColors = sortedTypes.map(([,], idx) => PALETTE[idx % PALETTE.length]);
+
+    // Build custom legend HTML
+    const legendEl = document.getElementById('error-pie-legend');
+    if (legendEl) {
+      legendEl.innerHTML = sortedTypes.map(([t, data], idx) => {
+        const last = data.statuses[data.statuses.length-1];
+        return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+          <div style="width:10px;height:10px;border-radius:2px;background:${PALETTE[idx % PALETTE.length]};flex-shrink:0;"></div>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute);">${t}</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute);margin-left:auto;">${data.count}×</span>
+        </div>`;
+      }).join('');
+    }
+
     errorPieInst = new Chart(pieCanvas, {
       type: 'doughnut',
       data: {
         labels: sortedTypes.map(([t])=>t),
-        datasets: [{ data: sortedTypes.map(([,d])=>d.count), backgroundColor: pieColors, borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' }]
+        datasets: [{ data: sortedTypes.map(([,d])=>d.count), backgroundColor: pieColors, borderWidth: 2, borderColor: '#13131a' }]
       },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        cutout: '65%',
+        plugins:{ legend:{ display:false } }
+      }
     });
   }
 
