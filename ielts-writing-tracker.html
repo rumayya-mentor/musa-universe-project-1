@@ -468,6 +468,84 @@
   .colloc-phrase { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--gold); }
   .colloc-example { font-size: 12px; color: var(--text-mute); margin-top: 4px; font-style: italic; font-family: var(--font-body); }
 
+
+
+  /* ── VOCAB UPGRADE ── */
+  .vocab-upgrade-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: start;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .vocab-upgrade-row:last-child { border-bottom: none; }
+  .vocab-upgrade-check {
+    padding-top: 34px;
+    flex-shrink: 0;
+  }
+  .vocab-upgrade-check input {
+    accent-color: var(--gold);
+    width: 16px;
+    height: 16px;
+  }
+  .vocab-upgrade-body {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(100px, 140px) 24px minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .vocab-upgrade-body.is-mastered { opacity: 0.5; }
+  .vocab-upgrade-col { min-width: 0; }
+  .vocab-upgrade-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  .vocab-upgrade-label.band65 { color: var(--accent); }
+  .vocab-upgrade-label.band85 { color: var(--green); }
+  .vocab-upgrade-text {
+    font-size: 15px;
+    font-family: var(--font-body);
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .vocab-upgrade-text.from { color: var(--text-mute); }
+  .vocab-upgrade-text.to { color: var(--text); font-weight: 600; }
+  .vocab-upgrade-arrow {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    color: var(--text-mute);
+    text-align: center;
+  }
+  .vocab-upgrade-context {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-mute);
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 99px;
+    justify-self: start;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .vocab-upgrade-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-mute);
+    font-size: 14px;
+    padding: 0;
+    flex-shrink: 0;
+    margin-top: 34px;
+  }
+  .vocab-upgrade-delete:hover { color: var(--text); }
+
   /* ── SECTION SPACING ── */
   .section { margin-bottom: 1.75rem; }
 
@@ -593,6 +671,28 @@
     .chart-wrap { height: 200px; }
 
     .section { margin-bottom: 1.25rem; }
+
+
+
+    .vocab-upgrade-row {
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+    }
+    .vocab-upgrade-check,
+    .vocab-upgrade-delete { margin-top: 0; padding-top: 0; }
+    .vocab-upgrade-body {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+    .vocab-upgrade-arrow {
+      text-align: left;
+      line-height: 1;
+    }
+    .vocab-upgrade-context {
+      justify-self: start;
+      max-width: 100%;
+    }
 
     .colloc-chip { width: calc(50% - 8px); }
   }
@@ -2497,22 +2597,23 @@ function renderVocab() {
     vList.innerHTML = vocab.length ? vocab.map((v,i) => {
       const checked = v.mastered ? 'checked' : '';
       const dim = v.mastered ? 'opacity:0.5;' : '';
-      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--border);">
-        <input type="checkbox" ${checked} onchange="toggleVocab(${i})"
-          style="accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;">
-        <div style="flex:1;${dim}display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-          <div style="min-width:100px;">
-            <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Band 6.5</div>
-            <div style="font-size:15px;color:var(--text-mute);font-family:var(--font-body);">${v.b7}</div>
-          </div>
-          <div style="font-family:var(--font-mono);font-size:16px;color:var(--text-mute);">→</div>
-          <div style="min-width:160px;">
-            <div style="font-family:var(--font-mono);font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Band 8.5</div>
-            <div style="font-size:15px;color:var(--text);font-family:var(--font-body);font-weight:600;">${v.b85}</div>
-          </div>
-          ${v.context?`<div style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute);background:var(--surface2);padding:3px 8px;border-radius:99px;">${v.context}</div>`:''}
+      return `<div class="vocab-upgrade-row">
+        <div class="vocab-upgrade-check">
+          <input type="checkbox" ${checked} onchange="toggleVocab(${i})">
         </div>
-        <button onclick="deleteVocab(${i})" style="background:none;border:none;cursor:pointer;color:var(--text-mute);font-size:14px;padding:0;flex-shrink:0;">×</button>
+        <div class="vocab-upgrade-body ${v.mastered ? 'is-mastered' : ''}">
+          <div class="vocab-upgrade-col">
+            <div class="vocab-upgrade-label band65">Band 6.5</div>
+            <div class="vocab-upgrade-text from">${v.b7}</div>
+          </div>
+          <div class="vocab-upgrade-arrow">→</div>
+          <div class="vocab-upgrade-col">
+            <div class="vocab-upgrade-label band85">Band 8.5</div>
+            <div class="vocab-upgrade-text to">${v.b85}</div>
+          </div>
+          ${v.context?`<div class="vocab-upgrade-context">${v.context}</div>`:''}
+        </div>
+        <button class="vocab-upgrade-delete" onclick="deleteVocab(${i})">×</button>
       </div>`;
     }).join('') : '<div class="empty"><div>Belum ada vocab upgrade</div></div>';
   }
