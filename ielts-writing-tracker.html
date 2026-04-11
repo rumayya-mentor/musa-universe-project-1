@@ -1256,6 +1256,108 @@ function getLatestRoadmapPostEntry(roadmap) {
   }).pop();
 }
 
+const PRACTICE_BASELINE_DATE = '2026-04-11';
+const STORAGE_VERSION_KEY = 'ielts_data_version';
+
+function addDaysISO(isoDate, days) {
+  const base = new Date(`${isoDate}T00:00:00`);
+  base.setDate(base.getDate() + Number(days || 0));
+  return getLocalISODate(base);
+}
+function parsePhaseNumber(value) {
+  if (typeof value === 'number') return value;
+  const m = String(value || '').match(/(\d+)/);
+  return m ? parseInt(m[1], 10) : null;
+}
+function hasAnyScore(entry) {
+  if (!entry) return false;
+  const hasBlock = obj => obj && ['ta','cc','lr','gra'].some(k => obj[k] !== undefined && obj[k] !== '');
+  return hasBlock(entry.scoreBefore) || hasBlock(entry.scoreAfter);
+}
+function isLegacySeedDate(iso) {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(String(iso))) return false;
+  if (iso >= '2025-06-01' && iso <= '2025-06-10') return true;
+  if (iso >= '2026-06-01' && iso <= '2026-06-10') return true;
+  return false;
+}
+function isLegacySeedTimestamp(value) {
+  if (!value) return false;
+  const s = String(value);
+  return s.includes('2025-06-') || s.includes('2026-06-');
+}
+function phaseDateISO(phaseNumber, anchorPhase = 1) {
+  return addDaysISO(PRACTICE_BASELINE_DATE, (Number(phaseNumber) || 1) - (Number(anchorPhase) || 1));
+}
+function migrateRoadmapData(roadmap) {
+  if (!Array.isArray(roadmap) || !roadmap.length) return DEFAULT_ROADMAP;
+  const merged = DEFAULT_ROADMAP.map((def, i) => {
+    const existing = roadmap[i] || {};
+    return {
+      ...def,
+      ...existing,
+      items: Array.isArray(existing.items) ? existing.items : (def.items || [])
+    };
+  });
+
+  const activePhases = merged.filter(r => r && (r.status === 'done' || hasAnyScore(r)));
+  const shouldResequenceDates = activePhases.length > 0 && activePhases.every(r => {
+    return !r.completedDate || r.completedDate === PRACTICE_BASELINE_DATE || isLegacySeedDate(r.completedDate);
+  });
+  const anchorPhase = shouldResequenceDates && activePhases.length
+    ? Math.max(...activePhases.map(r => parsePhaseNumber(r.phase) || 1))
+    : 1;
+
+  return merged.map(r => {
+    const next = { ...r };
+    const phaseNum = parsePhaseNumber(next.phase);
+    const targetDate = phaseDateISO(phaseNum, anchorPhase);
+    const phaseIsActive = next.status === 'done' || hasAnyScore(next);
+
+    if (phaseIsActive && (shouldResequenceDates || !next.completedDate || isLegacySeedDate(next.completedDate))) {
+      next.completedDate = targetDate;
+    }
+
+    if (phaseIsActive && (!next.updatedAt || isLegacySeedTimestamp(next.updatedAt) || shouldResequenceDates)) {
+      next.updatedAt = `${next.completedDate || targetDate}T00:00:00.000`;
+    }
+
+    return next;
+  });
+}
+function migrateErrorData(errors) {
+  if (!Array.isArray(errors) || !errors.length) return DEFAULT_ERRORS;
+  return errors.map(err => {
+    const next = { ...err };
+    if (next.isBaseline || next.phase === 'Baseline' || next.status === 'Baseline') {
+      next.isBaseline = true;
+      next.phase = 'Baseline';
+      next.status = 'Baseline';
+      next.date = PRACTICE_BASELINE_DATE;
+      return next;
+    }
+    const phaseNum = parsePhaseNumber(next.phase);
+    if (phaseNum && (!next.date || isLegacySeedDate(next.date))) {
+      next.date = phaseDateISO(phaseNum);
+    }
+    return next;
+  });
+}
+function migrateSpacedData(spaced) {
+  if (!Array.isArray(spaced) || !spaced.length) return DEFAULT_SPACED;
+  return spaced.map(item => {
+    const next = { ...item };
+    const phaseNum = parsePhaseNumber(next.topic);
+    const learnedTarget = phaseNum ? phaseDateISO(phaseNum, 4) : PRACTICE_BASELINE_DATE;
+    if (!next.learnedDate || next.learnedDate === PRACTICE_BASELINE_DATE || isLegacySeedDate(next.learnedDate)) {
+      next.learnedDate = learnedTarget;
+    }
+    if (!next.nextReview || next.nextReview === PRACTICE_BASELINE_DATE || isLegacySeedDate(next.nextReview)) {
+      next.nextReview = addDaysISO(next.learnedDate, Number(next.interval || 0));
+    }
+    return next;
+  });
+}
+
 // ── Default Data ──
 const DEFAULT_ERRORS = [
   { type: 'SVA',       count: 7, status: 'Baseline', example: 'e.g. The informations are... → The information is...', date: '2026-04-11', phase: 'Baseline', isBaseline: true },
@@ -1270,7 +1372,7 @@ const DEFAULT_ERRORS = [
 const DEFAULT_ROADMAP = [
   { phase: 1, title: 'Article + Uncountable Nouns',
     desc: 'a/an/the rules · uncountable nouns (research, evidence, knowledge, information, health, nutrition, equipment, advice, poverty, inequality, unemployment, progress, money, time, traffic, education, data) · quantifiers: many/much/a lot of/a wealth of',
-    status: 'done', completedDate: '2026-04-11',
+    status: 'done', completedDate: '2026-04-08',
     scoreBefore: { ta:'6.0', cc:'6.5', lr:'7.0', gra:'6.5' },
     scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
     items: [
@@ -1283,7 +1385,7 @@ const DEFAULT_ROADMAP = [
   },
   { phase: 2, title: 'Subject-Verb Agreement (SVA)',
     desc: 'Gerund subject → singular · The quality/type/level OF → singular · A number of → plural · The number of → singular · Each of → singular · Neither...nor → singular · The majority of + plural → plural · A and B → plural · Stative verbs: no am/is/are',
-    status: 'done', completedDate: '2026-04-11',
+    status: 'done', completedDate: '2026-04-09',
     scoreBefore: { ta:'7.0', cc:'6.5', lr:'7.0', gra:'6.5' },
     scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
     items: [
@@ -1297,7 +1399,7 @@ const DEFAULT_ROADMAP = [
   },
   { phase: 3, title: 'Task Response + PEEL',
     desc: '5 jenis soal: Discussion · Opinion/Argumentative · Problem & Solution · Advantages & Disadvantages · Double Question · Master template Discussion · PEEL: Point-Explain-Evidence-Link · Phrase bank opini eksplisit',
-    status: 'done', completedDate: '2026-04-11',
+    status: 'done', completedDate: '2026-04-10',
     scoreBefore: { ta:'6.5', cc:'6.5', lr:'7.0', gra:'6.5' },
     scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
     items: [
@@ -1375,47 +1477,43 @@ const DEFAULT_VOCAB = [
 ];
 
 const DEFAULT_SPACED = [
-  { topic: 'P1 — Article Rules: a/an/the/∅ + Uncountable nouns', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P1 — Quantifiers: many/much/a lot of/a wealth of', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P2 — SVA: A number of vs The number of', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P2 — SVA: Gerund subject, Each of, Neither...nor, Stative verbs', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P3 — PEEL Structure + 5 jenis soal Task 2', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P3 — Phrase bank opini eksplisit (kuat/sedang/nuanced)', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P4 — Topic sentence formula Band 8.5', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P4 — Academic verbs: argue/contend/demonstrate/precipitate', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: 'P4 — Vocab upgrade Band 7→8.5 (10 pasangan)', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
-  { topic: '10 Collocations Akademik', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 }
+  { topic: 'P1 — Article Rules: a/an/the/∅ + Uncountable nouns', learnedDate: '2026-04-08', nextReview: '2026-05-08', interval: 30 },
+  { topic: 'P1 — Quantifiers: many/much/a lot of/a wealth of', learnedDate: '2026-04-08', nextReview: '2026-05-08', interval: 30 },
+  { topic: 'P2 — SVA: A number of vs The number of', learnedDate: '2026-04-09', nextReview: '2026-05-09', interval: 30 },
+  { topic: 'P2 — SVA: Gerund subject, Each of, Neither...nor, Stative verbs', learnedDate: '2026-04-09', nextReview: '2026-05-09', interval: 30 },
+  { topic: 'P3 — PEEL Structure + 5 jenis soal Task 2', learnedDate: '2026-04-10', nextReview: '2026-05-10', interval: 30 },
+  { topic: 'P3 — Phrase bank opini eksplisit (kuat/sedang/nuanced)', learnedDate: '2026-04-10', nextReview: '2026-05-10', interval: 30 },
+  { topic: 'P4 — Topic sentence formula Band 8.5', learnedDate: '2026-04-11', nextReview: '2026-05-11', interval: 30 },
+  { topic: 'P4 — Academic verbs: argue/contend/demonstrate/precipitate', learnedDate: '2026-04-11', nextReview: '2026-05-11', interval: 30 },
+  { topic: 'P4 — Vocab upgrade Band 7→8.5 (10 pasangan)', learnedDate: '2026-04-11', nextReview: '2026-05-11', interval: 30 },
+  { topic: '10 Collocations Akademik', learnedDate: '2026-04-11', nextReview: '2026-05-11', interval: 30 }
 ];
 
 // ── Init data if not exists ──
-const DATA_VERSION = 'v8';
+const DATA_VERSION = 'v9';
 function initData() {
-  const storedErrors = load(KEYS.errors);
-  if (!storedErrors || !storedErrors[0]?.isBaseline) {
-    save(KEYS.errors, DEFAULT_ERRORS);
-  }
+  const prevVersion = localStorage.getItem(STORAGE_VERSION_KEY) || '';
 
-  const storedRoadmap = load(KEYS.roadmap);
-  if (!storedRoadmap || storedRoadmap.length !== 10) {
-    save(KEYS.roadmap, DEFAULT_ROADMAP);
-  } else {
-    const migratedRoadmap = DEFAULT_ROADMAP.map((def, i) => {
-      const existing = storedRoadmap[i] || {};
-      return {
-        ...def,
-        ...existing,
-        items: Array.isArray(existing.items) ? existing.items : (def.items || [])
-      };
-    });
-    save(KEYS.roadmap, migratedRoadmap);
-  }
+  let storedErrors = load(KEYS.errors);
+  if (!storedErrors || !storedErrors[0]?.isBaseline) storedErrors = DEFAULT_ERRORS;
+  if (prevVersion !== DATA_VERSION) storedErrors = migrateErrorData(storedErrors);
+  save(KEYS.errors, storedErrors);
+
+  let storedRoadmap = load(KEYS.roadmap);
+  if (!storedRoadmap || storedRoadmap.length !== 10) storedRoadmap = DEFAULT_ROADMAP;
+  storedRoadmap = migrateRoadmapData(storedRoadmap);
+  save(KEYS.roadmap, storedRoadmap);
 
   if (!load(KEYS.colloc)) save(KEYS.colloc, DEFAULT_COLLOC);
   if (!load(KEYS.vocab))  save(KEYS.vocab,  DEFAULT_VOCAB);
-  if (!load(KEYS.spaced)) save(KEYS.spaced, DEFAULT_SPACED);
-  if (!load(KEYS.sessions)) save(KEYS.sessions, []);
 
-  localStorage.setItem('ielts_data_version', DATA_VERSION);
+  let storedSpaced = load(KEYS.spaced);
+  if (!storedSpaced) storedSpaced = DEFAULT_SPACED;
+  if (prevVersion !== DATA_VERSION) storedSpaced = migrateSpacedData(storedSpaced);
+  save(KEYS.spaced, storedSpaced);
+
+  try { localStorage.removeItem(KEYS.sessions); } catch(e) {}
+  localStorage.setItem(STORAGE_VERSION_KEY, DATA_VERSION);
 }
 
 
@@ -1544,10 +1642,14 @@ function renderDashboard() {
   if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
   const canvas = document.getElementById('trend-chart');
   if (canvas) {
-    const labels = ['BL — 27/05/2025', ...phaseEntries.map(entry => {
-      const datePart = entry.completedDate ? ` · ${formatDisplayDate(entry.completedDate)}` : '';
-      return `P${entry.phase}${datePart}`;
-    })];
+    const labels = ['BL', ...phaseEntries.map(entry => `P${entry.phase}`)];
+    const labelMeta = [
+      { short: 'BL', full: 'Baseline IELTS · 27/05/2025' },
+      ...phaseEntries.map(entry => ({
+        short: `P${entry.phase}`,
+        full: `P${entry.phase}${entry.completedDate ? ' · ' + formatDisplayDate(entry.completedDate) : ''}`
+      }))
+    ];
     const data = [baselineOverall.toFixed(2), ...phaseEntries.map(entry => getScoreOverall(entry.scoreAfter)?.toFixed(2) ?? null)];
     const ptColors = ['#c9a84c', ...phaseEntries.map(()=>'#5ce0a0')];
     const ptRadius = [6, ...phaseEntries.map(()=>4)];
@@ -1568,11 +1670,42 @@ function renderDashboard() {
         }]
       },
       options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: { padding: { left: 16, right: 8, top: 8, bottom: 0 } },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title(items) {
+                const idx = items?.[0]?.dataIndex ?? 0;
+                return labelMeta[idx]?.full || labelMeta[idx]?.short || '';
+              },
+              label(ctx) {
+                return `Overall: ${Number(ctx.parsed.y).toFixed(1)}`;
+              }
+            }
+          }
+        },
         scales: {
-          y: { min: 5, max: 9, ticks: { stepSize: 0.5, font: { family: 'JetBrains Mono', size: 10 } } },
-          x: { ticks: { font: { family: 'JetBrains Mono', size: 10 }, maxRotation: 30 } }
+          y: {
+            min: 5,
+            max: 9,
+            ticks: {
+              stepSize: 0.5,
+              padding: 8,
+              font: { family: 'JetBrains Mono', size: 10 },
+              callback(value) { return Number(value).toFixed(1); }
+            }
+          },
+          x: {
+            ticks: {
+              autoSkip: false,
+              font: { family: 'JetBrains Mono', size: 10 },
+              maxRotation: 0,
+              minRotation: 0
+            }
+          }
         }
       }
     });
