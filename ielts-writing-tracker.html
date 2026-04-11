@@ -225,6 +225,36 @@
     opacity: 0.5;
   }
 
+  .progress-phase-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid rgba(232,226,212,0.9);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+  }
+  .criteria-phase-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .criteria-phase-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-mute);
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    letter-spacing: 0.04em;
+  }
+
   /* ── BUTTONS ── */
   .btn {
     display: inline-flex;
@@ -371,10 +401,10 @@
   .roadmap-item.belum-item.open { opacity: 1; }
   .roadmap-item.done-item { opacity: 1; }
 
-  .roadmap-content { flex: 1; }
+  .roadmap-content { flex: 1; min-width: 0; overflow: hidden; }
   .roadmap-phase { font-family: var(--font-mono); font-size: 9px; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
-  .roadmap-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; color: var(--text); margin-bottom: 4px; transition: color 0.15s; }
-  .roadmap-desc { font-size: 13px; color: var(--text-mute); font-family: var(--font-body); }
+  .roadmap-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; color: var(--text); margin-bottom: 4px; transition: color 0.15s; overflow-wrap:anywhere; word-break:break-word; }
+  .roadmap-desc { font-size: 13px; color: var(--text-mute); font-family: var(--font-body); word-break: break-word; overflow-wrap: break-word; white-space: normal; }
 
   /* ── SCORE INPUT GRID ── */
   .score-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
@@ -551,6 +581,8 @@
     .score-input-grid { grid-template-columns: 1fr; }
 
     .roadmap-detail { padding-left: 2rem; }
+    .roadmap-content { width: 100%; min-width: 0; }
+    .roadmap-title, .roadmap-phase, .roadmap-desc { overflow-wrap:anywhere; word-break:break-word; }
 
     .modal { padding: 1.5rem; width: 100%; max-width: 100vw; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
     .modal-overlay { align-items: flex-end; }
@@ -747,9 +779,6 @@
       <div class="nav-item active" data-page="dashboard">
         <span class="nav-icon">◈</span> Dashboard
       </div>
-      <div class="nav-item" data-page="sessions">
-        <span class="nav-icon">◷</span> Sesi Latihan
-      </div>
       <div class="nav-item" data-page="errors">
         <span class="nav-icon">◎</span> Error Tracker
       </div>
@@ -776,10 +805,6 @@
       <button class="bnav-item active" data-page="dashboard" onclick="mobileNav(this)">
         <span class="bnav-icon">◈</span>
         <span>Home</span>
-      </button>
-      <button class="bnav-item" data-page="sessions" onclick="mobileNav(this)">
-        <span class="bnav-icon">◷</span>
-        <span>Sesi</span>
       </button>
       <button class="bnav-item" data-page="errors" onclick="mobileNav(this)">
         <span class="bnav-icon">◎</span>
@@ -824,6 +849,7 @@
         <div class="metric">
           <div class="metric-label">Estimasi Terkini</div>
           <div class="metric-value" id="m-current">7.3</div>
+          <div class="metric-sub" id="m-current-sub">Per 11/04/2026</div>
           <div class="metric-delta up" id="m-delta">▲ +0.8 dari baseline</div>
         </div>
         <div class="metric">
@@ -832,9 +858,9 @@
           <div class="metric-sub">Overall Writing Band</div>
         </div>
         <div class="metric">
-          <div class="metric-label">Sesi Selesai</div>
-          <div class="metric-value" id="m-sessions">0</div>
-          <div class="metric-sub">Total sesi latihan</div>
+          <div class="metric-label">Phase Selesai</div>
+          <div class="metric-value" id="m-phases-done">0</div>
+          <div class="metric-sub">Progress roadmap</div>
         </div>
       </div>
 
@@ -845,9 +871,9 @@
           <div id="criteria-bars"></div>
         </div>
         <div class="card">
-          <div class="card-title">Tren Skor Writing</div>
+          <div class="card-title">Tren Skor per Phase</div>
           <div class="chart-wrap">
-            <canvas id="trend-chart" role="img" aria-label="Grafik tren skor writing per sesi latihan">Belum ada data sesi.</canvas>
+            <canvas id="trend-chart" role="img" aria-label="Grafik tren skor writing per phase">Belum ada data.</canvas>
           </div>
         </div>
       </div>
@@ -867,41 +893,7 @@
       </div>
     </div>
 
-    <!-- ══ SESSIONS ══ -->
-    <div class="page" id="page-sessions">
-      <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
-        <div>
-          <div class="page-title">Sesi Latihan</div>
-          <div class="page-subtitle">Catat hasil setiap sesi latihan Writing</div>
-        </div>
-        <button class="btn btn-primary" onclick="openSessionModal()">+ Tambah Sesi</button>
-      </div>
 
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Tanggal</th>
-                <th>Tipe</th>
-                <th>TA</th>
-                <th>CC</th>
-                <th>LR</th>
-                <th>GRA</th>
-                <th>Overall</th>
-                <th>Catatan</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="sessions-table"></tbody>
-          </table>
-          <div id="sessions-empty" class="empty" style="display:none;">
-            <div class="empty-icon">✎</div>
-            <div>Belum ada sesi. Tambahkan sesi pertamamu!</div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- ══ ERRORS ══ -->
     <div class="page" id="page-errors">
@@ -1030,30 +1022,13 @@
 
     <!-- ══ TIMELINE ══ -->
     <div class="page" id="page-timeline">
-      <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
-        <div>
-          <div class="page-title">Timeline</div>
-          <div class="page-subtitle">Progress by phase & by date · akselerasi terlacak</div>
-        </div>
-        <div class="tl-toggle">
-          <button class="tl-toggle-btn active" id="btn-by-phase" onclick="switchTlView('phase')">By Phase</button>
-          <button class="tl-toggle-btn" id="btn-by-date" onclick="switchTlView('date')">By Date</button>
-        </div>
+      <div class="page-header">
+        <div class="page-title">Timeline</div>
+        <div class="page-subtitle">Ringkasan progres per phase berbasis pre–post test</div>
       </div>
 
-      <!-- Pace Banner -->
-      <div id="pace-banner"></div>
-
-      <!-- By-Phase View -->
-      <div id="tl-phase-view">
+      <div class="card">
         <div class="phase-timeline" id="phase-timeline-list"></div>
-      </div>
-
-      <!-- By-Date View -->
-      <div id="tl-date-view" style="display:none;">
-        <div class="card">
-          <div id="cal-list"></div>
-        </div>
       </div>
     </div>
 
@@ -1062,69 +1037,7 @@
 
 <!-- ══ MODALS ══ -->
 
-<!-- Session Modal -->
-<div class="modal-overlay" id="session-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Tambah Sesi Latihan</div>
-      <button class="modal-close" onclick="closeModal('session-modal')">×</button>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Tanggal</label>
-        <input type="date" class="form-input" id="s-date">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Tipe Task</label>
-        <select class="form-select" id="s-type">
-          <option value="Task 2">Task 2 — Essay</option>
-          <option value="Task 1">Task 1 — Letter</option>
-          <option value="Mixed">Mixed (T1 + T2)</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group"><label class="form-label">Task Achievement (TA)</label>
-      <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-ta" oninput="document.getElementById('v-ta').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
-        <span class="score-val" id="v-ta">7.0</span>
-      </div>
-    </div>
-    <div class="form-group"><label class="form-label">Coherence & Cohesion (CC)</label>
-      <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-cc" oninput="document.getElementById('v-cc').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
-        <span class="score-val" id="v-cc">7.0</span>
-      </div>
-    </div>
-    <div class="form-group"><label class="form-label">Lexical Resource (LR)</label>
-      <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-lr" oninput="document.getElementById('v-lr').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
-        <span class="score-val" id="v-lr">7.0</span>
-      </div>
-    </div>
-    <div class="form-group"><label class="form-label">Grammatical Range & Accuracy (GRA)</label>
-      <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-gra" oninput="document.getElementById('v-gra').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
-        <span class="score-val" id="v-gra">7.0</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Catatan / Refleksi</label>
-      <textarea class="form-textarea" id="s-notes" placeholder="Apa yang dipelajari? Apa yang masih perlu diperbaiki?"></textarea>
-    </div>
-    <div style="background:var(--surface2);border:0.5px solid var(--border-gold);border-radius:var(--radius);padding:14px 16px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;">
-      <div>
-        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Overall Band (otomatis)</div>
-        <div style="font-family:var(--font-display);font-size:42px;letter-spacing:2px;color:var(--gold);line-height:1;" id="auto-overall">7.0</div>
-        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);margin-top:3px;">avg TA + CC + LR + GRA</div>
-      </div>
-      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute);">→ 8.5 target</div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('session-modal')">Batal</button>
-      <button class="btn btn-primary" onclick="saveSession()">Simpan Sesi</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- Error Modal -->
 <div class="modal-overlay" id="error-modal">
@@ -1307,21 +1220,57 @@ function save(key, val) {
   }
 }
 
+function pad2(n) { return String(n).padStart(2, '0'); }
+function getLocalISODate(date = new Date()) {
+  const d = date instanceof Date ? date : new Date(date);
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+}
+function formatDisplayDate(iso) {
+  if (!iso) return '—';
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return iso;
+  return `${m[3]}/${m[2]}/${m[1]}`;
+}
+function getScoreOverall(scoreObj) {
+  if (!scoreObj) return null;
+  const vals = ['ta','cc','lr','gra'].map(k => parseFloat(scoreObj[k]));
+  if (vals.some(v => Number.isNaN(v))) return null;
+  return Math.round(((vals[0]+vals[1]+vals[2]+vals[3]) / 4) * 2) / 2;
+}
+function getRoadmapPostEntries(roadmap) {
+  return (roadmap || [])
+    .filter(r => r && r.scoreAfter && r.scoreAfter.ta !== undefined && r.scoreAfter.cc !== undefined && r.scoreAfter.lr !== undefined && r.scoreAfter.gra !== undefined)
+    .map((r, idx) => ({
+      ...r,
+      _idx: idx,
+      updatedAt: r.updatedAt || `${r.completedDate || ''}T00:00:00.000`
+    }));
+}
+function getLatestRoadmapPostEntry(roadmap) {
+  const entries = getRoadmapPostEntries(roadmap);
+  if (!entries.length) return null;
+  return [...entries].sort((a, b) => {
+    const timeCmp = String(a.updatedAt || '').localeCompare(String(b.updatedAt || ''));
+    if (timeCmp !== 0) return timeCmp;
+    return (a.phase || 0) - (b.phase || 0);
+  }).pop();
+}
+
 // ── Default Data ──
 const DEFAULT_ERRORS = [
-  { type: 'SVA',       count: 7, status: 'Baseline', example: 'e.g. The informations are... → The information is...', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
-  { type: 'Article',   count: 6, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
-  { type: 'Verb Form', count: 5, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
-  { type: 'Spelling',  count: 3, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
-  { type: 'Possessive',count: 2, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
-  { type: 'Word Form', count: 2, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true },
-  { type: 'Register',  count: 1, status: 'Baseline', example: '', date: '2025-05-27', phase: 'Baseline', isBaseline: true }
+  { type: 'SVA',       count: 7, status: 'Baseline', example: 'e.g. The informations are... → The information is...', date: '2026-04-11', phase: 'Baseline', isBaseline: true },
+  { type: 'Article',   count: 6, status: 'Baseline', example: '', date: '2026-04-11', phase: 'Baseline', isBaseline: true },
+  { type: 'Verb Form', count: 5, status: 'Baseline', example: '', date: '2026-04-11', phase: 'Baseline', isBaseline: true },
+  { type: 'Spelling',  count: 3, status: 'Baseline', example: '', date: '2026-04-11', phase: 'Baseline', isBaseline: true },
+  { type: 'Possessive',count: 2, status: 'Baseline', example: '', date: '2026-04-11', phase: 'Baseline', isBaseline: true },
+  { type: 'Word Form', count: 2, status: 'Baseline', example: '', date: '2026-04-11', phase: 'Baseline', isBaseline: true },
+  { type: 'Register',  count: 1, status: 'Baseline', example: '', date: '2026-04-11', phase: 'Baseline', isBaseline: true }
 ];
 
 const DEFAULT_ROADMAP = [
   { phase: 1, title: 'Article + Uncountable Nouns',
     desc: 'a/an/the rules · uncountable nouns (research, evidence, knowledge, information, health, nutrition, equipment, advice, poverty, inequality, unemployment, progress, money, time, traffic, education, data) · quantifiers: many/much/a lot of/a wealth of',
-    status: 'done', completedDate: '2025-06-01',
+    status: 'done', completedDate: '2026-04-11',
     scoreBefore: { ta:'6.0', cc:'6.5', lr:'7.0', gra:'6.5' },
     scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
     items: [
@@ -1334,7 +1283,7 @@ const DEFAULT_ROADMAP = [
   },
   { phase: 2, title: 'Subject-Verb Agreement (SVA)',
     desc: 'Gerund subject → singular · The quality/type/level OF → singular · A number of → plural · The number of → singular · Each of → singular · Neither...nor → singular · The majority of + plural → plural · A and B → plural · Stative verbs: no am/is/are',
-    status: 'done', completedDate: '2025-06-02',
+    status: 'done', completedDate: '2026-04-11',
     scoreBefore: { ta:'7.0', cc:'6.5', lr:'7.0', gra:'6.5' },
     scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
     items: [
@@ -1348,7 +1297,7 @@ const DEFAULT_ROADMAP = [
   },
   { phase: 3, title: 'Task Response + PEEL',
     desc: '5 jenis soal: Discussion · Opinion/Argumentative · Problem & Solution · Advantages & Disadvantages · Double Question · Master template Discussion · PEEL: Point-Explain-Evidence-Link · Phrase bank opini eksplisit',
-    status: 'done', completedDate: '2025-06-03',
+    status: 'done', completedDate: '2026-04-11',
     scoreBefore: { ta:'6.5', cc:'6.5', lr:'7.0', gra:'6.5' },
     scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
     items: [
@@ -1360,7 +1309,7 @@ const DEFAULT_ROADMAP = [
   },
   { phase: 4, title: 'Coherence & Cohesion — Topic Sentence',
     desc: 'Formula: [Sophisticated subject] + [Academic verb] + [Precise claim] · Academic verbs: argue/contend/assert/maintain/propose/suggest/demonstrate/indicate/reveal/precipitate/trigger/induce · Vocab upgrade Band 7→8.5',
-    status: 'done', completedDate: '2025-06-04',
+    status: 'done', completedDate: '2026-04-11',
     scoreBefore: { ta:'7.0', cc:'6.5', lr:'7.0', gra:'6.5' },
     scoreAfter:  { ta:'7.5', cc:'7.0', lr:'7.5', gra:'7.0' },
     items: [
@@ -1426,44 +1375,46 @@ const DEFAULT_VOCAB = [
 ];
 
 const DEFAULT_SPACED = [
-  { topic: 'P1 — Article Rules: a/an/the/∅ + Uncountable nouns', learnedDate: '2025-06-01', nextReview: '2025-07-01', interval: 30 },
-  { topic: 'P1 — Quantifiers: many/much/a lot of/a wealth of', learnedDate: '2025-06-01', nextReview: '2025-07-01', interval: 30 },
-  { topic: 'P2 — SVA: A number of vs The number of', learnedDate: '2025-06-02', nextReview: '2025-07-02', interval: 30 },
-  { topic: 'P2 — SVA: Gerund subject, Each of, Neither...nor, Stative verbs', learnedDate: '2025-06-02', nextReview: '2025-07-02', interval: 30 },
-  { topic: 'P3 — PEEL Structure + 5 jenis soal Task 2', learnedDate: '2025-06-03', nextReview: '2025-07-03', interval: 30 },
-  { topic: 'P3 — Phrase bank opini eksplisit (kuat/sedang/nuanced)', learnedDate: '2025-06-03', nextReview: '2025-07-03', interval: 30 },
-  { topic: 'P4 — Topic sentence formula Band 8.5', learnedDate: '2025-06-04', nextReview: '2025-07-04', interval: 30 },
-  { topic: 'P4 — Academic verbs: argue/contend/demonstrate/precipitate', learnedDate: '2025-06-04', nextReview: '2025-07-04', interval: 30 },
-  { topic: 'P4 — Vocab upgrade Band 7→8.5 (10 pasangan)', learnedDate: '2025-06-04', nextReview: '2025-07-04', interval: 30 },
-  { topic: '10 Collocations Akademik', learnedDate: '2025-06-01', nextReview: '2025-07-01', interval: 30 }
+  { topic: 'P1 — Article Rules: a/an/the/∅ + Uncountable nouns', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P1 — Quantifiers: many/much/a lot of/a wealth of', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P2 — SVA: A number of vs The number of', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P2 — SVA: Gerund subject, Each of, Neither...nor, Stative verbs', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P3 — PEEL Structure + 5 jenis soal Task 2', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P3 — Phrase bank opini eksplisit (kuat/sedang/nuanced)', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P4 — Topic sentence formula Band 8.5', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P4 — Academic verbs: argue/contend/demonstrate/precipitate', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: 'P4 — Vocab upgrade Band 7→8.5 (10 pasangan)', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 },
+  { topic: '10 Collocations Akademik', learnedDate: '2026-04-11', nextReview: '2026-04-11', interval: 30 }
 ];
 
 // ── Init data if not exists ──
-const DATA_VERSION = 'v6';
+const DATA_VERSION = 'v8';
 function initData() {
-  const prevVersion = localStorage.getItem('ielts_data_version');
-  const isVersionBump = prevVersion !== DATA_VERSION;
-
-  // Always load defaults if data missing OR version bumped
   const storedErrors = load(KEYS.errors);
   if (!storedErrors || !storedErrors[0]?.isBaseline) {
     save(KEYS.errors, DEFAULT_ERRORS);
   }
 
   const storedRoadmap = load(KEYS.roadmap);
-  if (!storedRoadmap || storedRoadmap.length !== 10 || isVersionBump) {
+  if (!storedRoadmap || storedRoadmap.length !== 10) {
     save(KEYS.roadmap, DEFAULT_ROADMAP);
+  } else {
+    const migratedRoadmap = DEFAULT_ROADMAP.map((def, i) => {
+      const existing = storedRoadmap[i] || {};
+      return {
+        ...def,
+        ...existing,
+        items: Array.isArray(existing.items) ? existing.items : (def.items || [])
+      };
+    });
+    save(KEYS.roadmap, migratedRoadmap);
   }
 
-  // Colloc & vocab: always seed if empty, reset if version bumped
-  if (!load(KEYS.colloc) || isVersionBump) save(KEYS.colloc, DEFAULT_COLLOC);
-  if (!load(KEYS.vocab)  || isVersionBump) save(KEYS.vocab,  DEFAULT_VOCAB);
-
-  // Spaced & sessions: only seed if empty (preserve user data)
-  if (!load(KEYS.spaced))   save(KEYS.spaced,   DEFAULT_SPACED);
+  if (!load(KEYS.colloc)) save(KEYS.colloc, DEFAULT_COLLOC);
+  if (!load(KEYS.vocab))  save(KEYS.vocab,  DEFAULT_VOCAB);
+  if (!load(KEYS.spaced)) save(KEYS.spaced, DEFAULT_SPACED);
   if (!load(KEYS.sessions)) save(KEYS.sessions, []);
 
-  // Mark version AFTER all seeding is done
   localStorage.setItem('ielts_data_version', DATA_VERSION);
 }
 
@@ -1471,7 +1422,6 @@ function initData() {
 function renderPage(page) {
   try {
     if (page === 'dashboard') renderDashboard();
-    if (page === 'sessions')  renderSessions();
     if (page === 'errors')    renderErrors();
     if (page === 'roadmap')   renderRoadmap();
     if (page === 'spaced')    renderSpaced();
@@ -1495,81 +1445,80 @@ function renderPage(page) {
 let trendChartInst = null;
 let errorChartInst = null;
 
+
 function renderDashboard() {
-  const sessions  = load(KEYS.sessions)  || [];
   const errors    = load(KEYS.errors)    || [];
   const roadmap   = load(KEYS.roadmap)   || [];
   const colloc    = load(KEYS.colloc)    || [];
   const vocab     = load(KEYS.vocab)     || [];
   const spaced    = load(KEYS.spaced)    || [];
 
-  // ── Baseline from test result (27 May 2025) ──
   const BASELINE = { TA: 6.0, CC: 6.5, LR: 7.0, GRA: 6.5 };
   const TARGET   = { TA: 8.5, CC: 8.5, LR: 8.5, GRA: 8.5 };
 
-  // ── Current scores: prefer last 3 sessions, else derive from roadmap phase scores ──
-  const CURRENT = { TA: 7.5, CC: 7.0, LR: 7.5, GRA: 7.0 }; // pretest baseline
-  if (sessions.length > 0) {
-    const last3 = sessions.slice(-3);
-    ['ta','cc','lr','gra'].forEach((k, idx) => {
-      const key = ['TA','CC','LR','GRA'][idx];
-      CURRENT[key] = Math.round((last3.reduce((a,s)=>a+parseFloat(s[k]||0),0)/last3.length)*2)/2;
-    });
-  } else {
-    // Derive from latest phase scoreAfter
-    const latestWithScore = [...roadmap].reverse().find(r => r.scoreAfter?.ta);
-    if (latestWithScore) {
-      const af = latestWithScore.scoreAfter;
-      CURRENT.TA  = parseFloat(af.ta);
-      CURRENT.CC  = parseFloat(af.cc);
-      CURRENT.LR  = parseFloat(af.lr);
-      CURRENT.GRA = parseFloat(af.gra);
-    }
-  }
+  const latestEntry = getLatestRoadmapPostEntry(roadmap);
+  const CURRENT = latestEntry ? {
+    TA: parseFloat(latestEntry.scoreAfter.ta),
+    CC: parseFloat(latestEntry.scoreAfter.cc),
+    LR: parseFloat(latestEntry.scoreAfter.lr),
+    GRA: parseFloat(latestEntry.scoreAfter.gra)
+  } : { ...BASELINE };
 
   const currentOverall = Math.round(((CURRENT.TA+CURRENT.CC+CURRENT.LR+CURRENT.GRA)/4)*2)/2;
   const baselineOverall = (BASELINE.TA+BASELINE.CC+BASELINE.LR+BASELINE.GRA)/4;
+  const todayLabel = formatDisplayDate(getLocalISODate());
 
-  // ── Metrics ──
-  document.getElementById('m-sessions').textContent = sessions.length;
+  document.getElementById('m-phases-done').textContent = roadmap.filter(r => r.status === 'done').length;
   document.getElementById('m-current').textContent = currentOverall.toFixed(1);
+  const currentSub = document.getElementById('m-current-sub');
+  if (currentSub) currentSub.textContent = `Per ${todayLabel}`;
+
   const delta = currentOverall - baselineOverall;
   const deltaEl = document.getElementById('m-delta');
   deltaEl.textContent = (delta >= 0 ? '▲ +' : '▼ ') + Math.abs(delta).toFixed(2) + ' dari baseline';
   deltaEl.className = 'metric-delta ' + (delta > 0 ? 'up' : delta < 0 ? 'down' : 'neutral');
 
-  // ── Phase progress metric ──
-  const donePhases = roadmap.filter(r => r.status === 'done').length;
   const phasesEl = document.getElementById('m-phases');
-  if (phasesEl) phasesEl.textContent = donePhases + '/10';
+  if (phasesEl) phasesEl.textContent = roadmap.filter(r => r.status === 'done').length + '/10';
 
-  // ── Colloc mastered metric ──
   const collocEl = document.getElementById('m-colloc');
   if (collocEl) {
     const mastered = colloc.filter(c => c.mastered).length;
     collocEl.textContent = mastered + '/' + colloc.length;
   }
 
-  // ── Active errors metric ──
   const errorsEl = document.getElementById('m-errors');
   if (errorsEl) {
-    // Latest status per type from non-baseline entries
+    const baselineErrors = errors.filter(e => e.isBaseline);
     const sessionErrors = errors.filter(e => !e.isBaseline);
     const latestByType = {};
-    sessionErrors.forEach(e => { latestByType[e.type] = e.status; });
-    const activeCount = Object.values(latestByType).filter(s => s === 'Memburuk' || s === 'Statis').length
-      + errors.filter(e => e.isBaseline && !latestByType[e.type]).length; // no session entry yet = still at baseline
+    sessionErrors.forEach(e => { latestByType[e.type] = e; });
+    const activeCount = baselineErrors.reduce((count, base) => {
+      const latest = latestByType[base.type];
+      if (!latest) return count + 1;
+      return count + ((latest.count >= base.count) ? 1 : 0);
+    }, 0);
     errorsEl.textContent = activeCount;
   }
 
-  // ── Criteria progress bars ──
+  const phaseEntries = getRoadmapPostEntries(roadmap).sort((a, b) => (a.phase || 0) - (b.phase || 0));
   const colors = { TA: '#c9a84c', CC: '#5ca8e0', LR: '#e0a85c', GRA: '#5ce0a0' };
   const fullNames = { TA: 'Task Achievement', CC: 'Coherence & Cohesion', LR: 'Lexical Resource', GRA: 'Grammatical Range & Accuracy' };
   const barsHTML = Object.keys(BASELINE).map(k => {
+    const keyLower = k.toLowerCase();
     const base = BASELINE[k], cur = CURRENT[k], target = TARGET[k];
     const pct  = Math.min(((cur  - 4) / (9 - 4)) * 100, 100);
     const tpct = Math.min(((target - 4) / (9 - 4)) * 100, 100);
     const bpct = Math.min(((base - 4) / (9 - 4)) * 100, 100);
+    const phaseMarkers = phaseEntries.map(entry => {
+      const val = parseFloat(entry.scoreAfter[keyLower]);
+      const mpct = Math.min(((val - 4) / (9 - 4)) * 100, 100);
+      return `<div class="progress-phase-marker" style="left:${mpct.toFixed(1)}%;" title="P${entry.phase}: ${val.toFixed(1)}"></div>`;
+    }).join('');
+    const phasePills = [
+      `<span class="criteria-phase-pill">BL ${base.toFixed(1)}</span>`,
+      ...phaseEntries.map(entry => `<span class="criteria-phase-pill">P${entry.phase} ${parseFloat(entry.scoreAfter[keyLower]).toFixed(1)}</span>`)
+    ].join('');
     return `<div class="criteria-row">
       <div class="criteria-header">
         <span class="criteria-name">${k} — ${fullNames[k]}</span>
@@ -1585,23 +1534,23 @@ function renderDashboard() {
         <div class="progress-fill" style="width:${pct.toFixed(1)}%;background:${colors[k]};"></div>
         <div class="progress-target-marker" style="left:${tpct.toFixed(1)}%;"></div>
         <div style="position:absolute;top:-4px;left:${bpct.toFixed(1)}%;width:1.5px;height:14px;background:var(--accent);border-radius:2px;opacity:0.4;" title="Baseline"></div>
+        ${phaseMarkers}
       </div>
+      <div class="criteria-phase-row">${phasePills}</div>
     </div>`;
   }).join('');
   document.getElementById('criteria-bars').innerHTML = barsHTML;
 
-  // ── Trend chart — baseline as first point ──
   if (trendChartInst) { trendChartInst.destroy(); trendChartInst = null; }
   const canvas = document.getElementById('trend-chart');
   if (canvas) {
-    const baselineDate = '27 Mei 2025';
-    const baselineVal  = baselineOverall.toFixed(2);
-    const sessLabels   = sessions.map(s => s.date);
-    const sessVals     = sessions.map(s => ((parseFloat(s.ta)+parseFloat(s.cc)+parseFloat(s.lr)+parseFloat(s.gra))/4).toFixed(2));
-    const labels = [baselineDate, ...sessLabels];
-    const data   = [baselineVal, ...sessVals];
-    const ptColors = ['#c9a84c', ...sessLabels.map(()=>'#5ce0a0')];
-    const ptRadius = [6, ...sessLabels.map(()=>4)];
+    const labels = ['BL — 27/05/2025', ...phaseEntries.map(entry => {
+      const datePart = entry.completedDate ? ` · ${formatDisplayDate(entry.completedDate)}` : '';
+      return `P${entry.phase}${datePart}`;
+    })];
+    const data = [baselineOverall.toFixed(2), ...phaseEntries.map(entry => getScoreOverall(entry.scoreAfter)?.toFixed(2) ?? null)];
+    const ptColors = ['#c9a84c', ...phaseEntries.map(()=>'#5ce0a0')];
+    const ptRadius = [6, ...phaseEntries.map(()=>4)];
 
     trendChartInst = new Chart(canvas, {
       type: 'line',
@@ -1629,26 +1578,25 @@ function renderDashboard() {
     });
   }
 
-  // ── Error summary chart (baseline counts) ──
   if (errorChartInst) { errorChartInst.destroy(); errorChartInst = null; }
   const ecCanvas = document.getElementById('error-chart');
   if (ecCanvas && errors.length > 0) {
-    // Show baseline vs latest session per type
     const types = [...new Set(errors.map(e => e.type))];
-    const baseMap = {}, latestMap = {};
-    errors.filter(e => e.isBaseline).forEach(e => { baseMap[e.type] = e.count; });
-    errors.filter(e => !e.isBaseline).sort((a,b)=>(a.date||'').localeCompare(b.date||'')).forEach(e => { latestMap[e.type] = e.count; });
+    const baselineMap = {};
+    const latestMap = {};
+    errors.filter(e => e.isBaseline).forEach(e => { baselineMap[e.type] = e.count; });
+    errors.filter(e => !e.isBaseline).forEach(e => { latestMap[e.type] = e.count; });
 
     errorChartInst = new Chart(ecCanvas, {
       type: 'bar',
       data: {
         labels: types,
         datasets: [
-          { label: 'Baseline', data: types.map(t => baseMap[t]||0), backgroundColor: 'rgba(201,168,76,0.4)', borderRadius: 2 },
-          { label: 'Terkini',  data: types.map(t => latestMap[t]!==undefined ? latestMap[t] : null),
+          { label: 'Baseline', data: types.map(t => baselineMap[t]||0), backgroundColor: 'rgba(201,168,76,0.4)', borderRadius: 2 },
+          { label: 'Terkini',  data: types.map(t => latestMap[t] !== undefined ? latestMap[t] : null),
             backgroundColor: types.map(t => {
               if (latestMap[t] === undefined) return 'transparent';
-              return latestMap[t] < (baseMap[t]||0) ? 'rgba(92,224,160,0.7)' : latestMap[t] > (baseMap[t]||0) ? 'rgba(224,92,92,0.7)' : 'rgba(224,168,92,0.7)';
+              return latestMap[t] < (baselineMap[t]||0) ? 'rgba(92,224,160,0.7)' : latestMap[t] > (baselineMap[t]||0) ? 'rgba(224,92,92,0.7)' : 'rgba(224,168,92,0.7)';
             }),
             borderRadius: 2
           }
@@ -1665,10 +1613,8 @@ function renderDashboard() {
     });
   }
 
-  // ── Today's reviews ──
   renderTodayReviews();
 
-  // ── Overdue spaced reviews ──
   const overdueEl = document.getElementById('m-overdue');
   if (overdueEl) {
     const today2 = new Date(); today2.setHours(0,0,0,0);
@@ -1677,6 +1623,7 @@ function renderDashboard() {
     overdueEl.style.color = overdue > 0 ? 'var(--accent)' : 'var(--text-mute)';
   }
 }
+
 
 function renderTodayReviews() {
   const spaced = load(KEYS.spaced) || [];
@@ -1740,7 +1687,7 @@ function calcOverall() {
   if (el) el.textContent = rounded.toFixed(1);
 }
 function openSessionModal() {
-  document.getElementById('s-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('s-date').value = getLocalISODate();
   ['ta','cc','lr','gra'].forEach(k => {
     document.getElementById('s-'+k).value = 7;
     document.getElementById('v-'+k).textContent = '7.0';
@@ -1785,6 +1732,8 @@ let errorTrendInst = null;
 function renderErrors() {
   const errors = load(KEYS.errors) || [];
   const filterType = document.getElementById('err-filter-type')?.value || 'all';
+  const baselineErrors = errors.filter(e => e.isBaseline);
+  const sessionErrors = errors.filter(e => !e.isBaseline);
 
   // ── Aggregate totals by type ──
   const totals = {};
@@ -1794,7 +1743,7 @@ function renderErrors() {
     totals[e.type].statuses.push(e.status);
   });
   const sortedTypes = Object.entries(totals).sort((a,b)=>b[1].count-a[1].count);
-  const statusBadge = s => s==='Aktif'?'badge-high':s==='Membaik'?'badge-medium':'badge-low';
+  const statusBadge = s => s==='Memburuk'?'badge-high':s==='Statis'?'badge-medium':s==='Membaik'?'badge-low':'badge-next';
 
   document.getElementById('error-list').innerHTML = sortedTypes.length ? sortedTypes.map(([type, data]) => {
     const lastStatus = data.statuses[data.statuses.length-1];
@@ -1921,7 +1870,7 @@ function renderErrors() {
   } else {
     if(logEmpty) logEmpty.style.display = 'none';
     if(tbody) tbody.innerHTML = sortedLog.map((e,i) => `<tr style="${e.isBaseline?'opacity:0.65;':''}">
-      <td class="mono" style="font-size:11px;">${e.date||'—'}</td>
+      <td class="mono" style="font-size:11px;">${formatDisplayDate(e.date)}</td>
       <td>${e.isBaseline
         ? '<span class="badge badge-locked" style="font-size:9px;">Baseline</span>'
         : `<span class="badge badge-next" style="font-size:9px;">${e.phase||'—'}</span>`}</td>
@@ -1974,7 +1923,7 @@ function updateErrorStatusPreview() {
 }
 
 function openErrorModal() {
-  document.getElementById('e-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('e-date').value = getLocalISODate();
   document.getElementById('e-count').value = 1;
   document.getElementById('e-example').value = '';
   const roadmap = load(KEYS.roadmap) || [];
@@ -1997,13 +1946,14 @@ function saveError() {
   const type = document.getElementById('e-type').value;
   const count = parseInt(document.getElementById('e-count').value) || 1;
   const example = document.getElementById('e-example').value.trim();
-  const date = document.getElementById('e-date').value || new Date().toISOString().split('T')[0];
+  const date = document.getElementById('e-date').value || getLocalISODate();
   const phase = document.getElementById('e-phase').value;
   const { status } = computeErrorStatus(errors, type, count);
   errors.push({ type, count, status, example, date, phase });
   save(KEYS.errors, errors);
   closeModal('error-modal');
   renderErrors();
+  renderDashboard();
   showToast(`Error dicatat — ${status}`);
 }
 
@@ -2013,6 +1963,7 @@ function deleteError(idx) {
   errors.splice(idx, 1);
   save(KEYS.errors, errors);
   renderErrors();
+  renderDashboard();
 }
 
 // ══════════════════════════════════════
@@ -2031,7 +1982,7 @@ function renderRoadmap() {
       return `${conn}<div class="tl-node">
         <div class="tl-dot ${r.status==='done'?'done':'belum'}">${r.status==='done'?'✓':r.phase}</div>
         <div class="tl-label ${r.status==='done'?'done':'belum'}">P${r.phase}</div>
-        ${r.completedDate?`<div class="tl-date">${r.completedDate}</div>`:''}
+        ${r.completedDate?`<div class="tl-date">${formatDisplayDate(r.completedDate)}</div>`:''}
       </div>`;
     }).join('');
   }
@@ -2057,7 +2008,7 @@ function renderRoadmap() {
           ${['ta','cc','lr','gra'].map(k=>`<td class="mono">${sc(bf,k)}</td>`).join('')}
           ${['ta','cc','lr','gra'].map(k=>`<td class="mono" style="color:var(--green)">${sc(af,k)}</td>`).join('')}
           <td>${dHtml}</td>
-          <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute)">${r.completedDate||'—'}</td>
+          <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute)">${formatDisplayDate(r.completedDate)}</td>
         </tr>`;
       }).join('');
     } else {
@@ -2119,7 +2070,7 @@ function renderRoadmap() {
       <div class="roadmap-header">
         <div class="roadmap-num ${r.status==='done'?'done':'belum'}">${r.status==='done'?'✓':r.phase}</div>
         <div class="roadmap-content">
-          <div class="roadmap-phase">Phase ${r.phase}${r.completedDate?' <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute)">· '+r.completedDate+'</span>':''}</div>
+          <div class="roadmap-phase">Phase ${r.phase}${r.completedDate?' <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute)">· '+formatDisplayDate(r.completedDate)+'</span>':''}</div>
           <div class="roadmap-title">${r.title}</div>
           <div class="roadmap-desc">${r.desc}</div>
         </div>
@@ -2177,8 +2128,11 @@ function savePhaseScores(i, e) {
   const gv = (prefix, k) => document.getElementById(`${prefix}-${i}-${k}`)?.value || '6.5';
   roadmap[i].scoreBefore = { ta:gv('bf','ta'), cc:gv('bf','cc'), lr:gv('bf','lr'), gra:gv('bf','gra') };
   roadmap[i].scoreAfter  = { ta:gv('af','ta'), cc:gv('af','cc'), lr:gv('af','lr'), gra:gv('af','gra') };
+  roadmap[i].updatedAt = new Date().toISOString();
   save(KEYS.roadmap, roadmap);
   renderRoadmap();
+  renderDashboard();
+  renderTimeline();
   const item = document.getElementById('rm-item-'+i);
   if (item) item.classList.add('open');
   showToast('Skor phase tersimpan!');
@@ -2188,11 +2142,14 @@ function markDone(idx, e) {
   if (e) e.stopPropagation();
   const roadmap = load(KEYS.roadmap) || [];
   roadmap[idx].status = 'done';
-  roadmap[idx].completedDate = new Date().toISOString().split('T')[0];
+  roadmap[idx].completedDate = roadmap[idx].completedDate || getLocalISODate();
+  roadmap[idx].updatedAt = new Date().toISOString();
   if (roadmap[idx+1]) roadmap[idx+1].status = 'active';
   if (roadmap[idx+2] && roadmap[idx+2].status==='locked') roadmap[idx+2].status = 'next';
   save(KEYS.roadmap, roadmap);
   renderRoadmap();
+  renderDashboard();
+  renderTimeline();
   showToast('Phase selesai! 🎉 Lanjut ke phase berikutnya.');
 }
 
@@ -2304,7 +2261,7 @@ function renderSpaced() {
 }
 
 function openSpacedModal() {
-  document.getElementById('sp-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('sp-date').value = getLocalISODate();
   document.getElementById('sp-topic').value = '';
   document.getElementById('spaced-modal').classList.add('open');
 }
@@ -2493,204 +2450,106 @@ function showToast(msg) {
 // ══════════════════════════════════════
 // TIMELINE
 // ══════════════════════════════════════
-let tlView = 'phase';
+function switchTlView() { /* timeline disederhanakan ke by-phase only */ }
 
-function switchTlView(v) {
-  tlView = v;
-  document.getElementById('btn-by-phase').classList.toggle('active', v === 'phase');
-  document.getElementById('btn-by-date').classList.toggle('active', v === 'date');
-  document.getElementById('tl-phase-view').style.display = v === 'phase' ? 'block' : 'none';
-  document.getElementById('tl-date-view').style.display = v === 'date' ? 'block' : 'none';
-}
-
-function savePhaseTarget(phaseIdx, val) {
-  const roadmap = load(KEYS.roadmap) || [];
-  roadmap[phaseIdx].targetDate = val;
-  save(KEYS.roadmap, roadmap);
-  renderTimeline();
-}
+function savePhaseTarget() { /* target date dihapus dari timeline */ }
 
 function renderTimeline() {
   const roadmap = load(KEYS.roadmap) || [];
-  const today = new Date(); today.setHours(0,0,0,0);
+  const statusLabel = {
+    done: 'Selesai',
+    active: 'Aktif',
+    next: 'Berikutnya',
+    locked: 'Terkunci'
+  };
+  const statusChipClass = {
+    done: 'chip-done',
+    active: 'chip-ontime',
+    next: 'chip-future',
+    locked: 'chip-future'
+  };
+  const criteriaLabel = { ta: 'TA', cc: 'CC', lr: 'LR', gra: 'GRA' };
 
-  // ── Pace calculation ──
-  const donePhases    = roadmap.filter(r => r.status === 'done');
-  const activePhase   = roadmap.find(r => r.status === 'active');
-  const phasesWithTarget = roadmap.filter(r => r.targetDate);
+  document.getElementById('phase-timeline-list').innerHTML = roadmap.map((r) => {
+    const bf = r.scoreBefore || null;
+    const af = r.scoreAfter || null;
+    const hasBefore = bf && ['ta','cc','lr','gra'].every(k => bf[k] !== undefined && bf[k] !== '');
+    const hasAfter  = af && ['ta','cc','lr','gra'].every(k => af[k] !== undefined && af[k] !== '');
+    const overallBefore = hasBefore ? getScoreOverall(bf) : null;
+    const overallAfter = hasAfter ? getScoreOverall(af) : null;
+    const overallDelta = overallBefore !== null && overallAfter !== null ? overallAfter - overallBefore : null;
+    const deltaHtml = overallDelta === null
+      ? '<span style="color:var(--text-mute)">—</span>'
+      : overallDelta > 0
+        ? `<span style="color:var(--green)">▲ +${overallDelta.toFixed(1)}</span>`
+        : overallDelta < 0
+          ? `<span style="color:var(--accent)">▼ ${Math.abs(overallDelta).toFixed(1)}</span>`
+          : '<span style="color:var(--text-mute)">± 0.0</span>';
 
-  let paceStatus = 'on-track', paceMain = 'On Track', paceSub = 'Tetap konsisten!', paceIcon = '→';
-  let totalAheadDays = 0, behindCount = 0;
-
-  phasesWithTarget.forEach(r => {
-    if (!r.completedDate) return;
-    const target = new Date(r.targetDate); target.setHours(0,0,0,0);
-    const actual = new Date(r.completedDate); actual.setHours(0,0,0,0);
-    const diff = Math.round((target - actual) / 86400000); // positive = ahead
-    totalAheadDays += diff;
-    if (diff < 0) behindCount++;
-  });
-
-  const phasesComparedCount = phasesWithTarget.filter(r => r.completedDate).length;
-  if (phasesComparedCount > 0) {
-    const avgDiff = totalAheadDays / phasesComparedCount;
-    if (avgDiff >= 3) {
-      paceStatus = 'accelerating';
-      paceIcon = '↑';
-      paceMain = `Accelerating — ${Math.round(avgDiff)} hari lebih cepat rata-rata`;
-      paceSub = 'Luar biasa! Kamu bisa selesai lebih awal dari target.';
-    } else if (avgDiff >= 0) {
-      paceStatus = 'on-track';
-      paceIcon = '→';
-      paceMain = 'On Track';
-      paceSub = avgDiff > 0 ? `${Math.round(avgDiff)} hari lebih cepat dari target` : 'Tepat sesuai jadwal.';
-    } else {
-      paceStatus = 'behind';
-      paceIcon = '↓';
-      paceMain = `Behind Schedule — ${Math.abs(Math.round(avgDiff))} hari terlambat rata-rata`;
-      paceSub = 'Pertimbangkan akselerasi atau adjust target date.';
-    }
-  } else {
-    paceSub = 'Set target date per phase untuk melihat pace kamu.';
-  }
-
-  document.getElementById('pace-banner').innerHTML = `
-    <div class="pace-banner ${paceStatus}">
-      <span class="pace-icon">${paceIcon}</span>
-      <div>
-        <div class="pace-main">${paceMain}</div>
-        <div class="pace-sub">${paceSub}</div>
-      </div>
-    </div>`;
-
-  // ── By-Phase view ──
-  document.getElementById('phase-timeline-list').innerHTML = roadmap.map((r, i) => {
-    const bf = r.scoreBefore || {}, af = r.scoreAfter || {};
-    const hasScores = !!r.scoreBefore;
-
-    // Schedule chip
-    let chip = '';
-    if (r.status === 'done') {
-      if (r.targetDate && r.completedDate) {
-        const tgt = new Date(r.targetDate); tgt.setHours(0,0,0,0);
-        const act = new Date(r.completedDate); act.setHours(0,0,0,0);
-        const diff = Math.round((tgt - act) / 86400000);
-        if (diff > 0) chip = `<span class="schedule-chip chip-ahead">▲ ${diff}h lebih cepat</span>`;
-        else if (diff === 0) chip = `<span class="schedule-chip chip-ontime">✓ Tepat waktu</span>`;
-        else chip = `<span class="schedule-chip chip-behind">▼ ${Math.abs(diff)}h terlambat</span>`;
-      } else {
-        chip = `<span class="schedule-chip chip-done">✓ Selesai</span>`;
-      }
-    } else if (r.status === 'active' || r.status === 'next') {
-      if (r.targetDate) {
-        const tgt = new Date(r.targetDate); tgt.setHours(0,0,0,0);
-        const diff = Math.round((tgt - today) / 86400000);
-        if (diff > 0) chip = `<span class="schedule-chip chip-ontime">${diff}h tersisa</span>`;
-        else if (diff === 0) chip = `<span class="schedule-chip chip-ontime">Target hari ini</span>`;
-        else chip = `<span class="schedule-chip chip-behind">${Math.abs(diff)}h melewati target</span>`;
-      } else {
-        chip = `<span class="schedule-chip chip-ontime">Sedang berjalan</span>`;
-      }
-    } else {
-      chip = `<span class="schedule-chip chip-future">${r.status === 'next' ? 'Berikutnya' : 'Terkunci'}</span>`;
-    }
-
-    // Mini score strip
-    const scoreStrip = hasScores ? `
-      <div style="display:flex;gap:12px;margin-top:8px;flex-wrap:wrap;">
+    const criteriaStrip = hasBefore ? `
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px;">
         ${['ta','cc','lr','gra'].map(k => {
-          const bv = parseFloat(bf[k]||0), av = af[k] ? parseFloat(af[k]) : null;
-          const delta = av !== null ? av - bv : null;
-          const dStr = delta === null ? '' : delta > 0 ? `<span style="color:var(--green);font-size:9px">▲${delta.toFixed(1)}</span>` : delta < 0 ? `<span style="color:var(--accent);font-size:9px">▼${Math.abs(delta).toFixed(1)}</span>` : `<span style="color:var(--text-mute);font-size:9px">±0</span>`;
-          return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-            <span style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);text-transform:uppercase;">${k.toUpperCase()}</span>
-            <span style="font-family:var(--font-mono);font-size:11px;color:var(--text)">${bv.toFixed(1)}${av!==null?'→<b style="color:var(--green)">'+av.toFixed(1)+'</b>':''}</span>
-            ${dStr}
+          const b = parseFloat(bf[k]);
+          const a = hasAfter ? parseFloat(af[k]) : null;
+          const d = a !== null ? a - b : null;
+          const dHtml = d === null
+            ? '<span style="color:var(--text-mute);font-size:9px">—</span>'
+            : d > 0
+              ? `<span style="color:var(--green);font-size:9px">▲ +${d.toFixed(1)}</span>`
+              : d < 0
+                ? `<span style="color:var(--accent);font-size:9px">▼ ${Math.abs(d).toFixed(1)}</span>`
+                : '<span style="color:var(--text-mute);font-size:9px">± 0.0</span>';
+          return `<div style="background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 6px;text-align:center;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);letter-spacing:0.08em;text-transform:uppercase;">${criteriaLabel[k]}</div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--text);margin-top:4px;">${b.toFixed(1)} → <span style="color:${a !== null ? 'var(--green)' : 'var(--text-mute)'}">${a !== null ? a.toFixed(1) : '—'}</span></div>
+            <div style="margin-top:3px;">${dHtml}</div>
           </div>`;
         }).join('')}
-      </div>` : '';
+      </div>
+    ` : '';
+
+    const overallBlock = hasBefore ? `
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:12px;padding:10px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);">
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.08em;">Overall</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--text);">${overallBefore !== null ? overallBefore.toFixed(1) : '—'} → <span style="color:${overallAfter !== null ? 'var(--green)' : 'var(--text-mute)'}">${overallAfter !== null ? overallAfter.toFixed(1) : '—'}</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;">${deltaHtml}</div>
+      </div>
+    ` : `
+      <div style="margin-top:12px;padding:10px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text-mute);font-style:italic;">
+        Belum ada data pre–post test untuk phase ini.
+      </div>
+    `;
+
+    const completedInfo = r.completedDate
+      ? `<div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:var(--text-mute);letter-spacing:0.06em;text-transform:uppercase;">Completed · <span style="color:var(--text)">${formatDisplayDate(r.completedDate)}</span></div>`
+      : '';
 
     const cardCls = r.status === 'done' ? 'done-card' : 'belum-card';
 
     return `<div class="pt-item">
-      <div class="pt-dot ${r.status}">${r.status === 'done' ? '✓' : r.phase}</div>
+      <div class="pt-dot ${r.status === 'done' ? 'done' : r.status === 'active' ? 'active' : r.status === 'next' ? 'next' : 'belum'}">${r.status === 'done' ? '✓' : r.phase}</div>
       <div class="pt-card ${cardCls}">
         <div class="pt-header">
           <div>
             <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">Phase ${r.phase}</div>
             <div class="pt-title">${r.title}</div>
             <div class="pt-desc">${r.desc}</div>
+            ${completedInfo}
           </div>
           <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">
-            ${chip}
+            <span class="schedule-chip ${statusChipClass[r.status] || 'chip-future'}">${statusLabel[r.status] || '—'}</span>
           </div>
         </div>
-        ${scoreStrip}
-        <div class="pt-date-row">
-          <div class="pt-date-group">
-            <div class="pt-date-label">Mulai</div>
-            <div class="pt-date-val">${r.startDate || '—'}</div>
-          </div>
-          <div class="pt-date-group">
-            <div class="pt-date-label">Selesai</div>
-            <div class="pt-date-val">${r.completedDate || '—'}</div>
-          </div>
-          <div class="pt-date-group">
-            <div class="pt-date-label">Target selesai</div>
-            <div class="pt-date-val" style="color:var(--amber)">${r.targetDate||'—'}</div>
-            <!-- readonly: set target di tab Roadmap
-            <input type="date" class="pt-date-input" value="${r.targetDate||''}"
-              onchange="savePhaseTarget(${i}, this.value)"
-              onclick="event.stopPropagation()">
-            -->
-
-        </div>
+        ${overallBlock}
+        ${criteriaStrip}
       </div>
     </div>`;
   }).join('');
-
-  // ── By-Date view ──
-  const events = [];
-  roadmap.forEach(r => {
-    if (r.startDate)     events.push({ date: r.startDate,     type: 'phase-start',  label: `Phase ${r.phase} dimulai`, sub: r.title });
-    if (r.completedDate) events.push({ date: r.completedDate, type: r.completedDate <= (r.targetDate||'9999') ? 'phase-done' : 'phase-late', label: `Phase ${r.phase} selesai`, sub: r.title });
-    if (r.targetDate && r.status !== 'done') events.push({ date: r.targetDate, type: 'phase-target', label: `Target — Phase ${r.phase}`, sub: r.title });
-  });
-  events.sort((a,b) => a.date.localeCompare(b.date));
-
-  if (events.length === 0) {
-    document.getElementById('cal-list').innerHTML = '<div class="empty"><div class="empty-icon">◉</div><div>Belum ada tanggal tercatat. Set target date atau tandai mulai di view By Phase.</div></div>';
-  } else {
-    // Group by date
-    const byDate = {};
-    events.forEach(e => { if (!byDate[e.date]) byDate[e.date] = []; byDate[e.date].push(e); });
-    document.getElementById('cal-list').innerHTML = Object.keys(byDate).sort().map(dateStr => {
-      const d = new Date(dateStr);
-      const isPast = d < today;
-      const isToday = dateStr === today.toISOString().split('T')[0];
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      return `<div class="cal-row">
-        <div class="cal-date" style="${isToday ? 'color:var(--gold)' : ''}">
-          <div class="day">${d.getDate()}</div>
-          <div class="month">${months[d.getMonth()]}</div>
-          <div class="year">${d.getFullYear()}</div>
-          ${isToday ? '<div style="font-size:8px;color:var(--gold);margin-top:2px;">TODAY</div>' : ''}
-        </div>
-        <div class="cal-content">
-          ${byDate[dateStr].map(ev => `
-            <div class="cal-event ${ev.type}">
-              <div class="cal-event-title">${ev.label}</div>
-              <div class="cal-event-sub">${ev.sub}</div>
-            </div>`).join('')}
-        </div>
-      </div>`;
-    }).join('');
-  }
 }
 
 function markPhaseStart(idx) {
   const roadmap = load(KEYS.roadmap) || [];
-  roadmap[idx].startDate = new Date().toISOString().split('T')[0];
+  roadmap[idx].startDate = getLocalISODate();
   save(KEYS.roadmap, roadmap);
   renderTimeline();
   showToast('Tanggal mulai dicatat!');
@@ -2768,7 +2627,6 @@ function startApp() {
   try { renderErrors(); }    catch(e) { console.error('errors:', e); }
   try { renderSpaced(); }    catch(e) { console.error('spaced:', e); }
   try { renderVocab(); }     catch(e) { console.error('vocab:', e); }
-  try { renderSessions(); }  catch(e) { console.error('sessions:', e); }
 }
 
 if (document.readyState === 'loading') {
