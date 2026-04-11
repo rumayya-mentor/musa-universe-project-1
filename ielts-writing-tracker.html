@@ -975,21 +975,57 @@
       <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
         <div>
           <div class="page-title">Error Tracker</div>
-          <div class="page-subtitle">Pola kesalahan berulang — lacak dan eliminasi</div>
+          <div class="page-subtitle">Pola kesalahan berulang — lacak by time & phase</div>
         </div>
         <button class="btn btn-primary" onclick="openErrorModal()">+ Catat Error</button>
       </div>
 
+      <!-- Summary row -->
       <div class="grid-2 section">
         <div class="card">
-          <div class="card-title">Frekuensi Error</div>
+          <div class="card-title">Total per Kategori</div>
           <div id="error-list"></div>
         </div>
         <div class="card">
-          <div class="card-title">Distribusi Error</div>
-          <div class="chart-wrap">
+          <div class="card-title">Distribusi</div>
+          <div class="chart-wrap" style="height:200px;">
             <canvas id="error-pie" role="img" aria-label="Pie chart distribusi jenis error">Belum ada data.</canvas>
           </div>
+        </div>
+      </div>
+
+      <!-- Trend by session -->
+      <div class="card section">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>Tren Error per Sesi</span>
+          <select id="err-filter-type" onchange="renderErrors()" style="background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:4px 8px;font-family:var(--font-mono);font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.06em;">
+            <option value="all">Semua tipe</option>
+            <option value="SVA">SVA</option>
+            <option value="Article">Article</option>
+            <option value="Verb Form">Verb Form</option>
+            <option value="Spelling">Spelling</option>
+            <option value="Possessive">Possessive</option>
+            <option value="Word Form">Word Form</option>
+            <option value="Register">Register</option>
+            <option value="Punctuation">Punctuation</option>
+            <option value="Preposition">Preposition</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="error-trend" role="img" aria-label="Tren error per sesi">Belum ada data.</canvas>
+        </div>
+      </div>
+
+      <!-- Log table -->
+      <div class="card">
+        <div class="card-title">Log Semua Entry</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tanggal</th><th>Phase</th><th>Tipe</th><th>Jumlah</th><th>Status</th><th>Contoh</th><th></th></tr></thead>
+            <tbody id="error-log-table"></tbody>
+          </table>
+          <div id="error-log-empty" class="empty" style="display:none;"><div>Belum ada log error</div></div>
         </div>
       </div>
     </div>
@@ -1024,7 +1060,7 @@
       <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
         <div>
           <div class="page-title">Spaced Review</div>
-          <div class="page-subtitle">Jadwal ulang materi: besok → 3 hari → 1 minggu → 2 minggu → 1 bulan</div>
+          <div class="page-subtitle">Materi yang perlu diulang · checklist tidak menghapus data</div>
         </div>
         <button class="btn btn-primary" onclick="openSpacedModal()">+ Tambah Materi</button>
       </div>
@@ -1037,23 +1073,22 @@
     <div class="page" id="page-vocab">
       <div class="page-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
         <div>
-          <div class="page-title">Collocations & Vocab</div>
-          <div class="page-subtitle">Bank kolokasi akademik yang sudah dikuasai</div>
+          <div class="page-title">Vocab & Collocations</div>
+          <div class="page-subtitle">Band 6.5 vs 8.5 — checklist tidak menghapus, uncheck untuk reset</div>
         </div>
         <button class="btn btn-primary" onclick="openVocabModal()">+ Tambah</button>
       </div>
+
+      <!-- Collocations as study checklist -->
       <div class="card section">
-        <div class="card-title">Collocations (10 dikuasai)</div>
-        <div id="colloc-grid" style="display:flex;flex-wrap:wrap;margin:-4px;"></div>
+        <div class="card-title">Collocations — centang yang sudah dikuasai</div>
+        <div id="colloc-grid"></div>
       </div>
+
+      <!-- Vocab upgrade as before/after checklist -->
       <div class="card">
-        <div class="card-title">Upgrade Vocabulary</div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Band 7</th><th>Band 8.5</th><th>Konteks</th></tr></thead>
-            <tbody id="vocab-table"></tbody>
-          </table>
-        </div>
+        <div class="card-title">Upgrade Vocabulary — Band 6.5 → 8.5</div>
+        <div id="vocab-list"></div>
       </div>
     </div>
 
@@ -1115,25 +1150,25 @@
     </div>
     <div class="form-group"><label class="form-label">Task Achievement (TA)</label>
       <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-ta" oninput="document.getElementById('v-ta').textContent=this.value">
+        <input type="range" min="4" max="9" step="0.5" value="7" id="s-ta" oninput="document.getElementById('v-ta').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
         <span class="score-val" id="v-ta">7.0</span>
       </div>
     </div>
     <div class="form-group"><label class="form-label">Coherence & Cohesion (CC)</label>
       <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-cc" oninput="document.getElementById('v-cc').textContent=this.value">
+        <input type="range" min="4" max="9" step="0.5" value="7" id="s-cc" oninput="document.getElementById('v-cc').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
         <span class="score-val" id="v-cc">7.0</span>
       </div>
     </div>
     <div class="form-group"><label class="form-label">Lexical Resource (LR)</label>
       <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-lr" oninput="document.getElementById('v-lr').textContent=this.value">
+        <input type="range" min="4" max="9" step="0.5" value="7" id="s-lr" oninput="document.getElementById('v-lr').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
         <span class="score-val" id="v-lr">7.0</span>
       </div>
     </div>
     <div class="form-group"><label class="form-label">Grammatical Range & Accuracy (GRA)</label>
       <div class="score-slider-group">
-        <input type="range" min="4" max="9" step="0.5" value="7" id="s-gra" oninput="document.getElementById('v-gra').textContent=this.value">
+        <input type="range" min="4" max="9" step="0.5" value="7" id="s-gra" oninput="document.getElementById('v-gra').textContent=parseFloat(this.value).toFixed(1);calcOverall()">
         <span class="score-val" id="v-gra">7.0</span>
       </div>
     </div>
@@ -1141,12 +1176,13 @@
       <label class="form-label">Catatan / Refleksi</label>
       <textarea class="form-textarea" id="s-notes" placeholder="Apa yang dipelajari? Apa yang masih perlu diperbaiki?"></textarea>
     </div>
-    <div class="form-group">
-      <label class="form-label">Self-score (1–10)</label>
-      <div class="score-slider-group">
-        <input type="range" min="1" max="10" step="1" value="7" id="s-self" oninput="document.getElementById('v-self').textContent=this.value">
-        <span class="score-val" id="v-self">7</span>
+    <div style="background:var(--surface2);border:0.5px solid var(--border-gold);border-radius:var(--radius);padding:14px 16px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Overall Band (otomatis)</div>
+        <div style="font-family:var(--font-display);font-size:42px;letter-spacing:2px;color:var(--gold);line-height:1;" id="auto-overall">7.0</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);margin-top:3px;">avg TA + CC + LR + GRA</div>
       </div>
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute);">→ 8.5 target</div>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('session-modal')">Batal</button>
@@ -1162,6 +1198,27 @@
       <div class="modal-title">Catat Error</div>
       <button class="modal-close" onclick="closeModal('error-modal')">×</button>
     </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Tanggal</label>
+        <input type="date" class="form-input" id="e-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phase</label>
+        <select class="form-select" id="e-phase">
+          <option value="P1">P1 — Article + Uncountable</option>
+          <option value="P2">P2 — SVA</option>
+          <option value="P3">P3 — Task Response + PEEL</option>
+          <option value="P4">P4 — CC Topic Sentence</option>
+          <option value="P5" selected>P5 — Complex Sentences</option>
+          <option value="P6">P6 — LR Collocation</option>
+          <option value="P7">P7 — Task 1 Letter</option>
+          <option value="P8">P8 — Full Essay Timed</option>
+          <option value="P9">P9 — Error Elimination</option>
+          <option value="P10">P10 — Post-test</option>
+        </select>
+      </div>
+    </div>
     <div class="form-group">
       <label class="form-label">Kategori Error</label>
       <select class="form-select" id="e-type">
@@ -1172,11 +1229,13 @@
         <option value="Possessive">Possessive</option>
         <option value="Word Form">Word Form</option>
         <option value="Register">Register</option>
+        <option value="Punctuation">Punctuation</option>
+        <option value="Preposition">Preposition</option>
         <option value="Other">Lainnya</option>
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label">Jumlah kali error di sesi ini</label>
+      <label class="form-label">Jumlah error di sesi ini</label>
       <input type="number" class="form-input" id="e-count" min="1" max="20" value="1">
     </div>
     <div class="form-group">
@@ -1189,7 +1248,7 @@
     </div>
     <div class="form-group">
       <label class="form-label">Contoh kalimat salah (opsional)</label>
-      <textarea class="form-textarea" id="e-example" placeholder="Contoh: 'The informations are...' → seharusnya 'The information is...'"></textarea>
+      <textarea class="form-textarea" id="e-example" placeholder="'The informations are...' → 'The information is...'" style="min-height:60px;"></textarea>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('error-modal')">Batal</button>
@@ -1302,7 +1361,7 @@ function save(key, val) {
 
 // ── Default Data ──
 const DEFAULT_ERRORS = [
-  { type: 'SVA', count: 7, status: 'Aktif', example: 'e.g. The informations are... → The information is...' },
+  { type: 'SVA', count: 7, status: 'Aktif', example: 'e.g. The informations are... → The information is...', date: '2025-06-01', phase: 'P2' },
   { type: 'Article', count: 6, status: 'Membaik', example: '' },
   { type: 'Verb Form', count: 5, status: 'Membaik', example: '' },
   { type: 'Spelling', count: 3, status: 'Aktif', example: '' },
@@ -1594,29 +1653,34 @@ function renderSessions() {
   }).join('');
 }
 
+
+function calcOverall() {
+  const vals = ['s-ta','s-cc','s-lr','s-gra'].map(id => parseFloat(document.getElementById(id)?.value||7));
+  const avg = vals.reduce((a,b)=>a+b,0)/4;
+  const rounded = Math.round(avg*2)/2;
+  const el = document.getElementById('auto-overall');
+  if (el) el.textContent = rounded.toFixed(1);
+}
 function openSessionModal() {
   document.getElementById('s-date').value = new Date().toISOString().split('T')[0];
   ['ta','cc','lr','gra'].forEach(k => {
     document.getElementById('s-'+k).value = 7;
     document.getElementById('v-'+k).textContent = '7.0';
   });
-  document.getElementById('s-self').value = 7;
-  document.getElementById('v-self').textContent = '7';
   document.getElementById('s-notes').value = '';
   document.getElementById('session-modal').classList.add('open');
+  calcOverall();
 }
 
 function saveSession() {
   const sessions = load(KEYS.sessions) || [];
   const getV = id => document.getElementById(id).value;
+  const ta=parseFloat(getV('s-ta')), cc=parseFloat(getV('s-cc')), lr=parseFloat(getV('s-lr')), gra=parseFloat(getV('s-gra'));
+  const overall = Math.round(((ta+cc+lr+gra)/4)*2)/2;
   sessions.push({
     date: getV('s-date'),
     type: getV('s-type'),
-    ta: getV('s-ta'),
-    cc: getV('s-cc'),
-    lr: getV('s-lr'),
-    gra: getV('s-gra'),
-    selfScore: getV('s-self'),
+    ta, cc, lr, gra, overall,
     notes: getV('s-notes')
   });
   save(KEYS.sessions, sessions);
@@ -1638,48 +1702,119 @@ function deleteSession(idx) {
 // ERRORS
 // ══════════════════════════════════════
 let errorPieInst = null;
+let errorTrendInst = null;
 
 function renderErrors() {
   const errors = load(KEYS.errors) || [];
-  const sorted = [...errors].sort((a,b)=>b.count-a.count);
-  const statusBadge = s => s==='Aktif'?'badge-high':s==='Membaik'?'badge-medium':'badge-low';
-  document.getElementById('error-list').innerHTML = sorted.map((e,i) => {
-    const dots = Array(Math.min(e.count,15)).fill('<div class="error-dot"></div>').join('');
-    return `<div class="error-row">
-      <div class="error-type">${e.type}</div>
-      <div class="error-dots">${dots}</div>
-      <div class="error-count">${e.count}×</div>
-      <div class="error-status">
-        <span class="badge ${statusBadge(e.status)}">${e.status}</span>
-        <button onclick="cycleStatus(${i})" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--ink-mute);margin-left:4px;" title="Ubah status">↻</button>
-        <button onclick="deleteError(${i})" style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--accent);" title="Hapus">×</button>
-      </div>
-    </div>`;
-  }).join('');
+  const filterType = document.getElementById('err-filter-type')?.value || 'all';
 
+  // ── Aggregate totals by type ──
+  const totals = {};
+  errors.forEach(e => {
+    if (!totals[e.type]) totals[e.type] = { count:0, statuses:[] };
+    totals[e.type].count += e.count;
+    totals[e.type].statuses.push(e.status);
+  });
+  const sortedTypes = Object.entries(totals).sort((a,b)=>b[1].count-a[1].count);
+  const statusBadge = s => s==='Aktif'?'badge-high':s==='Membaik'?'badge-medium':'badge-low';
+
+  document.getElementById('error-list').innerHTML = sortedTypes.length ? sortedTypes.map(([type, data]) => {
+    const lastStatus = data.statuses[data.statuses.length-1];
+    const dots = Array(Math.min(data.count,15)).fill('<div class="error-dot"></div>').join('');
+    return `<div class="error-row">
+      <div class="error-type">${type}</div>
+      <div class="error-dots">${dots}</div>
+      <div class="error-count">${data.count}×</div>
+      <div class="error-status"><span class="badge ${statusBadge(lastStatus)}">${lastStatus}</span></div>
+    </div>`;
+  }).join('') : '<div class="empty"><div>Belum ada data</div></div>';
+
+  // ── Pie chart ──
   if (errorPieInst) { errorPieInst.destroy(); errorPieInst = null; }
   const pieCanvas = document.getElementById('error-pie');
-  if (errors.length) {
-    const pieColors = errors.map(e => e.status==='Aktif'?'rgba(192,57,43,0.8)':e.status==='Membaik'?'rgba(184,134,11,0.7)':'rgba(45,106,79,0.7)');
+  if (sortedTypes.length && pieCanvas) {
+    const pieColors = sortedTypes.map(([t]) => {
+      const last = totals[t].statuses[totals[t].statuses.length-1];
+      return last==='Aktif'?'rgba(224,92,92,0.75)':last==='Membaik'?'rgba(224,168,92,0.75)':'rgba(92,224,160,0.75)';
+    });
     errorPieInst = new Chart(pieCanvas, {
       type: 'doughnut',
       data: {
-        labels: errors.map(e=>e.type),
-        datasets: [{ data: errors.map(e=>e.count), backgroundColor: pieColors, borderWidth: 1, borderColor: '#fff' }]
+        labels: sortedTypes.map(([t])=>t),
+        datasets: [{ data: sortedTypes.map(([,d])=>d.count), backgroundColor: pieColors, borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' }]
+      },
+      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
+    });
+  }
+
+  // ── Trend chart by date ──
+  if (errorTrendInst) { errorTrendInst.destroy(); errorTrendInst = null; }
+  const trendCanvas = document.getElementById('error-trend');
+  const filtered = filterType === 'all' ? errors : errors.filter(e=>e.type===filterType);
+  if (filtered.length && trendCanvas) {
+    // Group by date
+    const byDate = {};
+    filtered.forEach(e => { if(e.date){ byDate[e.date]=(byDate[e.date]||0)+e.count; } });
+    const dates = Object.keys(byDate).sort();
+    const counts = dates.map(d=>byDate[d]);
+    errorTrendInst = new Chart(trendCanvas, {
+      type: 'line',
+      data: {
+        labels: dates,
+        datasets: [{
+          label: filterType==='all'?'Total Error':filterType,
+          data: counts,
+          borderColor: '#e05c5c',
+          backgroundColor: 'rgba(224,92,92,0.08)',
+          tension: 0.35, pointRadius: 4, pointBackgroundColor: '#e05c5c', fill: true
+        }]
       },
       options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{
+          y:{ beginAtZero:true, ticks:{ stepSize:1, font:{family:'JetBrains Mono',size:10} } },
+          x:{ ticks:{ font:{family:'JetBrains Mono',size:10} } }
         }
       }
     });
+  } else if (trendCanvas && !filtered.length) {
+    const ctx = trendCanvas.getContext('2d');
+    ctx.clearRect(0,0,trendCanvas.width,trendCanvas.height);
+  }
+
+  // ── Log table ──
+  const tbody = document.getElementById('error-log-table');
+  const logEmpty = document.getElementById('error-log-empty');
+  const sortedLog = [...errors].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if (!sortedLog.length) {
+    if(tbody) tbody.innerHTML = '';
+    if(logEmpty) logEmpty.style.display = 'block';
+  } else {
+    if(logEmpty) logEmpty.style.display = 'none';
+    if(tbody) tbody.innerHTML = sortedLog.map((e,i) => `<tr>
+      <td class="mono" style="font-size:11px;">${e.date||'—'}</td>
+      <td><span class="badge badge-next" style="font-size:9px;">${e.phase||'—'}</span></td>
+      <td style="font-family:var(--font-mono);font-size:11px;font-weight:500;">${e.type}</td>
+      <td class="mono" style="color:var(--accent)">${e.count}×</td>
+      <td><span class="badge ${statusBadge(e.status)}" style="font-size:9px;">${e.status}</span></td>
+      <td style="font-size:12px;color:var(--text-mute);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.example||'—'}</td>
+      <td><button class="btn btn-sm btn-danger" onclick="deleteError(${i})">×</button></td>
+    </tr>`).join('');
   }
 }
 
 function openErrorModal() {
+  document.getElementById('e-date').value = new Date().toISOString().split('T')[0];
   document.getElementById('e-count').value = 1;
   document.getElementById('e-example').value = '';
+  // Auto-detect current active phase
+  const roadmap = load(KEYS.roadmap) || [];
+  const active = roadmap.find(r => r.status === 'active');
+  if (active) {
+    const sel = document.getElementById('e-phase');
+    if (sel) sel.value = 'P' + active.phase;
+  }
   document.getElementById('error-modal').classList.add('open');
 }
 
@@ -1688,23 +1823,16 @@ function saveError() {
   const type = document.getElementById('e-type').value;
   const count = parseInt(document.getElementById('e-count').value) || 1;
   const status = document.getElementById('e-status').value;
-  const example = document.getElementById('e-example').value;
-  const idx = errors.findIndex(e=>e.type===type);
-  if (idx >= 0) { errors[idx].count += count; errors[idx].status = status; }
-  else errors.push({ type, count, status, example });
+  const example = document.getElementById('e-example').value.trim();
+  const date = document.getElementById('e-date').value || new Date().toISOString().split('T')[0];
+  const phase = document.getElementById('e-phase').value;
+
+  // Add as log entry
+  errors.push({ type, count, status, example, date, phase });
   save(KEYS.errors, errors);
   closeModal('error-modal');
   renderErrors();
   showToast('Error dicatat!');
-}
-
-function cycleStatus(idx) {
-  const errors = load(KEYS.errors) || [];
-  const states = ['Aktif','Membaik','Selesai'];
-  const cur = states.indexOf(errors[idx].status);
-  errors[idx].status = states[(cur+1)%3];
-  save(KEYS.errors, errors);
-  renderErrors();
 }
 
 function deleteError(idx) {
@@ -1783,7 +1911,7 @@ function renderRoadmap() {
         </table>
       </div>` : '';
 
-    const canInput = r.status !== 'locked';
+    const canInput = true;
     const inputForm = canInput ? `
       <div style="background:var(--paper);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:14px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-mute);margin-bottom:10px;">Input Skor Before / After</div>
@@ -1812,7 +1940,7 @@ function renderRoadmap() {
           ${r.status!=='done'?`<button class="btn btn-sm" onclick="markDone(${i},event)" style="border-color:var(--green);color:var(--green)">Tandai Selesai ✓</button>`:''}
         </div>
       </div>` :
-      `<div style="font-size:12px;color:var(--ink-mute);padding:6px 0;font-style:italic">Phase ini belum terbuka.</div>`;
+      `<div style="font-size:12px;color:var(--text-mute);padding:6px 0;font-style:italic;font-family:var(--font-body)">Set target date & skor di sini saat phase terbuka nanti.</div>`;
 
     return `<div class="roadmap-item" id="rm-item-${i}" onclick="togglePhase(${i})">
       <div class="roadmap-header">
@@ -1831,9 +1959,33 @@ function renderRoadmap() {
       <div class="roadmap-detail">
         ${miniTable}
         ${inputForm}
+        <div style="margin-top:12px;">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;">Catatan & Item Tambahan</div>
+          <div id="rm-items-${i}" style="margin-bottom:8px;"></div>
+          <div style="display:flex;gap:8px;">
+            <input type="text" placeholder="Tambah item / catatan coaching..." id="rm-new-${i}"
+              style="flex:1;background:var(--surface2);border:0.5px solid var(--border);border-radius:var(--radius);padding:6px 10px;font-family:var(--font-body);font-size:13px;color:var(--text);"
+              onclick="event.stopPropagation()" onkeydown="if(event.key==='Enter'){event.stopPropagation();addPhaseItem(${i})}">
+            <button class="btn btn-sm btn-primary" onclick="addPhaseItem(${i})">+ Add</button>
+          </div>
+        </div>
       </div>
     </div>`;
   }).join('');
+  // Render custom items after DOM update
+  requestAnimationFrame(() => {
+    roadmap.forEach((r,i) => {
+      const el = document.getElementById('rm-items-'+i);
+      if (!el) return;
+      const items = r.items || [];
+      el.innerHTML = items.map((item,j) => `
+        <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--border);">
+          <input type="checkbox" ${item.done?'checked':''} onchange="togglePhaseItem(${i},${j})" onclick="event.stopPropagation()" style="accent-color:var(--gold);width:14px;height:14px;flex-shrink:0;">
+          <span style="flex:1;font-size:13px;font-family:var(--font-body);color:${item.done?'var(--text-mute)':'var(--text)'};${item.done?'text-decoration:line-through;':''}">${item.text}</span>
+          <button onclick="event.stopPropagation();deletePhaseItem(${i},${j})" style="background:none;border:none;cursor:pointer;color:var(--accent);font-size:12px;padding:0;">×</button>
+        </div>`).join('') || '<div style="font-size:12px;font-family:var(--font-body);color:var(--text-mute);font-style:italic;padding:4px 0;">Belum ada item.</div>';
+    });
+  });
 }
 
 function togglePhase(i) {
@@ -1866,6 +2018,47 @@ function markDone(idx, e) {
   showToast('Phase selesai! 🎉 Lanjut ke phase berikutnya.');
 }
 
+
+function addPhaseItem(i) {
+  const inp = document.getElementById('rm-new-'+i);
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  const roadmap = load(KEYS.roadmap) || [];
+  if (!roadmap[i].items) roadmap[i].items = [];
+  roadmap[i].items.push({ text, done: false });
+  save(KEYS.roadmap, roadmap);
+  inp.value = '';
+  renderRoadmap();
+  requestAnimationFrame(() => {
+    const item = document.getElementById('rm-item-'+i);
+    if (item) item.classList.add('open');
+  });
+}
+
+function togglePhaseItem(i, j) {
+  const roadmap = load(KEYS.roadmap) || [];
+  if (roadmap[i].items && roadmap[i].items[j] !== undefined) {
+    roadmap[i].items[j].done = !roadmap[i].items[j].done;
+    save(KEYS.roadmap, roadmap);
+    renderRoadmap();
+    requestAnimationFrame(() => {
+      const item = document.getElementById('rm-item-'+i);
+      if (item) item.classList.add('open');
+    });
+  }
+}
+
+function deletePhaseItem(i, j) {
+  const roadmap = load(KEYS.roadmap) || [];
+  if (roadmap[i].items) roadmap[i].items.splice(j, 1);
+  save(KEYS.roadmap, roadmap);
+  renderRoadmap();
+  requestAnimationFrame(() => {
+    const item = document.getElementById('rm-item-'+i);
+    if (item) item.classList.add('open');
+  });
+}
 // ══════════════════════════════════════
 // SPACED REPETITION
 // ══════════════════════════════════════
@@ -1882,17 +2075,23 @@ function renderSpaced() {
     const rev = new Date(s.nextReview); rev.setHours(0,0,0,0);
     const diffDays = Math.ceil((rev - today) / 86400000);
     let cls, label;
-    if (diffDays <= 0) { cls='due-today'; label='Harus review HARI INI'; }
-    else if (diffDays <= 2) { cls='due-soon'; label=`${diffDays} hari lagi`; }
-    else { cls='due-later'; label=`${diffDays} hari lagi`; }
+    if (diffDays <= 0) { cls='due-today'; label='Review hari ini'; }
+    else if (diffDays <= 2) { cls='due-soon'; label=`${diffDays}h lagi`; }
+    else { cls='due-later'; label=`${diffDays}h lagi`; }
+    const checked = s.reviewed ? 'checked' : '';
+    const strikeStyle = s.reviewed ? 'text-decoration:line-through;opacity:0.5;' : '';
     return `<div class="review-item">
-      <div>
-        <div class="review-topic">${s.topic}</div>
-        <div class="review-when">Dipelajari: ${s.learnedDate} · Interval: ${s.interval} hari</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;flex:1;">
+        <input type="checkbox" ${checked} onchange="toggleSpacedReview(${s.origIdx})"
+          style="accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;margin-top:3px;">
+        <div>
+          <div class="review-topic" style="${strikeStyle}">${s.topic}</div>
+          <div class="review-when">Interval: ${s.interval}d · Next: ${s.nextReview}</div>
+        </div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
         <span class="review-due ${cls}">${label}</span>
-        ${diffDays<=0?`<button class="btn btn-sm" onclick="markReviewed(${s.origIdx})">Sudah review ↻</button>`:''}
+        ${diffDays<=0&&!s.reviewed?`<button class="btn btn-sm" onclick="markReviewed(${s.origIdx})">Naik interval ↑</button>`:''}
         <button class="btn btn-sm btn-danger" onclick="deleteSpaced(${s.origIdx})">hapus</button>
       </div>
     </div>`;
@@ -1941,30 +2140,63 @@ function deleteSpaced(idx) {
   renderSpaced();
 }
 
+function toggleSpacedReview(idx) {
+  const spaced = load(KEYS.spaced) || [];
+  spaced[idx].reviewed = !spaced[idx].reviewed;
+  save(KEYS.spaced, spaced);
+  renderSpaced();
+}
+
 // ══════════════════════════════════════
-// VOCAB & COLLOCATIONS
+// VOCAB & COLLOCATIONS — study checklist
 // ══════════════════════════════════════
 function renderVocab() {
   const colloc = load(KEYS.colloc) || [];
   const vocab = load(KEYS.vocab) || [];
 
-  document.getElementById('colloc-grid').innerHTML = colloc.map((c,i) => `
-    <div class="colloc-chip">
-      <div class="colloc-phrase">${c.phrase}</div>
-      <div class="colloc-example">${c.example}</div>
-      <button onclick="deleteColloc(${i})" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--ink-mute);text-align:left;margin-top:4px;">× hapus</button>
-    </div>
-  `).join('');
+  // Collocations as checklist
+  const cGrid = document.getElementById('colloc-grid');
+  if (cGrid) {
+    cGrid.innerHTML = colloc.length ? colloc.map((item,i) => {
+      const checked = item.mastered ? 'checked' : '';
+      const dim = item.mastered ? 'opacity:0.5;' : '';
+      return `<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:0.5px solid var(--border);">
+        <input type="checkbox" ${checked} onchange="toggleColloc(${i})"
+          style="accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;margin-top:2px;">
+        <div style="flex:1;${dim}">
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--gold);font-weight:500;">${item.phrase}</div>
+          <div style="font-size:13px;color:var(--text-mute);font-style:italic;margin-top:3px;font-family:var(--font-body);">${item.example||'—'}</div>
+        </div>
+        <button onclick="deleteColloc(${i})" style="background:none;border:none;cursor:pointer;color:var(--text-mute);font-size:14px;padding:0;flex-shrink:0;" title="Hapus">×</button>
+      </div>`;
+    }).join('') : '<div class="empty"><div>Belum ada collocation</div></div>';
+  }
 
-  document.getElementById('vocab-table').innerHTML = vocab.map((v,i) => `
-    <tr>
-      <td style="color:var(--ink-mute)">${v.b7}</td>
-      <td style="font-weight:700;color:var(--ink)">${v.b85}</td>
-      <td style="font-size:12px;color:var(--ink-mute)">${v.context||'—'}
-        <button onclick="deleteVocab(${i})" style="background:none;border:none;cursor:pointer;font-size:10px;color:var(--accent);margin-left:8px;">× hapus</button>
-      </td>
-    </tr>
-  `).join('');
+  // Vocab upgrade as before/after checklist
+  const vList = document.getElementById('vocab-list');
+  if (vList) {
+    vList.innerHTML = vocab.length ? vocab.map((v,i) => {
+      const checked = v.mastered ? 'checked' : '';
+      const dim = v.mastered ? 'opacity:0.5;' : '';
+      return `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--border);">
+        <input type="checkbox" ${checked} onchange="toggleVocab(${i})"
+          style="accent-color:var(--gold);width:16px;height:16px;flex-shrink:0;">
+        <div style="flex:1;${dim}display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="min-width:100px;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Band 6.5</div>
+            <div style="font-size:15px;color:var(--text-mute);font-family:var(--font-body);">${v.b7}</div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:16px;color:var(--text-mute);">→</div>
+          <div style="min-width:160px;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;">Band 8.5</div>
+            <div style="font-size:15px;color:var(--text);font-family:var(--font-body);font-weight:600;">${v.b85}</div>
+          </div>
+          ${v.context?`<div style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute);background:var(--surface2);padding:3px 8px;border-radius:99px;">${v.context}</div>`:''}
+        </div>
+        <button onclick="deleteVocab(${i})" style="background:none;border:none;cursor:pointer;color:var(--text-mute);font-size:14px;padding:0;flex-shrink:0;">×</button>
+      </div>`;
+    }).join('') : '<div class="empty"><div>Belum ada vocab upgrade</div></div>';
+  }
 }
 
 function openVocabModal() {
@@ -2004,10 +2236,22 @@ function saveVocab() {
 }
 
 function deleteColloc(i) {
-  const c = load(KEYS.colloc)||[]; c.splice(i,1); save(KEYS.colloc,c); renderVocab();
+  if (!confirm('Hapus collocation ini?')) return;
+  const col = load(KEYS.colloc)||[]; col.splice(i,1); save(KEYS.colloc,col); renderVocab();
 }
 function deleteVocab(i) {
+  if (!confirm('Hapus vocab ini?')) return;
   const v = load(KEYS.vocab)||[]; v.splice(i,1); save(KEYS.vocab,v); renderVocab();
+}
+function toggleColloc(i) {
+  const col = load(KEYS.colloc)||[];
+  col[i].mastered = !col[i].mastered;
+  save(KEYS.colloc, col); renderVocab();
+}
+function toggleVocab(i) {
+  const v = load(KEYS.vocab)||[];
+  v[i].mastered = !v[i].mastered;
+  save(KEYS.vocab, v); renderVocab();
 }
 
 // ══════════════════════════════════════
@@ -2179,15 +2423,13 @@ function renderTimeline() {
           </div>
           <div class="pt-date-group">
             <div class="pt-date-label">Target selesai</div>
+            <div class="pt-date-val" style="color:var(--amber)">${r.targetDate||'—'}</div>
+            <!-- readonly: set target di tab Roadmap
             <input type="date" class="pt-date-input" value="${r.targetDate||''}"
               onchange="savePhaseTarget(${i}, this.value)"
               onclick="event.stopPropagation()">
-          </div>
-          ${r.status === 'active' && !r.startDate ? `
-          <div class="pt-date-group">
-            <div class="pt-date-label">Tandai mulai</div>
-            <button class="btn btn-sm" onclick="markPhaseStart(${i})" style="margin-top:2px;">Set hari ini</button>
-          </div>` : ''}
+            -->
+
         </div>
       </div>
     </div>`;
