@@ -818,7 +818,7 @@
       <div class="grid-4 section">
         <div class="metric">
           <div class="metric-label">Baseline</div>
-          <div class="metric-value" style="color:var(--ink-mute)">6.5</div>
+          <div class="metric-value" style="color:var(--text-mute)">6.5</div>
           <div class="metric-sub">Skor resmi 27 Mei 2025</div>
         </div>
         <div class="metric">
@@ -974,7 +974,7 @@
         <div class="timeline-strip" id="timeline-strip"></div>
         <div id="comparison-wrap" style="display:none;">
           <div style="height:0.5px;background:var(--border);margin:1.25rem 0;"></div>
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-mute);margin-bottom:10px;">Skor Before vs After per Phase</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-mute);margin-bottom:10px;">Skor Before vs After per Phase</div>
           <div class="table-wrap">
             <table class="ba-table">
               <thead><tr><th>Phase</th><th>Fokus</th><th>B-TA</th><th>B-CC</th><th>B-LR</th><th>B-GRA</th><th>A-TA</th><th>A-CC</th><th>A-LR</th><th>A-GRA</th><th>Delta</th><th>Selesai</th></tr></thead>
@@ -1354,25 +1354,30 @@ const DEFAULT_SPACED = [
 // ── Init data if not exists ──
 const DATA_VERSION = 'v5';
 function initData() {
-  // Reset errors on version bump to pick up isBaseline flag
+  const prevVersion = localStorage.getItem('ielts_data_version');
+  const isVersionBump = prevVersion !== DATA_VERSION;
+
+  // Always load defaults if data missing OR version bumped
   const storedErrors = load(KEYS.errors);
-  if (!storedErrors || !storedErrors[0]?.isBaseline) save(KEYS.errors, DEFAULT_ERRORS);
+  if (!storedErrors || !storedErrors[0]?.isBaseline) {
+    save(KEYS.errors, DEFAULT_ERRORS);
+  }
+
   const storedRoadmap = load(KEYS.roadmap);
-  if (!storedRoadmap || storedRoadmap.length !== 10 || localStorage.getItem('ielts_data_version') !== DATA_VERSION) {
+  if (!storedRoadmap || storedRoadmap.length !== 10 || isVersionBump) {
     save(KEYS.roadmap, DEFAULT_ROADMAP);
-    localStorage.setItem('ielts_data_version', DATA_VERSION);
   }
-  // Force reset colloc/vocab on version bump (picks up new format)
-  const storedColloc = load(KEYS.colloc);
-  if (!storedColloc || localStorage.getItem('ielts_data_version') !== DATA_VERSION) {
-    save(KEYS.colloc, DEFAULT_COLLOC);
-  }
-  const storedVocab = load(KEYS.vocab);
-  if (!storedVocab || localStorage.getItem('ielts_data_version') !== DATA_VERSION) {
-    save(KEYS.vocab, DEFAULT_VOCAB);
-  }
-  if (!load(KEYS.spaced)) save(KEYS.spaced, DEFAULT_SPACED);
+
+  // Colloc & vocab: always seed if empty, reset if version bumped
+  if (!load(KEYS.colloc) || isVersionBump) save(KEYS.colloc, DEFAULT_COLLOC);
+  if (!load(KEYS.vocab)  || isVersionBump) save(KEYS.vocab,  DEFAULT_VOCAB);
+
+  // Spaced & sessions: only seed if empty (preserve user data)
+  if (!load(KEYS.spaced))   save(KEYS.spaced,   DEFAULT_SPACED);
   if (!load(KEYS.sessions)) save(KEYS.sessions, []);
+
+  // Mark version AFTER all seeding is done
+  localStorage.setItem('ielts_data_version', DATA_VERSION);
 }
 
 // ══════════════════════════════════════
@@ -1453,9 +1458,9 @@ function renderDashboard() {
         <span class="criteria-name">${k} — ${fullNames[k]}</span>
         <span class="criteria-scores">
           <span class="score-baseline">${base.toFixed(1)}</span>
-          <span style="color:var(--ink-mute)">→</span>
+          <span style="color:var(--text-mute)">→</span>
           <span class="score-current">${cur.toFixed(1)}</span>
-          <span style="color:var(--ink-mute)">→</span>
+          <span style="color:var(--text-mute)">→</span>
           <span class="score-target">${target.toFixed(1)}</span>
         </span>
       </div>
@@ -1580,7 +1585,7 @@ function renderSessions() {
       <td class="mono">${parseFloat(s.lr).toFixed(1)}</td>
       <td class="mono">${parseFloat(s.gra).toFixed(1)}</td>
       <td class="mono" style="font-weight:700;color:var(--accent)">${overall}</td>
-      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--ink-mute)">${s.notes||'—'}</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--text-mute)">${s.notes||'—'}</td>
       <td><button class="btn btn-sm btn-danger" onclick="deleteSession(${realIdx})">hapus</button></td>
     </tr>`;
   }).join('');
@@ -1887,7 +1892,7 @@ function renderRoadmap() {
           ${['ta','cc','lr','gra'].map(k=>`<td class="mono">${sc(bf,k)}</td>`).join('')}
           ${['ta','cc','lr','gra'].map(k=>`<td class="mono" style="color:var(--green)">${sc(af,k)}</td>`).join('')}
           <td>${dHtml}</td>
-          <td style="font-family:var(--font-mono);font-size:11px;color:var(--ink-mute)">${r.completedDate||'—'}</td>
+          <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute)">${r.completedDate||'—'}</td>
         </tr>`;
       }).join('');
     } else {
@@ -1896,6 +1901,7 @@ function renderRoadmap() {
   }
 
   // Expandable list
+  try {
   document.getElementById('roadmap-list').innerHTML = roadmap.map((r, i) => {
     const badgeCls = r.status==='done'?'badge-done':'badge-belum';
     const badgeTxt = r.status==='done'?'Selesai':'Belum';
@@ -1948,7 +1954,7 @@ function renderRoadmap() {
       <div class="roadmap-header">
         <div class="roadmap-num ${r.status==='done'?'done':'belum'}">${r.status==='done'?'✓':r.phase}</div>
         <div class="roadmap-content">
-          <div class="roadmap-phase">Phase ${r.phase}${r.completedDate?' <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute)">· '+r.completedDate+'</span>':''}</div>
+          <div class="roadmap-phase">Phase ${r.phase}${r.completedDate?' <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-mute)">· '+r.completedDate+'</span>':''}</div>
           <div class="roadmap-title">${r.title}</div>
           <div class="roadmap-desc">${r.desc}</div>
         </div>
@@ -1988,6 +1994,11 @@ function renderRoadmap() {
         </div>`).join('') || '<div style="font-size:12px;font-family:var(--font-body);color:var(--text-mute);font-style:italic;padding:4px 0;">Belum ada item.</div>';
     });
   });
+  } catch(err) {
+    console.error('renderRoadmap error:', err);
+    const el = document.getElementById('roadmap-list');
+    if (el) el.innerHTML = '<div class="empty"><div>Error render roadmap: '+err.message+'</div></div>';
+  }
 }
 
 function togglePhase(i) {
@@ -2571,6 +2582,8 @@ examInput.addEventListener('change', () => {
 // ══════════════════════════════════════
 initData();
 renderDashboard();
+// Pre-render roadmap data into DOM so it's ready when user navigates
+try { renderRoadmap(); } catch(e) { console.error('roadmap prerender:', e); }
 </script>
 </body>
 </html>
