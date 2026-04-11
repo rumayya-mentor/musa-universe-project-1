@@ -692,8 +692,9 @@
   .pt-card.belum-card  { opacity: 0.55; }
 
   .pt-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
-  .pt-title  { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; color: var(--text); }
-  .pt-desc   { font-size: 13px; color: var(--text-mute); margin-top: 3px; }
+  .pt-header > div:first-child { min-width: 0; flex: 1 1 220px; }
+  .pt-title  { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; color: var(--text); white-space: normal; overflow-wrap: anywhere; word-break: break-word; }
+  .pt-desc   { font-size: 13px; color: var(--text-mute); margin-top: 3px; white-space: normal; overflow-wrap: anywhere; word-break: break-word; }
   .pt-meta   { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
 
   .pt-date-row {
@@ -759,6 +760,9 @@
     .phase-timeline { padding-left: 36px; }
     .pt-dot { left: -29px; width: 22px; height: 22px; font-size: 9px; }
     .phase-timeline::before { left: 10px; }
+    .pt-header { gap: 10px; }
+    .pt-header > div:first-child { flex-basis: 100%; }
+    .pt-title, .pt-desc { max-width: 100%; }
     .cal-date { width: 60px; }
     .cal-date .day { font-size: 16px; }
   }
