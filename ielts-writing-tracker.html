@@ -1528,29 +1528,83 @@ const DEFAULT_ROADMAP = [
     ]
   },
   { phase: 5, title: 'Complex Sentences — GRA Variety',
-    desc: 'Subordinate clauses · relative clauses · conditionals · passive voice · mixed sentence structures untuk GRA Band 8.5',
+    desc: 'Assessment focus: GRA · Task 2: Problem & Solution · Task 1: Formal Letter · Materi: subordinate clauses · relative clauses · conditionals · passive voice · mixed sentence structures · Framework: PRE-ASSESSMENT → Chunking per komponen → POST-ASSESSMENT',
     status: 'active',
-    items: []
+    items: [
+      { text: 'PRE-ASSESSMENT: Full essay Problem & Solution (baseline GRA)', done: false },
+      { text: 'Chunk 1: Subordinate clauses (although, while, whereas, since, because)', done: false },
+      { text: 'Chunk 2: Relative clauses (which, who, where, whose)', done: false },
+      { text: 'Chunk 3: Conditionals (if, unless, provided that)', done: false },
+      { text: 'Chunk 4: Passive voice untuk academic register', done: false },
+      { text: 'Chunk 5: Mixed structures — variety dalam 1 paragraf', done: false },
+      { text: 'Task 1 drill: Formal Letter structure + tone + opening/closing', done: false },
+      { text: 'POST-ASSESSMENT: Full essay Problem & Solution (delta GRA)', done: false }
+    ]
   },
   { phase: 6, title: 'Lexical Resource — Collocation + Paraphrase',
-    desc: 'Academic collocations · paraphrase techniques · topic-specific vocab (W2)',
-    status: 'next', items: []
+    desc: 'Assessment focus: LR · Task 2: Advantages & Disadvantages · Task 1: Semi-formal Letter · Materi: academic collocations · paraphrase techniques · topic-specific vocab · Framework: PRE-ASSESSMENT → Chunking per komponen → POST-ASSESSMENT',
+    status: 'next',
+    items: [
+      { text: 'PRE-ASSESSMENT: Full essay Adv & Disadvantage (baseline LR)', done: false },
+      { text: 'Chunk 1: Collocation patterns — verb+noun, adj+noun', done: false },
+      { text: 'Chunk 2: Paraphrase techniques — synonym, structure change', done: false },
+      { text: 'Chunk 3: Topic-specific vocabulary (health, education, technology, environment)', done: false },
+      { text: 'Chunk 4: Avoiding repetition — pronoun + synonym chains', done: false },
+      { text: 'Task 1 drill: Semi-formal Letter — tone, register, format', done: false },
+      { text: 'POST-ASSESSMENT: Full essay Adv & Disadvantage (delta LR)', done: false }
+    ]
   },
-  { phase: 7, title: 'Task 1 — Letter Writing Mastery',
-    desc: 'Formal/semi-formal/informal letter · tone · opening & closing formulas (W2)',
-    status: 'locked', items: []
+  { phase: 7, title: 'Opinion/Argumentative + Double Question + Informal Letter',
+    desc: 'Assessment focus: TA · Task 2: Opinion/Argumentative + Double Question · Task 1: Informal Letter · Materi: strong thesis positioning · answering 2 questions explicitly · informal register + tone · Framework: PRE-ASSESSMENT → Chunking per komponen → POST-ASSESSMENT',
+    status: 'locked',
+    items: [
+      { text: 'PRE-ASSESSMENT: Full essay Opinion/Argumentative (baseline TA)', done: false },
+      { text: 'Chunk 1: Opinion essay — clear position + one-sided argument', done: false },
+      { text: 'Chunk 2: Double Question — identify + answer both questions explicitly', done: false },
+      { text: 'Chunk 3: Intro & Conclusion mastery — hook, thesis, restate', done: false },
+      { text: 'Task 1 drill: Informal Letter — register, tone, casual phrases', done: false },
+      { text: 'POST-ASSESSMENT: Full essay Double Question (delta TA)', done: false }
+    ]
   },
-  { phase: 8, title: 'Full Essay Timed Practice',
-    desc: '40 menit Task 2 + 20 menit Task 1 · under exam conditions (W3)',
-    status: 'locked', items: []
+  { phase: 8, title: 'Full Timed Practice — Mixed All Types',
+    desc: 'Assessment focus: Semua kriteria · Task 2: Mixed semua tipe (Discussion, Opinion, Problem & Solution, Adv & Disadv, Double Question) · Task 1: Mixed semua tipe (Formal, Semi-formal, Informal) · 40 menit Task 2 + 20 menit Task 1 · under exam conditions',
+    status: 'locked',
+    items: [
+      { text: 'PRE-ASSESSMENT: Full mock (Task 1 + Task 2)', done: false },
+      { text: 'Timed drill: Task 2 Discussion (40 min)', done: false },
+      { text: 'Timed drill: Task 2 Opinion (40 min)', done: false },
+      { text: 'Timed drill: Task 2 Problem & Solution (40 min)', done: false },
+      { text: 'Timed drill: Task 2 Adv & Disadvantage (40 min)', done: false },
+      { text: 'Timed drill: Task 2 Double Question (40 min)', done: false },
+      { text: 'Timed drill: Task 1 Formal Letter (20 min)', done: false },
+      { text: 'Timed drill: Task 1 Semi-formal Letter (20 min)', done: false },
+      { text: 'Timed drill: Task 1 Informal Letter (20 min)', done: false },
+      { text: 'POST-ASSESSMENT: Full mock (Task 1 + Task 2)', done: false }
+    ]
   },
   { phase: 9, title: 'Error Elimination — Zero Error Goal',
-    desc: 'Targeted drill SVA, article, verb form berdasarkan error log (W3)',
-    status: 'locked', items: []
+    desc: 'Assessment focus: Semua kriteria · Task 2: Mixed · Task 1: Mixed · Targeted drill berdasarkan error log — SVA, Article, Verb Form, Spelling, Possessive, Word Form · Goal: 0 repeated errors dalam full essay',
+    status: 'locked',
+    items: [
+      { text: 'PRE-ASSESSMENT: Full essay (baseline error count)', done: false },
+      { text: 'Drill: SVA — targeted dari error log', done: false },
+      { text: 'Drill: Article — targeted dari error log', done: false },
+      { text: 'Drill: Verb Form — targeted dari error log', done: false },
+      { text: 'Drill: Spelling + Possessive + Word Form', done: false },
+      { text: 'Full essay — hitung error, target 0 repeated errors', done: false },
+      { text: 'POST-ASSESSMENT: Full essay (delta error count)', done: false }
+    ]
   },
-  { phase: 10, title: 'Post-test + Fine Tuning',
-    desc: 'Mock test full · evaluasi · penyesuaian akhir sebelum ujian (W4)',
-    status: 'locked', items: []
+  { phase: 10, title: 'Mock Test + Fine Tuning',
+    desc: 'Assessment focus: Final overall score · Full mock test: Task 1 + Task 2 semua tipe · Evaluasi akhir · Penyesuaian strategi sebelum ujian · Target: Band 8.5 overall writing',
+    status: 'locked',
+    items: [
+      { text: 'Mock Test 1: Task 2 + Task 1 (full exam conditions)', done: false },
+      { text: 'Mock Test 2: Task 2 + Task 1 (full exam conditions)', done: false },
+      { text: 'Final error analysis + pola kesalahan terakhir', done: false },
+      { text: 'Strategi exam day — time management, planning, checking', done: false },
+      { text: 'FINAL ASSESSMENT: Overall band score vs target 8.5', done: false }
+    ]
   }
 ];
 
@@ -1591,10 +1645,11 @@ const DEFAULT_SPACED = [
   { topic: 'P4 — Academic verbs: argue/contend/demonstrate/precipitate', learnedDate: '2026-04-11', nextReview: '2026-05-11', interval: 30 },
   { topic: 'P4 — Vocab upgrade Band 7→8.5 (10 pasangan)', learnedDate: '2026-04-11', nextReview: '2026-05-11', interval: 30 },
   { topic: '10 Collocations Akademik', learnedDate: '2026-04-11', nextReview: '2026-05-11', interval: 30 }
+  // P5-P10: tambahkan manual via tombol "Tambah Materi" setelah setiap phase selesai
 ];
 
 // ── Init data if not exists ──
-const DATA_VERSION = 'v9';
+const DATA_VERSION = 'v10';
 function initData() {
   const prevVersion = localStorage.getItem(STORAGE_VERSION_KEY) || '';
 
